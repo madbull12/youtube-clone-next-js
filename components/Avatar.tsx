@@ -6,7 +6,7 @@ interface IProps {
 }
 const Avatar = ({ src }:IProps) => {
   return (
-    <Image width={50} height={50} src={src ?? ""} className="rounded-full">
+    <Image width={40} height={40} src={src ?? ""} className="rounded-full">
 
     </Image>
   )

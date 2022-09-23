@@ -20,13 +20,13 @@ const Header = () => {
     })
   }
   return (
-    <div className="p-4 bg-stone-800 fixed top-0 w-full right-0 flex justify-between items-center">
+    <div className="px-4 py-2 bg-neutral-800 fixed top-0 w-full right-0 flex justify-between items-center">
       <Link href="/">
         <Image
           className="cursor-pointer"
           src={YoutubeLogo}
-          width={150}
-          height={100}
+          width={100}
+          height={70}
         />
       </Link>
       <Search />
