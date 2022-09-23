@@ -9,7 +9,7 @@ interface IProps {
 }
 const SearchSnippet = ({ video }: IProps) => {
   return (
-    <Link href="/">
+    <Link href={`/watch?v=${video.id.videoId}`}>
 
         <div className="flex gap-x-3 cursor-pointer">
                 {/* <img
@@ -28,6 +28,15 @@ const SearchSnippet = ({ video }: IProps) => {
                 <h1 className="text-white text-xl  text-ellipsis">{video.snippet.title}</h1>
                 <p className="text-gray-400">
                   <ReactTimeAgo date={video.snippet.publishedAt} />
+                </p>
+                <Link href="/">
+                  <p className="text-gray-400 text-sm pt-2 hover:text-gray-300">
+                    {video.snippet.channelTitle}
+                  </p>
+                </Link>
+              
+                <p className="text-gray-400 text-sm pt-3">
+                  {video.snippet.description}
                 </p>
             </div>
         </div>

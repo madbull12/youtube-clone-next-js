@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react'
+import Body from '../components/Body';
 import SearchSnippet from '../components/SearchSnippet';
 import useFetch from '../hooks/useFetch'
 import { IVideo } from '../interface';
@@ -17,13 +18,13 @@ const SearchPage = () => {
     }
 
   return (
-    <div className='min-h-screen bg-neutral-900 pt-28 px-6'>
-        <div className='flex flex-col space-y-2'>
+    <Body>
+        <div className='flex flex-col space-y-4'>
             {data?.items.map((item:IVideo)=>(
                 <SearchSnippet video={item} />
             ))}
         </div>
-    </div>
+    </Body>
   )
 }
 
