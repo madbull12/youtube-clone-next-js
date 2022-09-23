@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import ReactTimeAgo from "react-time-ago";
 import { IVideo } from "../interface";
 
 interface IProps {
@@ -18,12 +19,16 @@ const SearchSnippet = ({ video }: IProps) => {
                     width={video.snippet.thumbnails.medium.width}
                 /> */}
             <Image
+                className="w-1/2"
                 src={video.snippet.thumbnails.medium.url ?? ""}
-                height={video.snippet.thumbnails.medium.height ?? 180}
-                width={video.snippet.thumbnails.medium.width ?? 320}
+                height={180 ?? video.snippet.thumbnails.medium.height}
+                width={320 ?? video.snippet.thumbnails.medium.width}
             />
-            <div>
-                <h1 className="text-white text-2xl">{video.snippet.title}</h1>
+            <div className="w-3/4">
+                <h1 className="text-white text-xl  text-ellipsis">{video.snippet.title}</h1>
+                <p className="text-gray-400">
+                  <ReactTimeAgo date={video.snippet.publishedAt} />
+                </p>
             </div>
         </div>
     </Link>

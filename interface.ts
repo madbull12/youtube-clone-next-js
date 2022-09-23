@@ -2,8 +2,8 @@ export interface ISnippet {
     channelId:string;
     channelTitle:string;
     description:string;
-    publishTime:string;
-    publishedAt:string;
+    publishTime:Date;
+    publishedAt:Date;
     thumbnails:{
         default:IResolution;
         high:IResolution;
