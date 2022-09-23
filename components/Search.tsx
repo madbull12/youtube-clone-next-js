@@ -14,7 +14,7 @@ const Search = () => {
       <form
         onSubmit={(e)=>{
           e.preventDefault();
-          router.push("/search")
+          router.push(`/search?results=${term}`)
       }}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
@@ -27,7 +27,7 @@ const Search = () => {
 
         )}
         <input
-
+          onChange={(e)=>setTerm(e.target.value)}
           type="text"
           placeholder="Search"
           className="text-white  w-full outline-none bg-transparent  px-1 py-2"
