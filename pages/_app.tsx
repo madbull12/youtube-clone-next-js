@@ -2,8 +2,7 @@ import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Header from "../components/Header";
-import "./styles.css";
-
+import "../styles/globals.css"
 // Use the <SessionProvider> to improve performance and allow components that call
 // `useSession()` anywhere in your application to access the `session` object.
 export default function App({

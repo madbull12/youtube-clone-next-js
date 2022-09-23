@@ -2,10 +2,11 @@ import React from "react";
 
 interface IProps {
     text:string;
+    handleClick?:()=>void
 }
-const Button = ({ text }:IProps) => {
+const Button = ({ text,handleClick }:IProps) => {
   return (
-    <button className="text-uppercase font-semibold px-4 text-white bg-transparent py-2 border border-blue-500">
+    <button onClick={handleClick} className="text-uppercase font-semibold px-4 text-white bg-transparent py-2 border border-blue-500">
       {text}
     </button>
   );
