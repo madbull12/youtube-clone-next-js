@@ -4,7 +4,7 @@ import youtubeClient from "../lib/axios"
 
 export default function useFetch(url:string){
 
-    const [data,setData] = useState(null)
+    const [data,setData] = useState<any>(null)
     const [error,setError] = useState(null)
     const [loading,setLoading] = useState(false)
 
