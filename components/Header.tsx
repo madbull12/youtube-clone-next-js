@@ -20,7 +20,7 @@ const Header = () => {
     })
   }
   return (
-    <div className="px-4 py-2 bg-neutral-800 fixed top-0 w-full right-0 flex justify-between items-center">
+    <div className="px-4 py-2 bg-neutral-800 z-50 fixed top-0 w-full right-0 flex justify-between items-center">
       <Link href="/">
         <Image
           className="cursor-pointer"

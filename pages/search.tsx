@@ -17,7 +17,7 @@ const SearchPage = () => {
     }
 
   return (
-    <div className='min-h-screen bg-neutral-900'>
+    <div className='min-h-screen bg-neutral-900 pt-28 px-6'>
         <div className='flex flex-col space-y-2'>
             {data?.items.map((item:IVideo)=>(
                 <SearchSnippet video={item} />
