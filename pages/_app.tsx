@@ -1,8 +1,25 @@
-import '../styles/globals.css'
-import type { AppProps } from 'next/app'
+import { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
+import type { AppProps } from "next/app";
+import Header from "../components/Header";
+import "./styles.css";
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+// Use the <SessionProvider> to improve performance and allow components that call
+// `useSession()` anywhere in your application to access the `session` object.
+export default function App({
+  Component,
+  pageProps,
+}: AppProps<{
+  session: Session;
+}>) {
+  return (
+    <SessionProvider
+      // Provider options are not required but can be useful in situations where
+      // you have a short session maxAge time. Shown here with default values.
+      session={pageProps.session}
+    >
+      <Header />
+      <Component {...pageProps} />
+    </SessionProvider>
+  );
 }
-
-export default MyApp
