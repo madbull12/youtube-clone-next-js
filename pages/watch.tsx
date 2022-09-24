@@ -7,8 +7,9 @@ import SuggestedSnippet from "../components/SuggestedSnippet";
 import nFormatter from "../helper/convertion";
 import truncate from "../helper/truncate";
 import useFetch from "../hooks/useFetch";
-import { ISnippet, IVideo } from "../interface";
+import { IComment, ISnippet, IVideo } from "../interface";
 import { FiThumbsDown, FiThumbsUp } from "react-icons/fi";
+import Comment from "../components/Comment";
 
 const VideoPage = () => {
   const router = useRouter();
@@ -21,11 +22,10 @@ const VideoPage = () => {
   const { data: suggestedVideos } = useFetch(
     `search?relatedToVideoId=${data?.items[0]?.id}&type=video&part=id,snippet`
   );
-  const { data: comments } = useFetch(
-    `commentThreads?videoId=${data?.items[0]?.id}&maxResults=101&part=snippet`
-  );
+  // const { data: comments } = useFetch(
+  //   `commentThreads?videoId=${data?.items[0]?.id}&maxResults=101&part=snippet`
+  // );
 
-  console.log(comments)
 
   // const { data:channelData } = useFetch(`channels?part=snippet,statistics&id=${data?.items[0]?.snippet?.channelId}`)
 
@@ -57,7 +57,7 @@ const VideoPage = () => {
               <div className="flex gap-x-2 items-center">
                 <FiThumbsUp className="text-white" />
                 <p className="text-white font-semibold">
-                  {nFormatter(data?.items[0].statistics.likeCount)}
+                  {nFormatter(data?.items[0]?.statistics.likeCount)}
                 </p>
               </div>
               <div className="flex gap-x-2 items-center">
@@ -75,11 +75,17 @@ const VideoPage = () => {
             {truncate(data?.items[0]?.snippet?.description)}
           </p>
 
-          <div>
+          {/* <div>
             <h1 className="text-lg text-white mt-16">
-              {data?.items[0].statistics.commentCount.toLocaleString()} Comments
+              {data?.items[0]?.statistics?.commentCount.toLocaleString()} Comments
             </h1>
-          </div>
+            <div className="space-y-6 mt-6">
+              {comments?.items?.map((comment:IComment)=>(
+                <Comment comment={comment} />
+              ))}
+            </div>
+        
+          </div> */}
         </div>
         <div className="space-y-2">
           {suggestedVideos?.items?.map((video: IVideo) => (
