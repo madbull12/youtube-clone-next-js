@@ -3,8 +3,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import Body from "../components/Body";
+import SuggestedSnippet from "../components/SuggestedSnippet";
 import truncate from "../helper/truncate";
 import useFetch from "../hooks/useFetch";
+import { ISnippet, IVideo } from "../interface";
 
 const VideoPage = () => {
   const router = useRouter();
@@ -14,12 +16,17 @@ const VideoPage = () => {
     `videos?part=contentDetails,snippet,statistics&id=${v}`
   );
 
+  const { data:suggestedVideos } = useFetch(
+    `search?relatedToVideoId=${data?.items[0]?.id}&type=video&part=id,snippet`
+  )
+
   // const { data:channelData } = useFetch(`channels?part=snippet,statistics&id=${data?.items[0]?.snippet?.channelId}`)
 
   console.log(data);
+  console.log(suggestedVideos)
   return (
     <Body>
-      <div className="flex gap-x-2">
+      <div className="flex gap-x-6">
         <div className="w-[60%] space-y-2">
           <iframe
             height={400}
@@ -37,14 +44,19 @@ const VideoPage = () => {
           </div>
           <Link href="/">
             <p className="text-white cursor-pointer font-semibold">
-              {data?.items[0].snippet.channelTitle}
+              {data?.items[0]?.snippet?.channelTitle}
             </p>
           </Link>
           <p className="text-white ">
-            {truncate(data?.items[0].snippet.description)}
+            {truncate(data?.items[0]?.snippet?.description)}
           </p>
         
        
+        </div>
+        <div className="space-y-2">
+          {suggestedVideos?.items?.map((video:IVideo)=>(
+            <SuggestedSnippet video={video} />
+          ))}
         </div>
       </div>
     </Body>
