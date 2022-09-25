@@ -1,7 +1,7 @@
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React,{ useState } from "react";
 import Body from "../components/Body";
 import SuggestedSnippet from "../components/SuggestedSnippet";
 import nFormatter from "../helper/convertion";
@@ -17,6 +17,21 @@ const VideoPage = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const { v } = router.query;
+  const [textComment,setTextComment] = useState<string>("");
+
+  const createComment = async(e:React.SyntheticEvent) => {
+    e.preventDefault();
+    try {
+      const body = { text:textComment };
+      await fetch('/api/comment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const { data, loading, error } = useFetch(
     `videos?part=contentDetails,snippet,statistics&id=${v}`
@@ -83,16 +98,23 @@ const VideoPage = () => {
               {status === "authenticated" && (
                 <Avatar src={session?.user?.image ?? ""} />
               )}
-              <input
-                className="bg-transparent px-4 py-2 outline-none text-white border-b border-gray-600 focus:border-blue-500 w-full"
-                type="text"
-                disabled={status === "unauthenticated"}
-                placeholder={`${
-                  status === "authenticated"
-                    ? "Add a comment"
-                    : "Please login first before comment"
-                }`}
-              />
+              <form 
+                className="w-full"
+                onSubmit={createComment}
+              >
+                <input
+                  className="bg-transparent text-sm p-2 outline-none text-white border-b border-gray-600 focus:border-blue-500 w-full"
+                  type="text"
+                  disabled={status === "unauthenticated"}
+                  placeholder={`${
+                    status === "authenticated"
+                      ? "Add a comment"
+                      : "Please login first before comment"
+                  }`}
+                  onChange={(e)=>setTextComment(e.target.value)}
+                />
+              </form>
+           
             </div>
             <div className="space-y-6 mt-6"></div>
           </div>
