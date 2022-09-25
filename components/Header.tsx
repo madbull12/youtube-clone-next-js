@@ -14,11 +14,11 @@ const Header = () => {
       callbackUrl: "http://localhost:3000",
     });
   };
-  const handleSignOut = async() => {
+  const handleSignOut = async () => {
     await signOut({
-      callbackUrl: 'http://localhost:3000/',
-    })
-  }
+      callbackUrl: "http://localhost:3000/",
+    });
+  };
   return (
     <div className="px-4 py-2 bg-neutral-800 z-50 fixed top-0 w-full right-0 flex justify-between items-center">
       <Link href="/">
@@ -31,15 +31,14 @@ const Header = () => {
       </Link>
       <Search />
       <div className="flex items-center gap-x-2 ">
-        <Button text={status === "authenticated" ? "Sign out" : "Sign In"} handleClick={()=>{
-          status ==='authenticated' ? handleSignOut() : handleSignIn()
-        }} />
-        {status==="authenticated" && (
-          <Avatar src={data?.user?.image ?? ""} />
-
-        )}
+        <Button
+          text={status === "authenticated" ? "Sign out" : "Sign In"}
+          handleClick={() => {
+            status === "authenticated" ? handleSignOut() : handleSignIn();
+          }}
+        />
+        {status === "authenticated" && <Avatar src={data?.user?.image ?? ""} />}
       </div>
-  
     </div>
   );
 };

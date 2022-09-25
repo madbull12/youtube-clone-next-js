@@ -10,9 +10,12 @@ import useFetch from "../hooks/useFetch";
 import { IComment, ISnippet, IVideo } from "../interface";
 import { FiThumbsDown, FiThumbsUp } from "react-icons/fi";
 import Comment from "../components/Comment";
+import { useSession } from "next-auth/react";
+import Avatar from "../components/Avatar";
 
 const VideoPage = () => {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const { v } = router.query;
 
   const { data, loading, error } = useFetch(
@@ -25,7 +28,6 @@ const VideoPage = () => {
   // const { data: comments } = useFetch(
   //   `commentThreads?videoId=${data?.items[0]?.id}&maxResults=101&part=snippet`
   // );
-
 
   // const { data:channelData } = useFetch(`channels?part=snippet,statistics&id=${data?.items[0]?.snippet?.channelId}`)
 
@@ -47,7 +49,7 @@ const VideoPage = () => {
             <div className="gap-x-3 flex items-center ">
               <p className="text-gray-400 ">
                 {Number(data?.items[0]?.statistics?.viewCount).toLocaleString()}{" "}
-                views 
+                views
               </p>
               <p className="text-gray-400 text-sm">
                 {moment(data?.items[0]?.snippet?.publishedAt).format("ll")}
@@ -76,16 +78,23 @@ const VideoPage = () => {
           </p>
 
           <div>
-            <h1 className="text-lg text-white mt-16">
-              Comments
-            </h1>
-            <div className="flex items-center gap-x-4">
-
+            <h1 className="text-lg text-white mt-16">Comments</h1>
+            <div className="flex items-center gap-x-2 mt-4">
+              {status === "authenticated" && (
+                <Avatar src={session?.user?.image ?? ""} />
+              )}
+              <input
+                className="bg-transparent px-4 py-2 outline-none text-white border-b border-gray-600 focus:border-blue-500 w-full"
+                type="text"
+                disabled={status === "unauthenticated"}
+                placeholder={`${
+                  status === "authenticated"
+                    ? "Add a comment"
+                    : "Please login first before comment"
+                }`}
+              />
             </div>
-            <div className="space-y-6 mt-6">
-          
-            </div>
-        
+            <div className="space-y-6 mt-6"></div>
           </div>
         </div>
         <div className="space-y-2">

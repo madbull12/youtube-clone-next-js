@@ -1,11 +1,9 @@
-import React from 'react'
+import React from "react";
 
-const Body = ({ children }: { children:React.ReactNode}) => {
+const Body = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className='min-h-screen bg-neutral-900 pt-28 px-6'>
-        {children}
-    </main>
-  )
-}
+    <main className="min-h-screen bg-neutral-900 pt-28 px-6">{children}</main>
+  );
+};
 
-export default Body
+export default Body;

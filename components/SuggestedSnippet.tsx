@@ -20,9 +20,10 @@ const SuggestedSnippet = ({ video }: IProps) => {
         />
         <div className="w-1/2">
           <h1 className="text-md text-white">{video.snippet.title}</h1>
-          <Link href='/'>
-            <p className="text-gray-400 text-sm">{video.snippet.channelTitle}</p>
-
+          <Link href="/">
+            <p className="text-gray-400 text-sm">
+              {video.snippet.channelTitle}
+            </p>
           </Link>
           <p className="text-gray-400 text-sm">
             <ReactTimeAgo date={video.snippet.publishedAt} />
@@ -30,7 +31,6 @@ const SuggestedSnippet = ({ video }: IProps) => {
         </div>
       </div>
     </Link>
-    
   );
 };
 
