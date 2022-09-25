@@ -47,7 +47,7 @@ const VideoPage = () => {
             <div className="gap-x-3 flex items-center ">
               <p className="text-gray-400 ">
                 {Number(data?.items[0]?.statistics?.viewCount).toLocaleString()}{" "}
-                views
+                views 
               </p>
               <p className="text-gray-400 text-sm">
                 {moment(data?.items[0]?.snippet?.publishedAt).format("ll")}
@@ -75,17 +75,18 @@ const VideoPage = () => {
             {truncate(data?.items[0]?.snippet?.description)}
           </p>
 
-          {/* <div>
+          <div>
             <h1 className="text-lg text-white mt-16">
-              {data?.items[0]?.statistics?.commentCount.toLocaleString()} Comments
+              Comments
             </h1>
+            <div className="flex items-center gap-x-4">
+
+            </div>
             <div className="space-y-6 mt-6">
-              {comments?.items?.map((comment:IComment)=>(
-                <Comment comment={comment} />
-              ))}
+          
             </div>
         
-          </div> */}
+          </div>
         </div>
         <div className="space-y-2">
           {suggestedVideos?.items?.map((video: IVideo) => (
