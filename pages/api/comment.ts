@@ -7,13 +7,14 @@ export default async function handle(
   res: NextApiResponse
 ) {
     if(req.method === "POST") {
-        const { text } = req.body;
+        const { text,videoId } = req.body;
 
         const session = await getSession({ req });
       
         const result = await prisma?.comment.create({
           data: {
             text,
+            videoId,
             author:{
               connect:{
                 email:session?.user?.email || ""

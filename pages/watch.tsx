@@ -12,17 +12,28 @@ import { FiThumbsDown, FiThumbsUp } from "react-icons/fi";
 import Comment from "../components/Comment";
 import { useSession } from "next-auth/react";
 import Avatar from "../components/Avatar";
+import { GetServerSideProps } from "next";
 
-const VideoPage = () => {
+const VideoPage = ({ comments }:{ comments:IComment[] }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const { v } = router.query;
   const [textComment,setTextComment] = useState<string>("");
+  const { data, loading, error } = useFetch(
+    `videos?part=contentDetails,snippet,statistics&id=${v}`
+  );
+
+  console.log(comments);
+  const refreshData = () => {
+    router.replace(router.asPath);
+  }
 
   const createComment = async(e:React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { text:textComment };
+      const body = { text:textComment,videoId:data?.items[0].id };
+      setTextComment("")
+
       await fetch('/api/comment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -30,12 +41,13 @@ const VideoPage = () => {
       });
     } catch (error) {
       console.error(error);
+    } finally {
+      refreshData();
+     
     }
   }
 
-  const { data, loading, error } = useFetch(
-    `videos?part=contentDetails,snippet,statistics&id=${v}`
-  );
+
 
   const { data: suggestedVideos } = useFetch(
     `search?relatedToVideoId=${data?.items[0]?.id}&type=video&part=id,snippet`
@@ -116,7 +128,11 @@ const VideoPage = () => {
               </form>
            
             </div>
-            <div className="space-y-6 mt-6"></div>
+            <div className="space-y-6 mt-6">
+              {comments?.map((comment:IComment)=>(
+                <Comment comment={comment} />
+              ))}
+            </div>
           </div>
         </div>
         <div className="space-y-2">
@@ -128,5 +144,28 @@ const VideoPage = () => {
     </Body>
   );
 };
+
+export const getServerSideProps:GetServerSideProps = async({ query }) => {
+  const comments = await prisma?.comment.findMany({
+    where:{
+      videoId:query.v as string
+    },
+    include:{
+      author:{
+        select:{
+          name:true,
+          email:true,
+          image:true
+        }
+      }
+    }
+  })
+
+  return{
+    props:{
+      comments:JSON.parse(JSON.stringify(comments))
+    }
+  }
+}
 
 export default VideoPage;
