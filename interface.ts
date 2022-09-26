@@ -164,6 +164,10 @@ export interface IChannel {
     canonicalBaseUrl:string;
     channelId:string;
     descriptionSnippet:string;
-    stats:IStats;
+    stats:{
+        subscribers:number;
+        subscribersText:string;
+        videos:number;
+    }
     title:string;
 }

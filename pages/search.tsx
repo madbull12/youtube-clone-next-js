@@ -53,7 +53,10 @@ const SearchPage = () => {
                 ):(
                   <>
                     {item.type === "channel" ? (
-                      <ChannelSnippet key={uuidv4()} channel={item} />
+                      <div key={uuidv4()} className="my-8">
+                        <ChannelSnippet  channel={item?.channel} />
+
+                      </div>
                     ):(
                       <>
                         {item.type==="playlist" ? (
