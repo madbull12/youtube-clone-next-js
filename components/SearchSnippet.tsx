@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ReactTimeAgo from "react-time-ago";
-import { IVideo } from "../interface";
+import { IVideo, IVideoDetails } from "../interface";
 import Avatar from "./Avatar";
 
 interface IProps {
@@ -10,7 +10,7 @@ interface IProps {
 }
 const SearchSnippet = ({ video }: IProps) => {
   return (
-    <Link href={`/watch?v=${video.video.videoId}`}>
+    <Link href={`/watch?v=${video?.video?.videoId}`}>
       <div className="flex gap-x-3 cursor-pointer">
         {/* <img
                     loading="lazy"
@@ -20,7 +20,7 @@ const SearchSnippet = ({ video }: IProps) => {
                 /> */}
         <Image
           className="w-1/2"
-          src={video.video.thumbnails[0].url ?? ""}
+          src={video.video.thumbnails[0].url}
           height={ video.video.thumbnails[0].height}
           width={ video.video.thumbnails[0].width}
         />
@@ -29,7 +29,7 @@ const SearchSnippet = ({ video }: IProps) => {
             {video.video.title}
           </h1>
           <p className="text-gray-400">
-            {video.video.publishedTimeText}
+            {video?.video.publishedTimeText}
           </p>
           <Link href="/">
           
@@ -43,7 +43,7 @@ const SearchSnippet = ({ video }: IProps) => {
           </Link>
 
           <p className="text-gray-400 text-sm pt-3">
-            {video.video.descriptionSnippet}
+            {video?.video.descriptionSnippet}
           </p>
         </div>
       </div>

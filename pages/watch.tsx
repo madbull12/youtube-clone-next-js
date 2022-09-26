@@ -7,13 +7,14 @@ import SuggestedSnippet from "../components/SuggestedSnippet";
 import nFormatter from "../helper/convertion";
 import truncate from "../helper/truncate";
 import useFetch from "../hooks/useSearch";
-import { IComment, ISnippet, IVideo } from "../interface";
+import { IComment, ISnippet, IVideo, IVideoDetails } from "../interface";
 import { FiThumbsDown, FiThumbsUp } from "react-icons/fi";
 import Comment from "../components/Comment";
 import { useSession } from "next-auth/react";
 import Avatar from "../components/Avatar";
 import { GetServerSideProps } from "next";
 import useFetchDetails from "../hooks/useFetchDetails";
+import { v4 as uuidv4 } from 'uuid'
 
 const VideoPage = ({ comments }:{ comments:IComment[] }) => {
   const router = useRouter();
@@ -21,6 +22,8 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
   const { v } = router.query;
   const [textComment,setTextComment] = useState<string>("");
   const { data,loading,error } = useFetchDetails(`?id=${v}`);
+
+
 
 
   console.log(comments);
@@ -48,6 +51,8 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
   }
 
 
+  console.log(data)
+
 
   // const { data: suggestedVideos } = useFetch(
   //   `search?relatedToVideoId=${data?.items[0]?.id}&type=video&part=id,snippet`
@@ -58,7 +63,6 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
 
   // const { data:channelData } = useFetch(`channels?part=snippet,statistics&id=${data?.items[0]?.snippet?.channelId}`)
 
-  console.log(data);
   // console.log(suggestedVideos);
   return (
     <Body>
@@ -67,26 +71,27 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
           <iframe
             height={400}
             className="w-full "
-            src={`https://www.youtube.com/embed/${v}`}
+            src={`https://www.youtube.com/embed/${data?.videoId}`}
           ></iframe>
+          <p className="text-blue-500 text-sm">{data?.superTitle.items[0]}</p>
           <h1 className="text-xl text-white">
-            {data?.items[0]?.snippet?.title}
+            {data?.title}
           </h1>
           <div className="justify-between flex items-center">
             <div className="gap-x-3 flex items-center ">
               <p className="text-gray-400 ">
-                {Number(data?.items[0]?.statistics?.viewCount).toLocaleString()}{" "}
+                {Number(data?.stats.views).toLocaleString()}{" "}
                 views
               </p>
               <p className="text-gray-400 text-sm">
-                {moment(data?.items[0]?.snippet?.publishedAt).format("ll")}
+                {moment(data?.publishedDate).format("ll")}
               </p>
             </div>
             <div className="flex gap-x-4 items-center">
               <div className="flex gap-x-2 items-center">
                 <FiThumbsUp className="text-white" />
                 <p className="text-white font-semibold">
-                  {nFormatter(data?.items[0]?.statistics.likeCount)}
+                  {nFormatter(data?.stats.likes)}
                 </p>
               </div>
               <div className="flex gap-x-2 items-center">
@@ -97,11 +102,11 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
           </div>
           <Link href="/">
             <p className="text-white cursor-pointer font-semibold">
-              {data?.items[0]?.snippet?.channelTitle}
+              {data?.author.title}
             </p>
           </Link>
           <p className="text-white ">
-            {truncate(data?.items[0]?.snippet?.description)}
+            {data?.description}
           </p>
 
           <div>
@@ -130,7 +135,7 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
             </div>
             <div className="space-y-6 mt-6">
               {comments?.map((comment:IComment)=>(
-                <Comment comment={comment} />
+                <Comment comment={comment} key={uuidv4()} />
               ))}
             </div>
           </div>

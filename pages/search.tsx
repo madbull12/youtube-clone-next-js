@@ -4,7 +4,14 @@ import Body from "../components/Body";
 import SearchSnippet from "../components/SearchSnippet";
 import useSearch from "../hooks/useSearch";
 import useFetch from "../hooks/useSearch";
-import { IVideo } from "../interface";
+import { IChannel, IVideo } from "../interface";
+import { v4 as uuidv4 } from 'uuid'
+import ChannelSnippet from "../components/ChannelSnippet";
+
+
+type Props= {
+  item:IVideo | IChannel
+}
 
 const SearchPage = () => {
   const router = useRouter();
@@ -37,9 +44,29 @@ const SearchPage = () => {
           )}
         </>
         {data?.contents
-          .filter((item: IVideo) => item.type === "video")
-          .map((item: IVideo) => (
-            <SearchSnippet video={item} />
+          // .filter((item: IVideo) => item.type === "video")
+          .map((item:any) => (
+            <>
+               {item.type === "video" ? (
+                  <SearchSnippet key={uuidv4()} video={item} />
+
+                ):(
+                  <>
+                    {item.type === "channel" ? (
+                      <ChannelSnippet key={uuidv4()} channel={item} />
+                    ):(
+                      <>
+                        {item.type==="playlist" ? (
+                          <h1>damn</h1>
+                        ):null}
+                      
+                      </>
+                
+                    )}
+                  </>
+                )}    
+            </>
+         
           ))}
       </div>
     </Body>

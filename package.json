@@ -18,12 +18,14 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
-    "react-time-ago": "^7.2.1"
+    "react-time-ago": "^7.2.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/node": "18.7.18",
     "@types/react": "18.0.21",
     "@types/react-dom": "18.0.6",
+    "@types/uuid": "^8.3.4",
     "autoprefixer": "^10.4.12",
     "eslint": "8.23.1",
     "eslint-config-next": "12.3.1",

@@ -30,21 +30,17 @@ export interface IThumbnail{
     width:number;
 }
 
-export interface IVideoDetails {
-   
- 
+export interface IAuthor {
+    avatar:IAvatar[];
+    badges:IBadge[];
+    canonicalBaseUrl:string;
+    channelId:string;
+    title:string;
 }
 
-export interface IVideo {
-    type:string;
-    video:{
-        author:{
-            avatar:IAvatar[];
-            badges:IBadge[];
-            canonicalBaseUrl:string;
-            channelId:string;
-            title:string;
-        };
+export interface IVideoInfo {
+ 
+        author:IAuthor;
         badges:string[];
         descriptionSnippet:string;
         isLiveNow:boolean;
@@ -56,7 +52,53 @@ export interface IVideo {
         thumbnails:IThumbnail[];
         title:string;
         videoId:string;
+ 
+    
+}
+
+export interface ICard {
+    label:string;
+    link:{
+        displayDomain:string;
+        thumbnails:IThumbnail[];
+        title:string;
+        url:string;
+        type:string;
+
     }
+}
+
+export interface IStats {
+    comments:number;
+    likes:number;
+    views:number;
+}
+
+// export interface IVideoSnippet {
+
+// }
+
+export interface IVideoDetails {
+    author:IAuthor;
+    cards:ICard[];
+    category:string;
+    description:string;
+    publishedDate:string;
+    stats:IStats;
+    superTitle:{
+        items:string[];
+    };
+    thumbnails:IThumbnail[];
+    title:string;
+    videoId:string;
+    // publishedTimeText?:string;
+    // descriptionSnippet:string;
+
+}
+
+export interface IVideo {
+    type:string;
+    video:IVideoInfo
     
     // kind:string;
     // id:{
@@ -114,4 +156,14 @@ export interface IComment {
     videoId:string;
     author:IUser;
 
+}
+
+export interface IChannel {
+    avatar:IAvatar[];
+    badges:IBadge[];
+    canonicalBaseUrl:string;
+    channelId:string;
+    descriptionSnippet:string;
+    stats:IStats;
+    title:string;
 }
