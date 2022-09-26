@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { GoSearch } from "react-icons/go";
-import youtubeClient from "../lib/axios";
 
 const Search = () => {
   const [focus, setFocus] = useState<boolean>(false);
   const [term, setTerm] = useState<string>("");
   const router = useRouter();
+
 
   return (
     <div className="flex-[.5]">

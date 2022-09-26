@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 
-import youtubeClient from "../lib/axios"
+import  { youtubeSearch } from "../lib/axios"
 
-export default function useFetch(url:string){
+export default function useSearch(url:string){
 
     const [data,setData] = useState<any>(null)
     const [error,setError] = useState(null)
@@ -13,7 +13,7 @@ export default function useFetch(url:string){
             async function(){
                 try{
                     setLoading(true)
-                    const response = await youtubeClient.get(url)
+                    const response = await youtubeSearch.get(url)
                     setData(response.data)
                 }catch(err:any){
                     setError(err)

@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ReactTimeAgo from "react-time-ago";
-import { ISnippet, IVideo } from "../interface";
+import { ISnippet, IVideo, IVideoDetails } from "../interface";
 
 interface IProps {
-  video: IVideo;
+  video: IVideoDetails;
 }
 const SuggestedSnippet = ({ video }: IProps) => {
   return (

@@ -3,13 +3,14 @@ import Link from "next/link";
 import React from "react";
 import ReactTimeAgo from "react-time-ago";
 import { IVideo } from "../interface";
+import Avatar from "./Avatar";
 
 interface IProps {
   video: IVideo;
 }
 const SearchSnippet = ({ video }: IProps) => {
   return (
-    <Link href={`/watch?v=${video.id.videoId}`}>
+    <Link href={`/watch?v=${video.video.videoId}`}>
       <div className="flex gap-x-3 cursor-pointer">
         {/* <img
                     loading="lazy"
@@ -19,25 +20,30 @@ const SearchSnippet = ({ video }: IProps) => {
                 /> */}
         <Image
           className="w-1/2"
-          src={video.snippet.thumbnails.medium.url ?? ""}
-          height={180 ?? video.snippet.thumbnails.medium.height}
-          width={320 ?? video.snippet.thumbnails.medium.width}
+          src={video.video.thumbnails[0].url ?? ""}
+          height={ video.video.thumbnails[0].height}
+          width={ video.video.thumbnails[0].width}
         />
         <div className="w-3/4">
           <h1 className="text-white text-xl  text-ellipsis">
-            {video.snippet.title}
+            {video.video.title}
           </h1>
           <p className="text-gray-400">
-            <ReactTimeAgo date={video.snippet.publishedAt} />
+            {video.video.publishedTimeText}
           </p>
           <Link href="/">
-            <p className="text-gray-400 text-sm pt-2 hover:text-gray-300">
-              {video.snippet.channelTitle}
-            </p>
+          
+            <div className="flex gap-x-2 items-center">
+                <Avatar src={video.video.author.avatar[0].url} />
+                <p className="text-gray-400 text-sm pt-2 hover:text-gray-300">
+                  {video.video.author.title}
+                </p>
+            </div>
+           
           </Link>
 
           <p className="text-gray-400 text-sm pt-3">
-            {video.snippet.description}
+            {video.video.descriptionSnippet}
           </p>
         </div>
       </div>

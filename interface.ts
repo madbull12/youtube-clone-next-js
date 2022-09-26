@@ -13,13 +13,58 @@ export interface ISnippet {
 
 }
 
+export interface IAvatar {
+    height:number;
+    url:string;
+    width:number;
+}
+
+export interface IBadge {
+    text:string;
+    type:string;
+}
+
+export interface IThumbnail{
+    height:number;
+    url:string;
+    width:number;
+}
+
+export interface IVideoDetails {
+   
+ 
+}
+
 export interface IVideo {
-    id:{
-        kind:string;
-        videoId:string
-    },
-    kind:string;
-    snippet:ISnippet;
+    type:string;
+    video:{
+        author:{
+            avatar:IAvatar[];
+            badges:IBadge[];
+            canonicalBaseUrl:string;
+            channelId:string;
+            title:string;
+        };
+        badges:string[];
+        descriptionSnippet:string;
+        isLiveNow:boolean;
+        lengthSeconds:number;
+        publishedTimeText:string;
+        stats:{
+            views:number;
+        };
+        thumbnails:IThumbnail[];
+        title:string;
+        videoId:string;
+    }
+    
+    // kind:string;
+    // id:{
+    //     kind:string;
+    //     videoId:string;
+    // }
+    // snippet:ISnippet;
+
 }
 
 export interface IResolution {
