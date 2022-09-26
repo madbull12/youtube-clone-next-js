@@ -15,6 +15,7 @@ import Avatar from "../components/Avatar";
 import { GetServerSideProps } from "next";
 import useFetchDetails from "../hooks/useFetchDetails";
 import { v4 as uuidv4 } from 'uuid'
+import useFetchRelated from "../hooks/useFetchRelated";
 
 const VideoPage = ({ comments }:{ comments:IComment[] }) => {
   const router = useRouter();
@@ -26,7 +27,6 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
 
 
 
-  console.log(comments);
   const refreshData = () => {
     router.replace(router.asPath);
   }
@@ -51,12 +51,12 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
   }
 
 
-  console.log(data)
+
+  const { data:relatedContents } = useFetchRelated(`?id=${v}`);
+  console.log(relatedContents)
 
 
-  // const { data: suggestedVideos } = useFetch(
-  //   `search?relatedToVideoId=${data?.items[0]?.id}&type=video&part=id,snippet`
-  // );
+
   // const { data: comments } = useFetch(
   //   `commentThreads?videoId=${data?.items[0]?.id}&maxResults=101&part=snippet`
   // );
@@ -140,11 +140,15 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
             </div>
           </div>
         </div>
-        {/* <div className="space-y-2">
-          {suggestedVideos?.items?.map((video: IVideo) => (
-            <SuggestedSnippet video={video} />
-          ))}
-        </div> */}
+        <div className="space-y-2">
+                {
+                  relatedContents?.contents
+                    .filter((item:IVideo)=>item.type==="video")
+                    .map((item:IVideo)=>(
+                      <SuggestedSnippet video={item} />
+                    ))
+                }
+        </div>
       </div>
     </Body>
   );

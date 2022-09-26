@@ -4,7 +4,7 @@ import Body from "../components/Body";
 import SearchSnippet from "../components/SearchSnippet";
 import useSearch from "../hooks/useSearch";
 import useFetch from "../hooks/useSearch";
-import { IChannel, IVideo } from "../interface";
+import { IChannel, IVideo, IVideoDetails, IVideoInfo } from "../interface";
 import { v4 as uuidv4 } from 'uuid'
 import ChannelSnippet from "../components/ChannelSnippet";
 
@@ -44,33 +44,24 @@ const SearchPage = () => {
           )}
         </>
         {data?.contents
-          // .filter((item: IVideo) => item.type === "video")
-          .map((item:any) => (
-            <>
-               {item.type === "video" ? (
-                  <SearchSnippet key={uuidv4()} video={item} />
+          .filter((item:IChannel)=>item.type==="channel")
+          .map((item:IChannel)=>(
+            <div className="my-8" key={uuidv4()}>
+              <ChannelSnippet channel={item} />
 
-                ):(
-                  <>
-                    {item.type === "channel" ? (
-                      <div key={uuidv4()} className="my-8">
-                        <ChannelSnippet  channel={item?.channel} />
 
-                      </div>
-                    ):(
-                      <>
-                        {item.type==="playlist" ? (
-                          <h1>damn</h1>
-                        ):null}
-                      
-                      </>
-                
-                    )}
-                  </>
-                )}    
-            </>
-         
+            </div>
+        ))}
+
+        {data?.contents
+          .filter((item:IVideo)=>item.type==="video")
+          .map((item:IVideo)=>(
+            <SearchSnippet video={item} key={uuidv4()} />
           ))}
+             
+
+       
+                
       </div>
     </Body>
   );

@@ -2,31 +2,31 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ReactTimeAgo from "react-time-ago";
-import { ISnippet, IVideo, IVideoDetails } from "../interface";
+import { ISnippet, IVideo, IVideoDetails, IVideoInfo } from "../interface";
 
 interface IProps {
-  video: IVideoDetails;
+  video: IVideo;
 }
 const SuggestedSnippet = ({ video }: IProps) => {
   return (
-    <Link href={`/watch?v=${video.id.videoId}`}>
+    <Link href={`/watch?v=${video.video.videoId}`}>
       <div className="flex gap-x-2 cursor-pointer">
         <Image
-          src={video.snippet.thumbnails.medium.url}
-          height={120}
+          src={video?.video.thumbnails[0].url}
+          height={video?.video.thumbnails[0].height}
           objectFit="cover"
-          width={160}
+          width={video?.video.thumbnails[0].width}
           className="w-1/2"
         />
         <div className="w-1/2">
-          <h1 className="text-md text-white">{video.snippet.title}</h1>
+          <h1 className="text-md text-white">{video.video.title}</h1>
           <Link href="/">
             <p className="text-gray-400 text-sm">
-              {video.snippet.channelTitle}
+              {video.video.author.title}
             </p>
           </Link>
           <p className="text-gray-400 text-sm">
-            <ReactTimeAgo date={video.snippet.publishedAt} />
+            {video.video.publishedTimeText}
           </p>
         </div>
       </div>

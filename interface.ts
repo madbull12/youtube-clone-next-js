@@ -159,6 +159,11 @@ export interface IComment {
 }
 
 export interface IChannel {
+    type:string;
+    channel:IChannelSnippet;
+}
+
+export interface IChannelSnippet {
     avatar:IAvatar[];
     badges:IBadge[];
     canonicalBaseUrl:string;

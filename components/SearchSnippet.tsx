@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ReactTimeAgo from "react-time-ago";
+import nFormatter from "../helper/convertion";
 import { IVideo, IVideoDetails } from "../interface";
 import Avatar from "./Avatar";
 
@@ -28,9 +29,17 @@ const SearchSnippet = ({ video }: IProps) => {
           <h1 className="text-white text-xl  text-ellipsis">
             {video.video.title}
           </h1>
+          <div className="flex gap-x-3 items-center text-sm">
           <p className="text-gray-400">
-            {video?.video.publishedTimeText}
-          </p>
+              {nFormatter(video?.video.stats.views)} views
+            </p>
+            <p className="text-gray-400">
+              {video?.video.publishedTimeText}
+            </p>
+          
+
+          </div>
+         
           <Link href="/">
           
             <div className="flex gap-x-2 items-center">
