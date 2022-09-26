@@ -73,7 +73,8 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
             className="w-full "
             src={`https://www.youtube.com/embed/${data?.videoId}`}
           ></iframe>
-          <p className="text-blue-500 text-sm">{data?.superTitle.items[0]}</p>
+          <p className="text-blue-500 text-sm">{data?.superTitle.items.map((item:string)=>item+" ")}</p>
+
           <h1 className="text-xl text-white">
             {data?.title}
           </h1>
@@ -101,9 +102,13 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
             </div>
           </div>
           <Link href="/">
-            <p className="text-white cursor-pointer font-semibold">
-              {data?.author.title}
-            </p>
+            <div className="flex items-center gap-x-4 ">
+              <Avatar src={data?.author.avatar[0].url} />
+              <p className="text-white cursor-pointer font-semibold">
+                {data?.author.title}
+              </p>
+            </div>
+           
           </Link>
           <p className="text-white ">
             {data?.description}
