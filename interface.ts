@@ -40,7 +40,7 @@ export interface IAuthor {
 
 export interface IVideoInfo {
  
-        author:IAuthor;
+        author?:IAuthor;
         badges:string[];
         descriptionSnippet:string;
         isLiveNow:boolean;

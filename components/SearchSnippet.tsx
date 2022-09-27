@@ -46,12 +46,12 @@ const SearchSnippet = ({ video }: IProps) => {
           <Link href="/">
             <div className="flex gap-x-2 items-center">
               <Avatar
-                src={video.video.author.avatar[0].url}
+                src={video.video.author?.avatar[0].url ?? ""}
                 width={30}
                 height={30}
               />
               <p className="text-gray-400 text-sm pt-2 hover:text-gray-300">
-                {video.video.author.title}
+                {video.video.author?.title}
               </p>
             </div>
           </Link>

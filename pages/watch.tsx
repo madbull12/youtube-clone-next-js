@@ -150,7 +150,7 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
                   relatedContents?.contents
                     .filter((item:IVideo)=>item.type==="video")
                     .map((item:IVideo)=>(
-                      <VideoSnippet video={item} />
+                      <VideoSnippet column={false} video={item} />
                     ))
                 }
         </div>

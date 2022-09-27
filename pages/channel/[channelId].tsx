@@ -3,8 +3,10 @@ import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 import Body from '../../components/Body'
 import ChannelWrapper from '../../components/ChannelWrapper'
+import VideoSnippet from '../../components/VideoSnippet'
 import useChannelDetails from '../../hooks/useChannelDetails'
 import useChannelVideos from '../../hooks/useChannelVideos'
+import { IVideo } from '../../interface'
 
 const ChannelPage = () => {
     const router = useRouter();
@@ -20,7 +22,12 @@ const ChannelPage = () => {
   return (
     <Body>
         <ChannelWrapper channel={data}>
-          
+          <div className='mt-4 grid gap-x-2 gap-y-4 grid-cols-5'>
+            {channelVideos?.contents.map((video:IVideo)=>(
+              <VideoSnippet video={video} column={true} />
+            ))}
+          </div>
+        
         </ChannelWrapper>
     </Body>
   )
