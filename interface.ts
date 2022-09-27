@@ -176,3 +176,20 @@ export interface IChannelSnippet {
     }
     title:string;
 }
+
+export interface IChannelDetails {
+    artistBio:string | null;
+    avatar:IAvatar[];
+    badges:IBadge[];
+    banner:{
+        desktop:IResolution[];
+        mobile:IResolution[];
+        tv:IResolution[];
+
+    }
+    canonicalBaseUrl:string;
+    channelId:string;
+    country:string | null;
+    description:string;
+    joinedDateText:string;
+}

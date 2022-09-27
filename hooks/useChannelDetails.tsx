@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 import  { youtubeChannelDetails } from "../lib/axios"
 
-export default function useFetchDetails(url:string){
+export default function useChannelDetails(url:string){
 
     const [data,setData] = useState<any>(null)
     const [error,setError] = useState(null)

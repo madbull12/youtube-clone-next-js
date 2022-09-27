@@ -37,7 +37,7 @@ const Header = () => {
             status === "authenticated" ? handleSignOut() : handleSignIn();
           }}
         />
-        {status === "authenticated" && <Avatar src={data?.user?.image ?? ""} />}
+        {status === "authenticated" && <Avatar src={data?.user?.image ?? ""} width={30} height={30} />}
       </div>
     </div>
   );

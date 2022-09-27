@@ -3,10 +3,12 @@ import React from 'react'
 
 interface IProps {
     src:string;
+    width:number;
+    height:number;
 }
-const Avatar = ({ src }:IProps) => {
+const Avatar = ({ src,width,height }:IProps) => {
   return (
-    <Image width={30} height={30} src={src ?? ""} className="rounded-full">
+    <Image width={width ?? 30} height={height ?? 30} src={src ?? ""} className="rounded-full">
 
     </Image>
   )

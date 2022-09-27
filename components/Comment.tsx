@@ -13,6 +13,8 @@ const Comment = ({ comment }: IProps) => {
   return (
     <div className="gap-x-4 items-center flex">
       <Avatar
+        width={30}
+        height={30}
         src={comment?.author.image ?? ""}
       />
       <div className="space-y-2">
