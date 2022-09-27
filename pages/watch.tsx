@@ -103,7 +103,7 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
           </div>
           <Link href="/">
             <div className="flex items-center gap-x-4 ">
-              <Avatar src={data?.author.avatar[0].url} />
+              <Avatar src={data?.author.avatar[0].url} width={data?.author.avatar[0].width} height={data?.author.avatar[0].height} />
               <p className="text-white cursor-pointer font-semibold">
                 {data?.author.title}
               </p>
@@ -118,7 +118,7 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
             <h1 className="text-lg text-white mt-16">Comments</h1>
             <div className="flex items-center gap-x-2 mt-4">
               {status === "authenticated" && (
-                <Avatar src={session?.user?.image ?? ""} />
+                <Avatar src={session?.user?.image ?? ""} width={30} height={30} />
               )}
               <form 
                 className="w-full"

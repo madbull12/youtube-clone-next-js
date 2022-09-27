@@ -192,4 +192,10 @@ export interface IChannelDetails {
     country:string | null;
     description:string;
     joinedDateText:string;
+    stats:{
+        subscribers:number;
+        subscribersText:string;
+        views:number;
+    };
+    title:string;
 }

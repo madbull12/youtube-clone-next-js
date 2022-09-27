@@ -27,7 +27,7 @@ const SearchSnippet = ({ video }: IProps) => {
             height={video.video.thumbnails[0].height}
             width={video.video.thumbnails[0].width}
           />
-          <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-lg absolute bottom-2">
+          <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
             {toHHMS(video.video.lengthSeconds.toString())}
           </div>
         </div>
@@ -47,8 +47,8 @@ const SearchSnippet = ({ video }: IProps) => {
             <div className="flex gap-x-2 items-center">
               <Avatar
                 src={video.video.author.avatar[0].url}
-                width={video.video.author.avatar[0].width}
-                height={video.video.author.avatar[0].height}
+                width={30}
+                height={30}
               />
               <p className="text-gray-400 text-sm pt-2 hover:text-gray-300">
                 {video.video.author.title}
