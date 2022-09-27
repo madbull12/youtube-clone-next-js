@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
-import Body from '../../components/Body'
-import ChannelWrapper from '../../components/ChannelWrapper'
-import VideoSnippet from '../../components/VideoSnippet'
-import useChannelDetails from '../../hooks/useChannelDetails'
-import useChannelVideos from '../../hooks/useChannelVideos'
-import { IVideo } from '../../interface'
+import Body from '../../../components/Body'
+import ChannelWrapper from '../../../components/ChannelWrapper'
+import VideoSnippet from '../../../components/VideoSnippet'
+import useChannelDetails from '../../../hooks/useChannelDetails'
+import useChannelVideos from '../../../hooks/useChannelVideos'
+import { IVideo } from '../../../interface'
 
 const ChannelPage = () => {
     const router = useRouter();

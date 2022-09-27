@@ -28,7 +28,7 @@ const SearchSnippet = ({ video }: IProps) => {
             width={video.video.thumbnails[0].width}
           />
           <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
-            {toHHMS(video.video.lengthSeconds.toString())}
+            {toHHMS(video.video.lengthSeconds?.toString())}
           </div>
         </div>
 
