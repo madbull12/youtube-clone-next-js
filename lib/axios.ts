@@ -18,4 +18,10 @@ export const youtubeRelated = axios.create({
         'X-RapidAPI-Key': process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string,
     }
 });
+export const youtubeChannelDetails = axios.create({
+    baseURL: 'https://youtube138.p.rapidapi.com/channel/details',
+    headers: {
+        'X-RapidAPI-Key': process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string,
+    }
+});
 
