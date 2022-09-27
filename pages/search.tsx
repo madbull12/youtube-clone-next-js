@@ -18,6 +18,7 @@ const SearchPage = () => {
   const { results } = router.query;
   const [cursorToken, setCursorToken] = useState<string>("");
   const [didYouMean, setDidYouMean] = useState<string | null>(null);
+  const [filterClicked,setFilterClicked] = useState<boolean>(false);
   useEffect(()=>{
     setCursorToken("")
   },[router.pathname]);
@@ -39,11 +40,11 @@ const SearchPage = () => {
         {/* {data?.contents.map((item:IVideo)=>(
                 <SearchSnippet video={item} />
             ))} */}
-        <button className="font-semibold text-gray-400 flex items-center">
+        <button onClick={()=>setFilterClicked(!filterClicked)} className="font-semibold text-gray-400 flex items-center">
           <AiFillFilter />
           <span>FILTERS</span>
         </button>
-        <div className="w-full height-0">
+        <div className={` ${filterClicked ? "block" : "hidden"}`}>
           <div className="flex gap-x-8 justify-between  ">
             {data?.filterGroups.map((item: any) => (
               <div>
