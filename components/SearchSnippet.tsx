@@ -3,6 +3,7 @@ import Link from "next/link";
 import React from "react";
 import ReactTimeAgo from "react-time-ago";
 import nFormatter from "../helper/convertion";
+import toHHMS from "../helper/toHHMS";
 import { IVideo, IVideoDetails } from "../interface";
 import Avatar from "./Avatar";
 
@@ -19,12 +20,18 @@ const SearchSnippet = ({ video }: IProps) => {
                     height={video.snippet.thumbnails.medium.height}
                     width={video.snippet.thumbnails.medium.width}
                 /> */}
-        <Image
-          className="w-1/2"
-          src={video.video.thumbnails[0].url}
-          height={ video.video.thumbnails[0].height}
-          width={ video.video.thumbnails[0].width}
-        />
+                <div className="relative">
+                  <Image
+                      className="w-1/2"
+                      src={video.video.thumbnails[0].url}
+                      height={ video.video.thumbnails[0].height}
+                      width={ video.video.thumbnails[0].width}
+                    />
+                    <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-lg absolute bottom-2">
+                      {toHHMS(video.video.lengthSeconds.toString())}
+                    </div>
+                </div>
+    
         <div className="w-3/4">
           <h1 className="text-white text-xl  text-ellipsis">
             {video.video.title}
