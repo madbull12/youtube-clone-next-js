@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { IChannelDetails } from "../interface";
 import Avatar from "./Avatar";
@@ -9,6 +10,7 @@ interface IProps {
   channel: IChannelDetails;
 }
 const ChannelWrapper = ({ children, channel }: IProps) => {
+  console.log(channel);
   return (
     <div>
       <Image
@@ -30,6 +32,23 @@ const ChannelWrapper = ({ children, channel }: IProps) => {
         </div>
         <button className="bg-[#c91515] text-white px-4 py-2 rounded-sm font-semibold text-sm">SUBSCRIBE</button>
       </div>
+      <ul className="text-white font-semibold mt-4 flex items-center w-1/2 justify-between">
+        <li>
+          <Link href='/'>HOME</Link>
+        </li>
+        <li>
+          <Link href='/'>VIDEOS</Link>
+        </li>
+        <li>
+          <Link href='/'>PLAYLISTS</Link>
+        </li>
+        <li>
+          <Link href='/'>CHANNELS</Link>
+        </li>
+        <li>
+          <Link href='/'>ABOUT</Link>
+        </li>
+      </ul>
       {children}
     </div>
   );

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React,{ useState } from "react";
 import Body from "../components/Body";
-import SuggestedSnippet from "../components/SuggestedSnippet";
+import VideoSnippet from "../components/VideoSnippet";
 import nFormatter from "../helper/convertion";
 import truncate from "../helper/truncate";
 import useFetch from "../hooks/useSearch";
@@ -150,7 +150,7 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
                   relatedContents?.contents
                     .filter((item:IVideo)=>item.type==="video")
                     .map((item:IVideo)=>(
-                      <SuggestedSnippet video={item} />
+                      <VideoSnippet video={item} />
                     ))
                 }
         </div>

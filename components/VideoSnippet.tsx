@@ -7,7 +7,7 @@ import { ISnippet, IVideo, IVideoDetails, IVideoInfo } from "../interface";
 interface IProps {
   video: IVideo;
 }
-const SuggestedSnippet = ({ video }: IProps) => {
+const VideoSnippet = ({ video }: IProps) => {
   return (
     <Link href={`/watch?v=${video.video.videoId}`}>
       <div className="flex gap-x-2 cursor-pointer">
@@ -34,4 +34,4 @@ const SuggestedSnippet = ({ video }: IProps) => {
   );
 };
 
-export default SuggestedSnippet;
+export default VideoSnippet;
