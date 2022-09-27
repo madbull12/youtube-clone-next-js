@@ -15,10 +15,10 @@ const VideoSnippet = ({ video,column }: IProps) => {
     <Link href={`/watch?v=${video.video.videoId}`}>
       <div className={`${column ? "flex-col": "flex-row"} flex  gap-2 cursor-pointer`}>
         <Image
-          src={video?.video.thumbnails[0].url}
-          height={video?.video.thumbnails[0].height}
+          src={video?.video.thumbnails[3].url}
+          height={video?.video.thumbnails[3].height}
           objectFit="cover"
-          width={video?.video.thumbnails[0].width}
+          width={video?.video.thumbnails[3].width}
         
           className="w-1/2"
         />
