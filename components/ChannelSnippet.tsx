@@ -10,7 +10,7 @@ interface IProps {
 const ChannelSnippet = ({ channel }: IProps) => {
   console.log(channel);
   return (
-    <Link href={`/channel/${channel.channel.channelId}/feature`}>
+    <Link href={`/channel/${channel.channel.channelId}/feature`} >
       <div className=" flex items-center justify-center gap-x-16 cursor-pointer">
         <Image
           src={channel.channel.avatar[1].url ?? ""}

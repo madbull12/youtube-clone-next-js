@@ -2,17 +2,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import useChannelDetails from "../hooks/useChannelDetails";
 import { IChannelDetails } from "../interface";
 import Avatar from "./Avatar";
 import Body from "./Body";
 
 interface IProps {
   children: React.ReactNode;
-  channel: IChannelDetails;
 }
-const ChannelWrapper = ({ children, channel }: IProps) => {
-  console.log(channel);
+const ChannelWrapper = ({ children }: IProps) => {
   const router = useRouter();
+  const { channelId } = router.query
+  // useEffect(()=>{
+  //     router.replace("/")
+  // },[]);
+  const { data:channel,loading,error } = useChannelDetails(`?id=${channelId}`);
+  console.log(router)
+
 
   return (
     <div>
@@ -37,7 +43,7 @@ const ChannelWrapper = ({ children, channel }: IProps) => {
           SUBSCRIBE
         </button>
       </div>
-      <ul className="text-white font-semibold mt-4 flex items-center w-1/2 justify-between">
+      <ul className="text-white font-semibold mt-4 flex items-center w-1/2 justify-between gap-x-4">
         <li
           className={` text-gray-400 ${
             router.pathname.includes("/feature")
@@ -45,7 +51,7 @@ const ChannelWrapper = ({ children, channel }: IProps) => {
               : null
           }`}
         >
-          <Link href="/">HOME</Link>
+          <Link href={`/channel/${channelId}/feature`} scroll={false}>HOME</Link>
         </li>
         <li
           className={` text-gray-400 ${
@@ -54,7 +60,7 @@ const ChannelWrapper = ({ children, channel }: IProps) => {
               : null
           }`}
         >
-          <Link href="/">VIDEOS</Link>
+          <Link href={`/channel/${channelId}/videos`}>VIDEOS</Link>
         </li>
         <li
           className={` text-gray-400 ${
@@ -63,7 +69,7 @@ const ChannelWrapper = ({ children, channel }: IProps) => {
               : null
           }`}
         >
-          <Link href="/">PLAYLISTS</Link>
+          <Link href={`/channel/${channelId}/playlists`}>PLAYLISTS</Link>
         </li>
         <li
           className={` text-gray-400 ${
@@ -72,7 +78,7 @@ const ChannelWrapper = ({ children, channel }: IProps) => {
               : null
           }`}
         >
-          <Link href="/">CHANNELS</Link>
+          <Link href={`/channel/${channelId}/channels`}>CHANNELS</Link>
         </li>
         <li
           className={` text-gray-400 ${
@@ -81,7 +87,7 @@ const ChannelWrapper = ({ children, channel }: IProps) => {
               : null
           }`}
         >
-          <Link href="/">ABOUT</Link>
+          <Link href={`/channel/${channelId}/about`}>ABOUT</Link>
         </li>
       </ul>
       {children}

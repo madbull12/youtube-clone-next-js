@@ -11,19 +11,16 @@ import { v4 as uuidv4 } from 'uuid'
 
 const ChannelPage = () => {
     const router = useRouter();
-    const { channelId } = router.query
-    // useEffect(()=>{
-    //     router.replace("/")
-    // },[]);
-    const { data,loading,error } = useChannelDetails(`?id=${channelId}`);
+
+    const { channelId } = router.query;
 
     const { data:channelVideos } = useChannelVideos(`?id=${channelId}`);
     console.log(channelVideos)
 
   return (
     <Body>
-        <ChannelWrapper channel={data}>
-          <div className='mt-4 grid gap-x-2 gap-y-4 grid-cols-5'>
+        <ChannelWrapper >
+          <div className='mt-4 grid gap-x-2 gap-y-4 grid-cols-5 bg-black p-4'>
             {channelVideos?.contents.slice(0,1).map((video:IVideo)=>(
                 <div className="col-span-5 row-span-3" key={uuidv4()}>
                     <VideoSnippet video={video} column={false} />

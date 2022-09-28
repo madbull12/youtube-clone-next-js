@@ -11,14 +11,15 @@ interface IProps {
   column:boolean;
 }
 const VideoSnippet = ({ video,column }: IProps) => {
+  
   return (
     <Link href={`/watch?v=${video.video.videoId}`}>
       <div className={`${column ? "flex-col": "flex-row"} flex  gap-2 cursor-pointer`}>
         <Image
-          src={video?.video.thumbnails[3].url}
-          height={video?.video.thumbnails[3].height}
+          src={video?.video.thumbnails[3]?.url ?? video?.video.thumbnails[0].url}
+          height={video?.video.thumbnails[3]?.height ?? video?.video.thumbnails[0].height}
           objectFit="cover"
-          width={video?.video.thumbnails[3].width}
+          width={video?.video.thumbnails[3]?.width ?? video?.video.thumbnails[0].width}
         
           className="w-1/2"
         />
