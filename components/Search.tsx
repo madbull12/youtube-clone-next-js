@@ -1,15 +1,40 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoSearch } from "react-icons/go";
+import useDebounce from "../hooks/useDebounce";
+import { youtubeAutoComplete } from "../lib/axios";
 
 const Search = () => {
   const [focus, setFocus] = useState<boolean>(false);
+  const [data,setData] = useState<any>(null);
   const [term, setTerm] = useState<string>("");
   const router = useRouter();
 
 
+  const debouncedSearch = useDebounce(term,500);
+
+  useEffect(()=>{
+    // https://youtube138.p.rapidapi.com/auto-complete/
+   
+      async function fetchData(){
+          try{
+              const response = await youtubeAutoComplete.get(`?q=${debouncedSearch}`)
+              // const data = await response.json();
+              setData(response.data);
+              console.log(data)
+          }catch(err:any){
+              console.log(err)
+          }
+      }
+
+      if(debouncedSearch) fetchData();
+  
+
+  },[debouncedSearch])
+
+
   return (
-    <div className="flex-[.5]">
+    <div className="flex-[.5] relative">
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -26,6 +51,7 @@ const Search = () => {
           onChange={(e) => setTerm(e.target.value)}
           type="text"
           placeholder="Search"
+          value={term}
           className="text-white  w-full outline-none bg-transparent  px-1 py-2"
         />
         <button
@@ -35,6 +61,18 @@ const Search = () => {
           <GoSearch className="text-white" />
         </button>
       </form>
+      {(debouncedSearch && data) && (
+          <div className="absolute  w-full py-2  top-full bg-white">
+                {data?.results.map((item:string)=>(
+                  <div onClick={()=>setTerm(item)} className="flex gap-x-2 items-center py-1 px-2 hover:bg-gray-100 cursor-pointer">
+                    <GoSearch />
+                    <p>{item}</p>
+                  </div>
+                ))}
+          </div>
+      )}
+     
+  
     </div>
   );
 };

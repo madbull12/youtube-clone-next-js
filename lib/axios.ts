@@ -38,3 +38,10 @@ export const youtubeChannelChannels = axios.create({
     }
 });
 
+export const youtubeAutoComplete = axios.create({
+    baseURL: 'https://youtube138.p.rapidapi.com/auto-complete',
+    headers: {
+        'X-RapidAPI-Key': process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string,
+    }
+})
+
