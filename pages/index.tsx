@@ -18,11 +18,11 @@ const categories = [
   "Japanese Music",
   "Podcasts",
   "K-POP",
-  "NBA"
-]
+  "NBA",
+];
 
 const Home: NextPage = () => {
-  const [category,setCategory] =useState("Music")
+  const [category, setCategory] = useState("Music");
   const { data, loading, error } = useYoutubeHome(
     `/search?q=${category}&part=snippet,id&regionCode=US&maxResults=50`
   );
@@ -36,13 +36,14 @@ const Home: NextPage = () => {
       </Head>
       <Body>
         <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer  ">
-          {categories.map((item:string)=>(
-            <span onClick={()=>setCategory(item)} className="text-white bg-zinc-700 border-zinc-500 px-2 py-1 border rounded-full hover:bg-zinc-500 transition-all duration-200 ease-in-out">
+          {categories.map((item: string) => (
+            <span
+              onClick={() => setCategory(item)}
+              className={`${item} text-white bg-zinc-700 border-zinc-500 px-2 py-1 border rounded-full hover:bg-zinc-500 transition-all duration-200 ease-in-out`}
+            >
               {item}
             </span>
           ))}
-        
-          
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {data?.items?.map((video: IVideoV3) => (
