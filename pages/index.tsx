@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ReactTimeAgo from "react-time-ago";
 import Body from "../components/Body";
 import Header from "../components/Header";
@@ -12,6 +12,7 @@ import { ISnippet, IVideoV3 } from "../interface";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { AiFillClockCircle } from "react-icons/ai";
 import { MdPlaylistAdd } from "react-icons/md";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 const categories = [
   "Music",
@@ -30,7 +31,34 @@ const categories = [
 
 const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   const [onVideoHover, setOnVideoHover] = useState(false);
-  const [dialogOpen,setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const saveToWatchLater = async (
+    thumbnail: string,
+    title: string,
+    authorTitle: string,
+    publishedAt: Date,
+    videoId: string
+  ) => {
+    try {
+      const data = { 
+        thumbnail,
+        title,
+        authorTitle,
+        publishedAt,
+        videoId
+       };
+
+      await fetch("/api/watch-later", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+    } catch (error) {
+      console.error(error);
+    } 
+  };
+
   return (
     <Link href={`/watch?v=${video.id.videoId}`}>
       <div
@@ -60,21 +88,37 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
             </p>
             {onVideoHover && (
               <div className="relative">
-                <HiOutlineDotsVertical className="text-gray-400 cursor-pointer" onClick={(e)=>{
-                  e.stopPropagation()
-                }}  />
-                <div className="absolute top-full py-2 z-50 bg-zinc-800 text-white w-72 space-y-4 rounded-lg">
-                  <p className="flex items-center gap-x-3 py-1 hover:bg-zinc-600 px-4">
-                    <AiFillClockCircle className="text-xl" />
-                    Save to watch later
-                  </p>
-                  <p className="flex items-center gap-x-3 py-1 hover:bg-zinc-500 px-4">
-                    <MdPlaylistAdd className="text-xl" />
-                    Save to playlist
-                  </p>
-                </div>
+                <HiOutlineDotsVertical
+                  className="text-gray-400 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDialogOpen(!dialogOpen);
+                  }}
+                />
+                {dialogOpen && (
+                  <div className="absolute top-full py-2 z-50 bg-zinc-800 text-white w-72 space-y-4 rounded-lg">
+                    <button
+                      className="flex items-center gap-x-3 py-1 hover:bg-zinc-600 px-4 w-full"
+                      onClick={() =>
+                        saveToWatchLater(
+                          video?.snippet.thumbnails.medium.url,
+                          video?.snippet.title,
+                          video?.snippet.channelTitle,
+                          video?.snippet.publishedAt,
+                          video?.id.videoId
+                        )
+                      }
+                    >
+                      <AiFillClockCircle className="text-xl" />
+                      Save to watch later
+                    </button>
+                    <button className="flex items-center gap-x-3 py-1 hover:bg-zinc-500 px-4 w-full">
+                      <MdPlaylistAdd className="text-xl" />
+                      Save to playlist
+                    </button>
+                  </div>
+                )}
               </div>
-
             )}
           </div>
         </div>
