@@ -9,6 +9,9 @@ import Header from "../components/Header";
 import nFormatter from "../helper/convertion";
 import useYoutubeHome from "../hooks/useYoutubeHome";
 import { ISnippet, IVideoV3 } from "../interface";
+import { HiOutlineDotsVertical } from "react-icons/hi";
+import { AiFillClockCircle } from "react-icons/ai";
+import { MdPlaylistAdd } from "react-icons/md";
 
 const categories = [
   "Music",
@@ -22,8 +25,63 @@ const categories = [
   "Action Movie",
   "Lo-fi",
   "Mixes",
-  "Anime"
+  "Anime",
 ];
+
+const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
+  const [onVideoHover, setOnVideoHover] = useState(false);
+  const [dialogOpen,setDialogOpen] = useState(false);
+  return (
+    <Link href={`/watch?v=${video.id.videoId}`}>
+      <div
+        className={`flex-col flex  gap-2 cursor-pointer`}
+        onMouseEnter={() => setOnVideoHover(true)}
+        onMouseLeave={() => setOnVideoHover(false)}
+      >
+        <div className="relative ">
+          <Image
+            src={video.snippet.thumbnails.medium.url ?? ""}
+            height={video.snippet.thumbnails.medium.height ?? 200}
+            objectFit="cover"
+            width={video.snippet.thumbnails.medium.width ?? 200}
+            className="w-1/2"
+          />
+          {/* <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
+  {toHHMS(video.video.lengthSeconds?.toString())}
+</div> */}
+        </div>
+
+        <div className={` space-y-2`}>
+          <h1 className="text-sm  text-white ">{video.snippet.title}</h1>
+
+          <div className="flex items-center justify-between gap-x-2">
+            <p className="text-gray-400 text-sm">
+              <ReactTimeAgo date={video.snippet.publishTime} />
+            </p>
+            {onVideoHover && (
+              <div className="relative">
+                <HiOutlineDotsVertical className="text-gray-400 cursor-pointer" onClick={(e)=>{
+                  e.stopPropagation()
+                }}  />
+                <div className="absolute top-full py-2 z-50 bg-zinc-800 text-white w-72 space-y-4 rounded-lg">
+                  <p className="flex items-center gap-x-3 py-1 hover:bg-zinc-600 px-4">
+                    <AiFillClockCircle className="text-xl" />
+                    Save to watch later
+                  </p>
+                  <p className="flex items-center gap-x-3 py-1 hover:bg-zinc-500 px-4">
+                    <MdPlaylistAdd className="text-xl" />
+                    Save to playlist
+                  </p>
+                </div>
+              </div>
+
+            )}
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+};
 
 const Home: NextPage = () => {
   const [category, setCategory] = useState("Music");
@@ -51,34 +109,7 @@ const Home: NextPage = () => {
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {data?.items?.map((video: IVideoV3) => (
-            <Link href={`/watch?v=${video.id.videoId}`}>
-              <div className={`flex-col flex  gap-2 cursor-pointer`}>
-                <div className="relative ">
-                  <Image
-                    src={video.snippet.thumbnails.medium.url ?? ""}
-                    height={video.snippet.thumbnails.medium.height ?? 200}
-                    objectFit="cover"
-                    width={video.snippet.thumbnails.medium.width ?? 200}
-                    className="w-1/2"
-                  />
-                  {/* <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
-              {toHHMS(video.video.lengthSeconds?.toString())}
-            </div> */}
-                </div>
-
-                <div className={` space-y-2`}>
-                  <h1 className="text-sm  text-white ">
-                    {video.snippet.title}
-                  </h1>
-
-                  <div className="flex items-center gap-x-2">
-                    <p className="text-gray-400 text-sm">
-                      <ReactTimeAgo date={video.snippet.publishTime} />
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Link>
+            <VideoSnippet video={video} />
           ))}
         </div>
       </Body>

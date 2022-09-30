@@ -8,9 +8,7 @@ interface IProps {
 }
 const Avatar = ({ src,width,height }:IProps) => {
   return (
-    <Image width={width ?? 30} height={height ?? 30} src={src ?? ""} className="rounded-full">
-
-    </Image>
+    <Image width={width ?? 30} height={height ?? 30} src={src ?? ""} className="rounded-full cursor-pointer" />
   )
 }
 
