@@ -10,14 +10,14 @@ const Search = () => {
   const [data,setData] = useState<any>(null);
   const [term, setTerm] = useState<string>("");
   const router = useRouter();
-  // const [openAutocomplete,setOpenAutocomplete] = useState<boolean>(true);
+  const [openAutocomplete,setOpenAutocomplete] = useState<boolean>(true);
 
   const debouncedSearch = useDebounce(term,500);
 
   const ref = useRef(null);
 
   useOutsideClick(ref, () => {
-    setTerm("")
+    setOpenAutocomplete(false)
   });
 
   useEffect(()=>{
@@ -57,6 +57,7 @@ const Search = () => {
       >
         {focus && <GoSearch className="text-white" />}
         <input
+        onClick={() => setOpenAutocomplete(true)}
           onChange={(e) => setTerm(e.target.value)}
           type="search"
           placeholder="Search"
@@ -70,7 +71,9 @@ const Search = () => {
           <GoSearch className="text-white" />
         </button>
       </form>
-      {(debouncedSearch && data ) && (
+      {openAutocomplete && (
+        <>
+          {(debouncedSearch && data ) && (
           <div className="absolute  w-full py-2  top-full bg-white" ref={ref}>
                 {data?.results.map((item:string)=>(
                   <div onClick={()=>setTerm(item)} className="flex gap-x-2 items-center py-1 px-2 hover:bg-gray-100 cursor-pointer">
@@ -80,6 +83,9 @@ const Search = () => {
                 ))}
           </div>
       )}
+        </>
+      )}
+      
      
   
     </div>

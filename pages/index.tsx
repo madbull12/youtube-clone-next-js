@@ -1,15 +1,19 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
+import ReactTimeAgo from 'react-time-ago'
 import Body from '../components/Body'
 import Header from '../components/Header'
+import nFormatter from '../helper/convertion'
 import useYoutubeHome from '../hooks/useYoutubeHome'
+import { ISnippet, IVideoV3 } from '../interface'
 
 
 
 const Home: NextPage = () => {
   const { data, loading, error } = useYoutubeHome(
-    `/search?q=music&part=snippet,id&maxResults=${200}`
+    `/search?q=music&part=snippet,id&maxResults=${200}&regionCode=US`
   );
   console.log(data)
   return (
@@ -20,7 +24,40 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
     <Body>
-
+      <div className='grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
+      {data?.items.map((video:IVideoV3)=>(
+        <Link href={`/watch?v=${video.id.videoId}`}>
+        <div className={`flex-col flex  gap-2 cursor-pointer`}>
+          <div className="relative ">
+            <Image
+              src={video.snippet.thumbnails.medium.url ?? ""}
+              height={video.snippet.thumbnails.medium.height}
+              objectFit="cover"
+              width={video.snippet.thumbnails.medium.width}
+            
+              className="w-1/2"
+            />
+            {/* <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
+              {toHHMS(video.video.lengthSeconds?.toString())}
+            </div> */}
+          </div>
+       
+          <div className={` space-y-2`}>
+            <h1 className="text-sm  text-white ">{video.snippet.title}</h1>
+    
+            <div className="flex items-center gap-x-2">
+            
+              <p className="text-gray-400 text-sm">
+                <ReactTimeAgo date={video.snippet.publishTime} />
+              </p>
+            </div>
+         
+          </div>
+        </div>
+      </Link>
+      ))}
+      </div>
+  
     </Body>
     </div>
   )

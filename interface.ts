@@ -13,6 +13,15 @@ export interface ISnippet {
 
 }
 
+export interface IVideoV3 {
+    id:{
+        kind:string;
+        videoId:string
+    };
+    kind:string;
+    snippet:ISnippet
+}
+
 export interface IAvatar {
     height:number;
     url:string;
