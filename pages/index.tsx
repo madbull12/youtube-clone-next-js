@@ -13,7 +13,7 @@ import { ISnippet, IVideoV3 } from '../interface'
 
 const Home: NextPage = () => {
   const { data, loading, error } = useYoutubeHome(
-    `/search?q=music&part=snippet,id&maxResults=${200}&regionCode=US`
+    `/search?q=gaming&part=snippet,id&regionCode=US`
   );
   console.log(data)
   return (

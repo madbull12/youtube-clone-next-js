@@ -27,6 +27,7 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
 
 
 
+
   const refreshData = () => {
     router.replace(router.asPath);
   }
@@ -34,7 +35,7 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
   const createComment = async(e:React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { text:textComment,videoId:data?.items[0].id };
+      const body = { text:textComment,videoId:data?.videoId };
       setTextComment("")
 
       await fetch('/api/comment', {
@@ -53,7 +54,7 @@ const VideoPage = ({ comments }:{ comments:IComment[] }) => {
 
 
   const { data:relatedContents } = useFetchRelated(`?id=${v}`);
-  console.log(relatedContents)
+  console.log(data)
 
 
 
