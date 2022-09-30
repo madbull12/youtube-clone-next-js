@@ -6,6 +6,7 @@ import "../styles/globals.css"
 import TimeAgo from 'javascript-time-ago'
 
 import en from 'javascript-time-ago/locale/en.json'
+import AuthWrapper from "../components/AuthWrapper";
 
 TimeAgo.addDefaultLocale(en)
 // Use the <SessionProvider> to improve performance and allow components that call
@@ -21,9 +22,13 @@ export default function App({
       // Provider options are not required but can be useful in situations where
       // you have a short session maxAge time. Shown here with default values.
       session={pageProps.session}
+      
     >
-      <Header />
-      <Component {...pageProps} />
+      <AuthWrapper>
+        <Header />
+        <Component {...pageProps} />
+      </AuthWrapper>
+     
     </SessionProvider>
   );
 }

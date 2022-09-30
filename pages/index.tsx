@@ -19,6 +19,10 @@ const categories = [
   "Podcasts",
   "K-POP",
   "NBA",
+  "Action Movie",
+  "Lo-fi",
+  "Mixes",
+  "Anime"
 ];
 
 const Home: NextPage = () => {
