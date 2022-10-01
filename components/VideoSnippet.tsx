@@ -30,7 +30,7 @@ const VideoSnippet = ({ video,column }: IProps) => {
           </div>
         </div>
      
-        <div className={`${column ? "w-full" : " w-1/2"} space-y-1`}>
+        <div className={`${column ? "w-full" : " w-1/2"} space-y-1 overflow-hidden`}>
           <h1 className="text-md  text-white">{video.video.title}</h1>
           {video.video.author && (
               <Link href="/">
