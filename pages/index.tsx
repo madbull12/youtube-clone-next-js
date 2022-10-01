@@ -13,6 +13,9 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { AiFillClockCircle } from "react-icons/ai";
 import { MdPlaylistAdd } from "react-icons/md";
 import useOutsideClick from "../hooks/useOutsideClick";
+import saveToWatchLater from "../helper/saveToWatchLater";
+
+
 
 const categories = [
   "Music",
@@ -33,32 +36,8 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   const [onVideoHover, setOnVideoHover] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const saveToWatchLater = async (
-    thumbnail: string,
-    title: string,
-    authorTitle: string,
-    publishedAt: Date,
-    videoId: string
-  ) => {
-    try {
-      const data = { 
-        thumbnail,
-        title,
-        authorTitle,
-        publishedAt,
-        videoId
-       };
 
-      await fetch("/api/watch-later", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-    } catch (error) {
-      console.error(error);
-    } 
-  };
-
+  
   return (
     <Link href={`/watch?v=${video.id.videoId}`}>
       <div
@@ -96,7 +75,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
                   }}
                 />
                 {dialogOpen && (
-                  <div className="absolute top-full py-2 z-50 bg-zinc-800 text-white w-72 space-y-4 rounded-lg">
+                  <div className="absolute top-full -right-8 py-2 z-50 bg-zinc-800 text-white w-72 space-y-4 rounded-lg">
                     <button
                       className="flex items-center gap-x-3 py-1 hover:bg-zinc-600 px-4 w-full"
                       onClick={(e) =>{

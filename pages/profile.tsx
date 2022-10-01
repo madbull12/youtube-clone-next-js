@@ -51,8 +51,13 @@ export const getServerSideProps:GetServerSideProps = async(context) => {
   const videosList = await prisma?.watchLater.findMany({
     where:{
       user:{
-        email:session?.user?.email
-      }
+        email:session?.user?.email,
+        
+      },
+      
+    },
+    orderBy:{
+      createdAt:"desc"
     }
   });
 

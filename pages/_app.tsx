@@ -7,6 +7,7 @@ import TimeAgo from 'javascript-time-ago'
 
 import en from 'javascript-time-ago/locale/en.json'
 import AuthWrapper from "../components/AuthWrapper";
+import { Toaster } from "react-hot-toast";
 
 TimeAgo.addDefaultLocale(en)
 // Use the <SessionProvider> to improve performance and allow components that call
@@ -25,6 +26,9 @@ export default function App({
       
     >
       <AuthWrapper>
+        <Toaster 
+          position="bottom-left"
+        />
         <Header />
         <Component {...pageProps} />
       </AuthWrapper>
