@@ -99,7 +99,8 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
                   <div className="absolute top-full py-2 z-50 bg-zinc-800 text-white w-72 space-y-4 rounded-lg">
                     <button
                       className="flex items-center gap-x-3 py-1 hover:bg-zinc-600 px-4 w-full"
-                      onClick={() =>
+                      onClick={(e) =>{
+                        e.stopPropagation()
                         saveToWatchLater(
                           video?.snippet.thumbnails.medium.url,
                           video?.snippet.title,
@@ -107,6 +108,8 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
                           video?.snippet.publishedAt,
                           video?.id.videoId
                         )
+                      }
+                       
                       }
                     >
                       <AiFillClockCircle className="text-xl" />
