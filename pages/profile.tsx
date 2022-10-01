@@ -2,8 +2,10 @@ import { GetServerSideProps } from 'next';
 import { unstable_getServerSession } from 'next-auth';
 import { getSession, useSession } from 'next-auth/react'
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react'
 import { AiFillClockCircle } from 'react-icons/ai';
+import ReactTimeAgo from 'react-time-ago';
 import Avatar from '../components/Avatar';
 import Body from '../components/Body'
 import { IVideoV3 } from '../interface';
@@ -24,11 +26,21 @@ const ProfilePage = ({ videosList }:{ videosList:any }) => {
           <p className=' text-xl text-white'>Watch later</p>
 
         </div>
-        {videosList?.map((video:any)=>(
-          <div>
-            <Image src={video.thumbnail} width={176} height={88} />
-          </div>
-        ))}
+        <div className='grid grid-cols-5 gap-4 mt-4'>
+          {videosList?.map((video:any)=>(
+            <Link href={`/watch?v=${video.videoId}`}>
+              <div className='flex flex-col cursor-pointer space-y-2'>
+                <Image src={video.thumbnail} width={320} height={180} />
+                <p className='text-white'>{video.title}</p>
+                <div className='flex justify-between items-center'>
+                  <p className="text-gray-400 text-sm">{video.authorTitle}</p>
+                  <p></p>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+       
       </div>
     </Body>
   )
