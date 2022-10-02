@@ -45,6 +45,8 @@ const Search = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          setOpenAutocomplete(false)
+
           router.push(`/search?results=${term}`);
         }}
         

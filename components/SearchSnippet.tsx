@@ -1,16 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { HiOutlineDotsVertical } from "react-icons/hi";
 import ReactTimeAgo from "react-time-ago";
 import nFormatter from "../helper/convertion";
+import saveToWatchLater from "../helper/saveToWatchLater";
 import toHHMS from "../helper/toHHMS";
 import { IVideo, IVideoDetails } from "../interface";
 import Avatar from "./Avatar";
+import SaveDialog from "./SaveDialog";
 
 interface IProps {
   video: IVideo;
 }
 const SearchSnippet = ({ video }: IProps) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  
+  console.log(video)
+
   return (
     <Link href={`/watch?v=${video?.video?.videoId}`}>
       <div className="flex gap-x-3 cursor-pointer">
@@ -33,9 +40,35 @@ const SearchSnippet = ({ video }: IProps) => {
         </div>
 
         <div className="w-3/4">
-          <h1 className="text-white text-xl  text-ellipsis">
-            {video.video.title}
-          </h1>
+          <div className="flex items-center justify-between">
+            <h1 className="text-white text-xl  text-ellipsis">
+              {video.video.title}
+            </h1>
+
+            <div className="relative">
+              <HiOutlineDotsVertical
+                className="text-gray-400 cursor-pointer"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setDialogOpen(!dialogOpen);
+                }}
+              />
+              {dialogOpen && (
+                <SaveDialog
+                  saveToWatchLater={() => {
+                    saveToWatchLater(
+                      video?.video?.thumbnails[1].url,
+                      video?.video.title,
+                      video?.video.author.title,
+                      video?.video.publishedTimeText,
+                      video?.video.videoId
+                    );
+                  }}
+                />
+              )}
+            </div>
+          </div>
+
           <div className="flex gap-x-3 items-center text-sm">
             <p className="text-gray-400">
               {nFormatter(video?.video.stats.views)} views

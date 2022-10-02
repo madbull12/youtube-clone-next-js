@@ -14,6 +14,7 @@ import { AiFillClockCircle } from "react-icons/ai";
 import { MdPlaylistAdd } from "react-icons/md";
 import useOutsideClick from "../hooks/useOutsideClick";
 import saveToWatchLater from "../helper/saveToWatchLater";
+import SaveDialog from "../components/SaveDialog";
 
 
 
@@ -75,30 +76,17 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
                   }}
                 />
                 {dialogOpen && (
-                  <div className="absolute top-full -right-8 py-2 z-50 bg-zinc-800 text-white w-72 space-y-4 rounded-lg">
-                    <button
-                      className="flex items-center gap-x-3 py-1 hover:bg-zinc-600 px-4 w-full"
-                      onClick={(e) =>{
-                        e.stopPropagation()
-                        saveToWatchLater(
-                          video?.snippet.thumbnails.medium.url,
-                          video?.snippet.title,
-                          video?.snippet.channelTitle,
-                          video?.snippet.publishedAt,
-                          video?.id.videoId
-                        )
-                      }
-                       
-                      }
-                    >
-                      <AiFillClockCircle className="text-xl" />
-                      Save to watch later
-                    </button>
-                    <button className="flex items-center gap-x-3 py-1 hover:bg-zinc-500 px-4 w-full">
-                      <MdPlaylistAdd className="text-xl" />
-                      Save to playlist
-                    </button>
-                  </div>
+                  <SaveDialog 
+                    saveToWatchLater={() => {
+                      saveToWatchLater(
+                        video.snippet.thumbnails.medium.url,
+                        video.snippet.title,
+                        video.snippet.channelTitle,
+                        video.snippet.publishedAt.toString(),
+                        video?.id.videoId
+                      );
+                  }}
+                  />
                 )}
               </div>
             )}

@@ -4,7 +4,7 @@ const saveToWatchLater = async (
   thumbnail: string,
   title: string,
   authorTitle: string,
-  publishedAt: Date,
+  publishedAt: string,
   videoId: string
 ) => {
   try {
