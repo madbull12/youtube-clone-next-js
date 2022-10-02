@@ -15,6 +15,8 @@ import { MdPlaylistAdd } from "react-icons/md";
 import useOutsideClick from "../hooks/useOutsideClick";
 import saveToWatchLater from "../helper/saveToWatchLater";
 import SaveDialog from "../components/SaveDialog";
+import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
 
 
 
@@ -38,6 +40,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
 
 
+  const session = useSession();
   
   return (
     <Link href={`/watch?v=${video.id.videoId}`}>
@@ -78,14 +81,19 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
                 {dialogOpen && (
                   <SaveDialog 
                     saveToWatchLater={() => {
+                      {session?.status === "authenticated" ? (
                       saveToWatchLater(
                         video.snippet.thumbnails.medium.url,
                         video.snippet.title,
                         video.snippet.channelTitle,
                         video.snippet.publishedAt.toString(),
                         video?.id.videoId
-                      );
-                  }}
+                      )
+                      ):(
+                        toast.error("Please login first to perform the action!")
+                      )}
+                     
+                    }}
                   />
                 )}
               </div>

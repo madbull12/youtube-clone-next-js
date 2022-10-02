@@ -1,6 +1,8 @@
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import ReactTimeAgo from "react-time-ago";
 import nFormatter from "../helper/convertion";
@@ -15,7 +17,7 @@ interface IProps {
 }
 const SearchSnippet = ({ video }: IProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
-  
+  const session = useSession();
   console.log(video)
 
   return (
@@ -56,13 +58,18 @@ const SearchSnippet = ({ video }: IProps) => {
               {dialogOpen && (
                 <SaveDialog
                   saveToWatchLater={() => {
-                    saveToWatchLater(
-                      video?.video?.thumbnails[1].url,
-                      video?.video.title,
-                      video?.video.author.title,
-                      video?.video.publishedTimeText,
-                      video?.video.videoId
-                    );
+                    {session.status === "authenticated" ? (
+                      saveToWatchLater(
+                        video?.video?.thumbnails[1].url,
+                        video?.video.title,
+                        video?.video.author.title,
+                        video?.video.publishedTimeText,
+                        video?.video.videoId
+                      )
+                    ):(
+                      toast.error("Please login first to perform the action!")
+                    )}
+                   
                   }}
                 />
               )}
