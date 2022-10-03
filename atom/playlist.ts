@@ -6,7 +6,7 @@ export const playlistDialogState = atom({
 });
 
 export const isPlaylistDialogOpen = selector({
-    key: 'charCountState', // unique ID (with respect to other atoms/selectors)
+    key: 'isPlaylistDialogOpen', // unique ID (with respect to other atoms/selectors)
     get: ({get}) => {
       const isOpen = get(playlistDialogState);
   

@@ -64,6 +64,9 @@ const SearchSnippet = ({ video }: IProps) => {
               />
               {dialogOpen && (
                 <SaveDialog
+                  saveToPlaylist={()=>{
+                    
+                  }}
                   saveToWatchLater={() => {
                     {session.status === "authenticated" ? (
                       saveToWatchLater(

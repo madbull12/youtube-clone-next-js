@@ -19,8 +19,9 @@ import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import Backdrop from "../components/Backdrop";
 import SaveToPlaylist from "../components/SaveToPlaylist";
-import { useRecoilValue } from 'recoil'
+import { useRecoilValue,useRecoilState } from 'recoil'
 import { isPlaylistDialogOpen } from "../atom/playlist";
+import { videoState, videoValue } from "../atom/video";
 
 
 const categories = [
@@ -43,6 +44,10 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   const [onVideoHover, setOnVideoHover] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const [_videoState,setVideoState] = useRecoilState(videoState);
+
+  const videoStateValue = useRecoilValue(videoValue);
+  console.log(_videoState)
   const session = useSession();
   
   return (
@@ -84,6 +89,17 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
                 />
                 {dialogOpen && (
                   <SaveDialog 
+                    saveToPlaylist={()=>{
+                      const data = {
+                        videoId:video.id.videoId,
+                        thumbnail:video.snippet.thumbnails.medium.url,
+                        title:video.snippet.title,
+                        authorTitle:video.snippet.channelTitle,
+                        publishedAt:video.snippet.publishedAt
+                  
+                      }
+                      setVideoState({...data})
+                    }}
                     saveToWatchLater={() => {
                       {session?.status === "authenticated" ? (
                       saveToWatchLater(

@@ -6,8 +6,9 @@ import { playlistDialogState } from "../atom/playlist";
 
 interface IProps {
   saveToWatchLater: () => void;
+  saveToPlaylist: () => void
 }
-const SaveDialog = ({ saveToWatchLater }: IProps) => {
+const SaveDialog = ({ saveToWatchLater,saveToPlaylist }: IProps) => {
   const [openDialog, setOpenDialog] = useRecoilState(playlistDialogState);
 
   useEffect(()=>{
@@ -36,7 +37,7 @@ const SaveDialog = ({ saveToWatchLater }: IProps) => {
         }}
         className="flex items-center gap-x-3 py-1 hover:bg-zinc-500 px-4 w-full"
       >
-        <MdPlaylistAdd className="text-xl" />
+        <MdPlaylistAdd className="text-xl" onClick={saveToPlaylist} />
         Save to playlist
       </button>
     </div>
