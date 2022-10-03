@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState,useRef } from "react";
 import { GoSearch } from "react-icons/go";
 import useDebounce from "../hooks/useDebounce";
+import useMediaQuery from "../hooks/useMediaQuery";
 import useOutsideClick from "../hooks/useOutsideClick";
 import { youtubeAutoComplete } from "../lib/axios";
 
@@ -11,6 +12,7 @@ const Search = () => {
   const [term, setTerm] = useState<string>("");
   const router = useRouter();
   const [openAutocomplete,setOpenAutocomplete] = useState<boolean>(true);
+  const matches = useMediaQuery("(min-width: 500px)");
 
   const debouncedSearch = useDebounce(term,500);
 
@@ -41,7 +43,7 @@ const Search = () => {
 
 
   return (
-    <div className="flex-[.5] relative">
+    <div className={`${matches ? "w-1/2" : "w-full" } relative`}>
       <form
         onSubmit={(e) => {
           e.preventDefault();

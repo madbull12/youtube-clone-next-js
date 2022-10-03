@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import YoutubeLogo from "../public/youtube.png";
 import Button from "./Button";
 import Search from "./Search";
@@ -8,11 +8,23 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import Avatar from "./Avatar";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { GoSearch } from "react-icons/go";
+import { BsArrowLeft } from "react-icons/bs";
 
 const Header = () => {
   const { data, status } = useSession();
-  
-  const matches = useMediaQuery('(min-width: 500px)');
+  const [openMobileSearch, setOpenMobileSearch] = useState<boolean>(false);
+
+  const matches = useMediaQuery("(min-width: 500px)");
+  useEffect(() => {
+    if(matches) {
+      setOpenMobileSearch(false);
+
+    } else {
+      setOpenMobileSearch(true);
+    }
+  }, [matches]);
+
+  console.log(matches);
 
   const handleSignIn = async () => {
     await signIn("google", {
@@ -36,28 +48,49 @@ const Header = () => {
       </Link>
       {matches ? (
         <Search />
-
-      ):(
-        <GoSearch className="cursor-pointer text-white text-lg" />
+      ) : (
+        <>
+          {openMobileSearch ? (
+            <div className="flex items-center gap-x-4">
+              <BsArrowLeft
+                onClick={() => setOpenMobileSearch(false)}
+                className="text-xl text-white cursor-pointer"
+              />
+              <Search />
+            </div>
+          ) : (
+            <GoSearch
+              className="cursor-pointer text-white text-lg"
+              onClick={() => setOpenMobileSearch(true)}
+            />
+          )}
+        </>
       )}
+
       <div className="flex items-center gap-x-2 ">
-        <Button
-          text={status === "authenticated" ? "Sign out" : "Sign In"}
-          handleClick={() => {
-            status === "authenticated" ? handleSignOut() : handleSignIn();
-          }}
-        />
+        {!openMobileSearch && (
+          <Button
+            text={status === "authenticated" ? "Sign out" : "Sign In"}
+            handleClick={() => {
+              status === "authenticated" ? handleSignOut() : handleSignIn();
+            }}
+          />
+        )}
+
         {status === "authenticated" && (
-          <div>
-          <a href="/profile">
-               <Avatar  src={data?.user?.image ?? ""} width={30} height={30} />
-            </a>
-          </div>
-          
-
-
-         
-
+          <>
+            {!openMobileSearch && (
+              <div>
+                <a href="/profile">
+                  <Avatar
+                    src={data?.user?.image ?? ""}
+                    width={30}
+                    height={30}
+                  />
+                </a>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
