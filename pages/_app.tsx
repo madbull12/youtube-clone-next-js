@@ -4,7 +4,7 @@ import type { AppProps } from "next/app";
 import Header from "../components/Header";
 import "../styles/globals.css"
 import TimeAgo from 'javascript-time-ago'
-
+import { RecoilRoot } from 'recoil'
 import en from 'javascript-time-ago/locale/en.json'
 import AuthWrapper from "../components/AuthWrapper";
 import { Toaster } from "react-hot-toast";
@@ -26,11 +26,15 @@ export default function App({
       
     >
       <AuthWrapper>
-        <Toaster 
-          position="bottom-left"
-        />
-        <Header />
-        <Component {...pageProps} />
+        <RecoilRoot>
+
+          <Toaster 
+            position="bottom-left"
+          />
+          <Header />
+          <Component {...pageProps} />
+        </RecoilRoot>
+        
       </AuthWrapper>
      
     </SessionProvider>
