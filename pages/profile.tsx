@@ -27,18 +27,26 @@ const ProfilePage = ({ videosList }:{ videosList:any }) => {
 
         </div>
         <div className='grid grid-cols-5 gap-4 mt-4'>
-          {videosList?.map((video:any)=>(
-            <Link href={`/watch?v=${video.videoId}`}>
-              <div className='flex flex-col cursor-pointer space-y-2'>
-                <Image src={video.thumbnail} width={320} height={180} />
-                <p className='text-white'>{video.title}</p>
-                <div className='flex justify-between items-center'>
-                  <p className="text-gray-400 text-sm">{video.authorTitle}</p>
-                  <p></p>
-                </div>
-              </div>
-            </Link>
-          ))}
+          {videosList.length === 0 ? (
+            <p className='text-white text-lg'>No videos saved</p>
+          ):(
+            <>
+              {videosList?.map((video:any)=>(
+                <Link href={`/watch?v=${video.videoId}`}>
+                  <div className='flex flex-col cursor-pointer space-y-2'>
+                    <Image src={video.thumbnail} width={320} height={180} />
+                    <p className='text-white'>{video.title}</p>
+                    <div className='flex justify-between items-center'>
+                      <p className="text-gray-400 text-sm">{video.authorTitle}</p>
+                      <p></p>
+                    </div>
+                  </div>
+                </Link>
+            ))}
+            </>
+            
+          )}
+         
         </div>
        
       </div>

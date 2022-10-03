@@ -1,13 +1,14 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import toast from "react-hot-toast";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import ReactTimeAgo from "react-time-ago";
 import nFormatter from "../helper/convertion";
 import saveToWatchLater from "../helper/saveToWatchLater";
 import toHHMS from "../helper/toHHMS";
+import useOutsideClick from "../hooks/useOutsideClick";
 import { IVideo, IVideoDetails } from "../interface";
 import Avatar from "./Avatar";
 import SaveDialog from "./SaveDialog";
@@ -18,7 +19,13 @@ interface IProps {
 const SearchSnippet = ({ video }: IProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const session = useSession();
-  console.log(video)
+  console.log(video);
+
+  const ref= useRef(null);
+
+  useOutsideClick(ref,()=>{
+    setDialogOpen(false)
+  })
 
   return (
     <Link href={`/watch?v=${video?.video?.videoId}`}>
@@ -47,7 +54,7 @@ const SearchSnippet = ({ video }: IProps) => {
               {video.video.title}
             </h1>
 
-            <div className="relative">
+            <div className="relative" ref={ref}>
               <HiOutlineDotsVertical
                 className="text-gray-400 cursor-pointer"
                 onClick={(e) => {

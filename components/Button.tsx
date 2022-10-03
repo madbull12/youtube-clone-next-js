@@ -8,7 +8,7 @@ const Button = ({ text, handleClick }: IProps) => {
   return (
     <button
       onClick={handleClick}
-      className="text-uppercase font-semibold px-4 text-white bg-transparent py-2 border border-blue-500"
+      className="text-uppercase whitespace-nowrap font-semibold px-4 text-white bg-transparent py-2 border border-blue-500"
     >
       {text}
     </button>

@@ -88,7 +88,7 @@ model WatchLater {
   title             String
   authorTitle       String
   views             Int?
-  publishedTimeText String
+  publishedTimeText String 
   user              User    @relation(fields: [userId], references: [id])
   userId            String
   videoId           String

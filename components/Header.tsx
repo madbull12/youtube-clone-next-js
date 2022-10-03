@@ -6,9 +6,14 @@ import Button from "./Button";
 import Search from "./Search";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Avatar from "./Avatar";
+import useMediaQuery from "../hooks/useMediaQuery";
+import { GoSearch } from "react-icons/go";
 
 const Header = () => {
   const { data, status } = useSession();
+  
+  const matches = useMediaQuery('(min-width: 500px)');
+
   const handleSignIn = async () => {
     await signIn("google", {
       callbackUrl: "http://localhost:3000",
@@ -29,7 +34,12 @@ const Header = () => {
           height={70}
         />
       </Link>
-      <Search />
+      {matches ? (
+        <Search />
+
+      ):(
+        <GoSearch className="cursor-pointer text-white text-lg" />
+      )}
       <div className="flex items-center gap-x-2 ">
         <Button
           text={status === "authenticated" ? "Sign out" : "Sign In"}

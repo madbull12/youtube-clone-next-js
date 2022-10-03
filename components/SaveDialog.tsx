@@ -1,13 +1,14 @@
-import React from 'react'
+import React,{ useRef } from 'react'
 import { AiFillClockCircle } from 'react-icons/ai'
 import { MdPlaylistAdd } from 'react-icons/md'
-import saveToWatchLater from '../helper/saveToWatchLater'
+import useOutsideClick from '../hooks/useOutsideClick'
 import { IVideoV3 } from '../interface'
 
 interface IProps {
     saveToWatchLater:()=>void
 }
 const SaveDialog = ({ saveToWatchLater }:IProps) => {
+
   return (
     <div className="absolute top-full -right-8 py-2 z-50 bg-zinc-800 text-white w-72 space-y-4 rounded-lg">
     <button

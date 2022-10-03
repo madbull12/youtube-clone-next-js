@@ -33,6 +33,7 @@ const categories = [
   "Lo-fi",
   "Mixes",
   "Anime",
+  "Health"
 ];
 
 const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
@@ -119,11 +120,11 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Body>
-        <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer  ">
+        <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer overflow-x-scroll  ">
           {categories.map((item: string) => (
             <span
               onClick={() => setCategory(item)}
-              className={`${item} text-white bg-zinc-700 border-zinc-500 px-2 py-1 border rounded-full hover:bg-zinc-500 transition-all duration-200 ease-in-out`}
+              className={`${item} whitespace-nowrap text-white bg-zinc-700 border-zinc-500 px-2 py-1 border rounded-full hover:bg-zinc-500 transition-all duration-200 ease-in-out`}
             >
               {item}
             </span>
