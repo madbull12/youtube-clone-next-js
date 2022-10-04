@@ -1,15 +1,20 @@
-import Image from 'next/image'
-import React from 'react'
+import Image from "next/image";
+import React from "react";
 
 interface IProps {
-    src:string;
-    width:number;
-    height:number;
+  src: string;
+  width: number;
+  height: number;
 }
-const Avatar = ({ src,width,height }:IProps) => {
+const Avatar = ({ src, width, height }: IProps) => {
   return (
-    <Image width={width ?? 30} height={height ?? 30} src={src ?? ""} className="rounded-full cursor-pointer" />
-  )
-}
+    <Image
+      width={width ?? 30}
+      height={height ?? 30}
+      src={src ?? ""}
+      className="rounded-full cursor-pointer"
+    />
+  );
+};
 
-export default Avatar
+export default Avatar;

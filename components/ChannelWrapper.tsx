@@ -12,16 +12,18 @@ interface IProps {
   children: React.ReactNode;
 }
 
-
 const ChannelWrapper = ({ children }: IProps) => {
   const router = useRouter();
-  const { channelId } = router.query
+  const { channelId } = router.query;
   // useEffect(()=>{
   //     router.replace("/")
   // },[]);
-  const { data:channel,loading,error } = useChannelDetails(`?id=${channelId}`);
-  console.log(channel)
-
+  const {
+    data: channel,
+    loading,
+    error,
+  } = useChannelDetails(`?id=${channelId}`);
+  console.log(channel);
 
   return (
     <div>
@@ -54,7 +56,9 @@ const ChannelWrapper = ({ children }: IProps) => {
               : null
           }`}
         >
-          <Link href={`/channel/${channelId}/feature`} scroll={false}>HOME</Link>
+          <Link href={`/channel/${channelId}/feature`} scroll={false}>
+            HOME
+          </Link>
         </li>
         <li
           className={` text-gray-400 ${

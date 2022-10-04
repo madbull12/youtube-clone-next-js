@@ -47,7 +47,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   const [_videoState,setVideoState] = useRecoilState(videoState);
 
   const videoStateValue = useRecoilValue(videoValue);
-  console.log(_videoState)
+  console.log(videoStateValue)
   const session = useSession();
   
   return (
@@ -98,7 +98,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
                         publishedAt:video.snippet.publishedAt
                   
                       }
-                      setVideoState({...data})
+                      setVideoState("yeahh")
                     }}
                     saveToWatchLater={() => {
                       {session?.status === "authenticated" ? (

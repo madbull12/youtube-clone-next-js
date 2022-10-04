@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState,useRef } from "react";
+import React, { useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import ReactTimeAgo from "react-time-ago";
@@ -21,11 +21,11 @@ const SearchSnippet = ({ video }: IProps) => {
   const session = useSession();
   console.log(video);
 
-  const ref= useRef(null);
+  const ref = useRef(null);
 
-  useOutsideClick(ref,()=>{
-    setDialogOpen(false)
-  })
+  useOutsideClick(ref, () => {
+    setDialogOpen(false);
+  });
 
   return (
     <Link href={`/watch?v=${video?.video?.videoId}`}>
@@ -64,22 +64,21 @@ const SearchSnippet = ({ video }: IProps) => {
               />
               {dialogOpen && (
                 <SaveDialog
-                  saveToPlaylist={()=>{
-                    
-                  }}
+                  saveToPlaylist={() => {}}
                   saveToWatchLater={() => {
-                    {session.status === "authenticated" ? (
-                      saveToWatchLater(
-                        video?.video?.thumbnails[1].url,
-                        video?.video.title,
-                        video?.video.author.title,
-                        video?.video.publishedTimeText,
-                        video?.video.videoId
-                      )
-                    ):(
-                      toast.error("Please login first to perform the action!")
-                    )}
-                   
+                    {
+                      session.status === "authenticated"
+                        ? saveToWatchLater(
+                            video?.video?.thumbnails[1].url,
+                            video?.video.title,
+                            video?.video.author.title,
+                            video?.video.publishedTimeText,
+                            video?.video.videoId
+                          )
+                        : toast.error(
+                            "Please login first to perform the action!"
+                          );
+                    }
                   }}
                 />
               )}

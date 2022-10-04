@@ -16,9 +16,8 @@ const Header = () => {
 
   const matches = useMediaQuery("(min-width: 500px)");
   useEffect(() => {
-    if(matches) {
+    if (matches) {
       setOpenMobileSearch(false);
-
     } else {
       setOpenMobileSearch(true);
     }
