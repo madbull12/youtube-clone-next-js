@@ -45,8 +45,6 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
 
   const [_videoState, setVideoState] = useRecoilState(videoState);
 
-  const videoStateValue = useRecoilValue(videoValue);
-  console.log(videoStateValue);
   const session = useSession();
 
   const ref = useRef(null);
