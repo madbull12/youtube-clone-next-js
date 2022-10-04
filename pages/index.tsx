@@ -97,7 +97,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
                           thumbnail: video.snippet.thumbnails.medium.url,
                           title: video.snippet.title,
                           authorTitle: video.snippet.channelTitle,
-                          publishedAt: video.snippet.publishedAt,
+                          publishedTimeText: video.snippet.publishedAt,
                         };
 
                         {

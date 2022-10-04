@@ -16,32 +16,36 @@ const SaveToPlaylist = () => {
     setOpenPlaylist(false);
   });
   const [showPlaylistForm, setShowPlaylistForm] = useState<boolean>(false);
-  const [playlistName,setPlaylistName] = useState<string>("");
-  const [privacy, setPrivacy] = useState<string>("");
-
-
+  const [playlistName, setPlaylistName] = useState<string>("");
+  const [privacy, setPrivacy] = useState<string>("public");
 
   console.log(privacy);
 
-  const createPlaylistAndSaveVideo = async() => {
-    const data = {
-      title:playlistName,
-      privacy,
-      ...videoStateValue
-
+  const createPlaylistAndSaveVideo = async (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    try {
+      const data = {
+        playlistName,
+        privacy,
+        ...videoStateValue,
+      };
+      await toast.promise(
+        fetch("/api/playlist", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }),
+        {
+          loading: "Creating playlist",
+          success: "yeahh",
+          error: "crap something went wrong!",
+        }
+      );
+    } catch (error) {
+      console.log(error)
     }
-    await toast.promise(
-      fetch("/api/playlist",{
-        method:"POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      }),{
-        loading:"Creating playlist",
-        success:"yeahh",
-        error:"crap something went wrong!"
-      }
-    )
-  }
+    
+  };
   return (
     <div
       ref={ref}
@@ -53,13 +57,16 @@ const SaveToPlaylist = () => {
       </header>
       <div className="px-4 py-2">
         {showPlaylistForm ? (
-          <form className="flex flex-col space-y-2" onSubmit={createPlaylistAndSaveVideo}>
+          <form
+            className="flex flex-col space-y-2"
+            onSubmit={createPlaylistAndSaveVideo}
+          >
             <div className="flex flex-col ">
               <label htmlFor="name" className="">
                 Name
               </label>
               <input
-                onChange={(e)=>setPlaylistName(e.target.value)}
+                onChange={(e) => setPlaylistName(e.target.value)}
                 name="name"
                 type="text"
                 placeholder="Enter playlist name..."
@@ -81,7 +88,12 @@ const SaveToPlaylist = () => {
                   Private
                 </option>
               </select>
-              <button type="submit" className="bg-transparent px-4 py-2 text-blue-500 font-semibold self-start">CREATE</button>
+              <button
+                type="submit"
+                className="bg-transparent px-4 py-2 text-blue-500 font-semibold self-start"
+              >
+                CREATE
+              </button>
             </div>
           </form>
         ) : (
@@ -94,7 +106,6 @@ const SaveToPlaylist = () => {
           >
             <BsPlusLg />
             <p>Create new playlist</p>
-            
           </button>
         )}
       </div>
