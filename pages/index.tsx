@@ -19,10 +19,9 @@ import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import Backdrop from "../components/Backdrop";
 import SaveToPlaylist from "../components/SaveToPlaylist";
-import { useRecoilValue,useRecoilState } from 'recoil'
+import { useRecoilValue, useRecoilState } from "recoil";
 import { isPlaylistDialogOpen } from "../atom/playlist";
 import { videoState, videoValue } from "../atom/video";
-
 
 const categories = [
   "Music",
@@ -37,22 +36,26 @@ const categories = [
   "Lo-fi",
   "Mixes",
   "Anime",
-  "Health"
+  "Health",
 ];
 
 const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   const [onVideoHover, setOnVideoHover] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
-  const [_videoState,setVideoState] = useRecoilState(videoState);
+  const [_videoState, setVideoState] = useRecoilState(videoState);
 
   const videoStateValue = useRecoilValue(videoValue);
-  console.log(videoStateValue)
+  console.log(videoStateValue);
   const session = useSession();
-  
+
+  const ref = useRef(null);
+  useOutsideClick(ref, () => {
+    setDialogOpen(false);
+  });
+
   return (
     <Link href={`/watch?v=${video.id.videoId}`}>
-   
       <div
         className={`flex-col flex  gap-2 cursor-pointer`}
         onMouseEnter={() => setOnVideoHover(true)}
@@ -73,7 +76,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
 
         <div className={` space-y-2`}>
           <h1 className="text-sm  text-white ">{video.snippet.title}</h1>
-      
+
           <div className="flex items-center justify-between gap-x-2">
             <p className="text-gray-400 text-sm">
               <ReactTimeAgo date={video.snippet.publishTime} />
@@ -88,33 +91,42 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
                   }}
                 />
                 {dialogOpen && (
-                  <SaveDialog 
-                    saveToPlaylist={()=>{
-                      const data = {
-                        videoId:video.id.videoId,
-                        thumbnail:video.snippet.thumbnails.medium.url,
-                        title:video.snippet.title,
-                        authorTitle:video.snippet.channelTitle,
-                        publishedAt:video.snippet.publishedAt
-                  
-                      }
-                      setVideoState("yeahh")
-                    }}
-                    saveToWatchLater={() => {
-                      {session?.status === "authenticated" ? (
-                      saveToWatchLater(
-                        video.snippet.thumbnails.medium.url,
-                        video.snippet.title,
-                        video.snippet.channelTitle,
-                        video.snippet.publishedAt.toString(),
-                        video?.id.videoId
-                      )
-                      ):(
-                        toast.error("Please login first to perform the action!")
-                      )}
-                     
-                    }}
-                  />
+                  <div ref={ref}>
+                    <SaveDialog
+                      saveToPlaylist={() => {
+                        const data = {
+                          videoId: video.id.videoId,
+                          thumbnail: video.snippet.thumbnails.medium.url,
+                          title: video.snippet.title,
+                          authorTitle: video.snippet.channelTitle,
+                          publishedAt: video.snippet.publishedAt,
+                        };
+
+                        {
+                          session?.status === "authenticated"
+                            ? setVideoState(data)
+                            : toast.error(
+                                "Please login first to perform the action!"
+                              );
+                        }
+                      }}
+                      saveToWatchLater={() => {
+                        {
+                          session?.status === "authenticated"
+                            ? saveToWatchLater(
+                                video.snippet.thumbnails.medium.url,
+                                video.snippet.title,
+                                video.snippet.channelTitle,
+                                video.snippet.publishedAt.toString(),
+                                video?.id.videoId
+                              )
+                            : toast.error(
+                                "Please login first to perform the action!"
+                              );
+                        }
+                      }}
+                    />
+                  </div>
                 )}
               </div>
             )}
@@ -141,9 +153,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {isPlaylistOpen && (
-       <Backdrop>
-            <SaveToPlaylist />
-        </Backdrop> 
+        <Backdrop>
+          <SaveToPlaylist />
+        </Backdrop>
       )}
 
       <Body>

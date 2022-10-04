@@ -2,7 +2,7 @@ import { atom, selector } from "recoil";
 
 export const videoState = atom({
   key: "videoState",
-  default: "shit",
+  default: {}
 });
 
 export const videoValue = selector({

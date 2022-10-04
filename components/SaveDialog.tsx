@@ -3,6 +3,7 @@ import { AiFillClockCircle } from "react-icons/ai";
 import { MdPlaylistAdd } from "react-icons/md";
 import { useRecoilState } from "recoil";
 import { playlistDialogState } from "../atom/playlist";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 interface IProps {
   saveToWatchLater: () => void;
@@ -10,6 +11,8 @@ interface IProps {
 }
 const SaveDialog = ({ saveToWatchLater, saveToPlaylist }: IProps) => {
   const [openDialog, setOpenDialog] = useRecoilState(playlistDialogState);
+ 
+
 
   useEffect(() => {
     document.body.style.overflowY = "hidden";
@@ -18,7 +21,7 @@ const SaveDialog = ({ saveToWatchLater, saveToPlaylist }: IProps) => {
     }
   }, [openDialog]);
   return (
-    <div className="absolute top-full -right-8 py-2 z-50 bg-zinc-800 text-white w-72 space-y-4 rounded-lg">
+    <div className="absolute  top-full -right-8 py-2 z-50 bg-zinc-800 text-white w-72 space-y-4 rounded-lg">
       <button
         className="flex items-center gap-x-3 py-1 hover:bg-zinc-600 px-4 w-full"
         onClick={(e) => {
