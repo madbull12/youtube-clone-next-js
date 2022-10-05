@@ -14,12 +14,7 @@ const SaveDialog = ({ saveToWatchLater, saveToPlaylist }: IProps) => {
  
 
 
-  useEffect(() => {
-    document.body.style.overflowY = "hidden";
-    if (!openDialog) {
-      document.body.style.overflowY = "visible";
-    }
-  }, [openDialog]);
+
   return (
     <div className="absolute  top-full -right-8 py-2 z-50 bg-zinc-800 text-white w-72 space-y-4 rounded-lg">
       <button

@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactTimeAgo from "react-time-ago";
 import Body from "../components/Body";
 import Header from "../components/Header";
@@ -145,6 +145,14 @@ const Home: NextPage = () => {
   console.log(data);
   const isPlaylistOpen = useRecoilValue(isPlaylistDialogOpen);
 
+  const openDialog = useRecoilValue(isPlaylistDialogOpen);
+  
+  useEffect(() => {
+    document.body.style.overflowY = "hidden";
+    if (!openDialog) {
+      document.body.style.overflowY = "visible";
+    }
+  }, [openDialog]);
   return (
     <div>
       <Head>

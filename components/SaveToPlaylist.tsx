@@ -44,6 +44,8 @@ const SaveToPlaylist = () => {
     } catch (error) {
       console.log(error)
     }
+
+    setOpenPlaylist(false)
     
   };
   return (

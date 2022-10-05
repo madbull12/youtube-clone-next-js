@@ -4,10 +4,12 @@ import type { AppProps } from "next/app";
 import Header from "../components/Header";
 import "../styles/globals.css"
 import TimeAgo from 'javascript-time-ago'
-import { RecoilRoot } from 'recoil'
+import { RecoilRoot, useRecoilValue } from 'recoil'
 import en from 'javascript-time-ago/locale/en.json'
 import AuthWrapper from "../components/AuthWrapper";
 import { Toaster } from "react-hot-toast";
+import { useEffect } from "react";
+import { isPlaylistDialogOpen } from "../atom/playlist";
 
 TimeAgo.addDefaultLocale(en)
 // Use the <SessionProvider> to improve performance and allow components that call
@@ -18,6 +20,7 @@ export default function App({
 }: AppProps<{
   session: Session;
 }>) {
+
   return (
     <SessionProvider
       // Provider options are not required but can be useful in situations where
