@@ -9,8 +9,8 @@ import { videoValue } from "../atom/video";
 import { GetServerSideProps } from "next";
 import { IPlaylist } from "../interface";
 
-interface IProps { 
-  userPlaylists:IPlaylist[]
+interface IProps {
+  userPlaylists: IPlaylist[];
 }
 const SaveToPlaylist = ({ userPlaylists }: IProps) => {
   const ref = useRef(null);
@@ -25,6 +25,31 @@ const SaveToPlaylist = ({ userPlaylists }: IProps) => {
   const [privacy, setPrivacy] = useState<string>("public");
 
   console.log(privacy);
+
+  const saveVideo = async (playlistId: string, playlistName: string) => {
+    try {
+      const data = {
+        playlistId,
+        ...videoStateValue,
+      };
+      await toast.promise(
+        fetch("/api/save", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }),
+        {
+          loading: "Saving video...",
+          success: `Added to ${playlistName}`,
+          error: "Oops... Something went wrong!",
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+
+    setOpenPlaylist(false);
+  };
 
   const createPlaylistAndSaveVideo = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -41,17 +66,16 @@ const SaveToPlaylist = ({ userPlaylists }: IProps) => {
           body: JSON.stringify(data),
         }),
         {
-          loading: "Creating playlist...",
-          success: `Playlist ${data.playlistName} created`,
+          loading: "Creating playlist",
+          success: `Added to ${data.playlistName}`,
           error: "Oops... Something went wrong!",
         }
       );
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
 
-    setOpenPlaylist(false)
-    
+    setOpenPlaylist(false);
   };
   return (
     <div
@@ -63,16 +87,13 @@ const SaveToPlaylist = ({ userPlaylists }: IProps) => {
         <MdClose className="text-lg" onClick={() => setOpenPlaylist(false)} />
       </header>
       <div className="flex flex-col ">
-        {userPlaylists.map((playlist:IPlaylist)=>(
-          <div className="p-3 cursor-pointer hover:bg-zinc-600  flex items-center gap-x-4 justify-between">
-            <p>{playlist.title}</p>
-            {
-              playlist.privacy === "private" ?(
-                <BsLockFill />
-              ):(
-                <BsGlobe />
-              )
-            }
+        {userPlaylists.map((playlist: IPlaylist) => (
+          <div
+            onClick={()=>saveVideo(playlist.id,playlist.title)}
+            className="p-3 cursor-pointer hover:bg-zinc-600  flex items-center gap-x-4 justify-between"
+          >
+              <p>{playlist.title}</p>
+              {playlist.privacy === "private" ? <BsLockFill /> : <BsGlobe />}
           </div>
         ))}
       </div>
@@ -133,7 +154,5 @@ const SaveToPlaylist = ({ userPlaylists }: IProps) => {
     </div>
   );
 };
-
-
 
 export default SaveToPlaylist;
