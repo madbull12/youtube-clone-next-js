@@ -13,6 +13,14 @@ export interface ISnippet {
 
 }
 
+export interface PlaylistVideo {
+    videoId: string;
+    thumbnail:string;
+    title: string;
+    authorTitle: string;
+    publishedTimeText: string | Date;
+}
+
 export interface IVideoV3 {
     id:{
         kind:string;

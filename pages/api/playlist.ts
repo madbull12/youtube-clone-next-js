@@ -18,6 +18,7 @@ export default async function handle(
     } = req.body;
 
     const session = await getSession({ req });
+    console.log(req.body)
 
     console.log(session);
     const result = await prisma?.playlist.create({
@@ -29,22 +30,22 @@ export default async function handle(
             email: session?.user?.email as string,
           },
         },
-        // saved:{
-        //     create:{
-        //         user:{
-        //             connect:{
-        //                 email:session?.user?.email || ""
-        //             }
-        //         },
-        //         videoId,
-        //         thumbnail,
-        //         title,
-        //         publishedTimeText,
-        //         authorTitle
+        saved:{
+            create:{
+                user:{
+                  connect:{
+                    email:session?.user?.email as string
+                  }
+                },
+                videoId,
+                thumbnail,
+                title,
+                publishedTimeText,
+                authorTitle
 
-        //      },
+             },
 
-        // }
+        }
       },
     });
     res.status(201).json(result);

@@ -8,6 +8,10 @@ import { IChannel, IVideo, IVideoDetails, IVideoInfo } from "../interface";
 import { v4 as uuidv4 } from "uuid";
 import ChannelSnippet from "../components/ChannelSnippet";
 import { AiFillFilter } from "react-icons/ai";
+import { useRecoilValue } from "recoil";
+import { isPlaylistDialogOpen } from "../atom/playlist";
+import Backdrop from "../components/Backdrop";
+import SaveToPlaylist from "../components/SaveToPlaylist";
 
 type Props = {
   item: IVideo | IChannel;
@@ -19,6 +23,8 @@ const SearchPage = () => {
   const [cursorToken, setCursorToken] = useState<string>("");
   const [didYouMean, setDidYouMean] = useState<string | null>(null);
   const [filterClicked,setFilterClicked] = useState<boolean>(false);
+  const isPlaylistOpen = useRecoilValue(isPlaylistDialogOpen);
+
   useEffect(()=>{
     setCursorToken("")
   },[router.pathname]);
@@ -36,6 +42,11 @@ const SearchPage = () => {
 
   return (
     <Body>
+        {isPlaylistOpen && (
+        <Backdrop>
+          <SaveToPlaylist />
+        </Backdrop>
+      )}
       <div className="flex flex-col space-y-4  ">
         {/* {data?.contents.map((item:IVideo)=>(
                 <SearchSnippet video={item} />

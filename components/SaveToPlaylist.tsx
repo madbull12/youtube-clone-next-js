@@ -36,9 +36,9 @@ const SaveToPlaylist = () => {
           body: JSON.stringify(data),
         }),
         {
-          loading: "Creating playlist",
-          success: "yeahh",
-          error: "crap something went wrong!",
+          loading: "Creating playlist...",
+          success: `Playlist ${data.playlistName} created`,
+          error: "Oops... Something went wrong!",
         }
       );
     } catch (error) {

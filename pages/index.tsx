@@ -8,7 +8,7 @@ import Body from "../components/Body";
 import Header from "../components/Header";
 import nFormatter from "../helper/convertion";
 import useYoutubeHome from "../hooks/useYoutubeHome";
-import { ISnippet, IVideoV3 } from "../interface";
+import { ISnippet, IVideoV3, PlaylistVideo } from "../interface";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { AiFillClockCircle } from "react-icons/ai";
 import { MdPlaylistAdd } from "react-icons/md";
@@ -38,6 +38,8 @@ const categories = [
   "Anime",
   "Health",
 ];
+
+
 
 const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   const [onVideoHover, setOnVideoHover] = useState(false);
@@ -92,7 +94,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
                   <div ref={ref}>
                     <SaveDialog
                       saveToPlaylist={() => {
-                        const data = {
+                        const data:PlaylistVideo = {
                           videoId: video.id.videoId,
                           thumbnail: video.snippet.thumbnails.medium.url,
                           title: video.snippet.title,

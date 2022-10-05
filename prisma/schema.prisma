@@ -47,7 +47,7 @@ model User {
   comments      Comment[]
   playlists     Playlist[]
   watchLater    WatchLater[]
-  savedVideo    SavedVideo[]
+  saved         SavedVideo[]
 }
 
 model VerificationToken {

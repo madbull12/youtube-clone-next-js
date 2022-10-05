@@ -5,11 +5,13 @@ import React, { useState, useRef } from "react";
 import toast from "react-hot-toast";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import ReactTimeAgo from "react-time-ago";
+import { useRecoilState } from "recoil";
+import { videoState } from "../atom/video";
 import nFormatter from "../helper/convertion";
 import saveToWatchLater from "../helper/saveToWatchLater";
 import toHHMS from "../helper/toHHMS";
 import useOutsideClick from "../hooks/useOutsideClick";
-import { IVideo, IVideoDetails } from "../interface";
+import { IVideo, IVideoDetails, PlaylistVideo } from "../interface";
 import Avatar from "./Avatar";
 import SaveDialog from "./SaveDialog";
 
@@ -19,6 +21,7 @@ interface IProps {
 const SearchSnippet = ({ video }: IProps) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const session = useSession();
+  const [_videoState, setVideoState] = useRecoilState(videoState);
   console.log(video);
 
   const ref = useRef(null);
@@ -64,7 +67,23 @@ const SearchSnippet = ({ video }: IProps) => {
               />
               {dialogOpen && (
                 <SaveDialog
-                  saveToPlaylist={() => {}}
+                saveToPlaylist={() => {
+                  const data:PlaylistVideo = {
+                    videoId: video.video.videoId,
+                    thumbnail: video.video.thumbnails[1].url,
+                    title: video.video.title,
+                    authorTitle: video.video.author.title,
+                    publishedTimeText: video.video.publishedTimeText,
+                  };
+
+                  {
+                    session?.status === "authenticated"
+                      ? setVideoState(data)
+                      : toast.error(
+                          "Please login first to perform the action!"
+                        );
+                  }
+                }}
                   saveToWatchLater={() => {
                     {
                       session.status === "authenticated"
