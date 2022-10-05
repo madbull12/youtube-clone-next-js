@@ -6,8 +6,13 @@ import useOutsideClick from "../hooks/useOutsideClick";
 import { BsPlusLg } from "react-icons/bs";
 import toast from "react-hot-toast";
 import { videoValue } from "../atom/video";
+import { GetServerSideProps } from "next";
+import { IPlaylist } from "../interface";
 
-const SaveToPlaylist = () => {
+interface IProps { 
+  userPlaylists:IPlaylist[]
+}
+const SaveToPlaylist = ({ userPlaylists }: IProps) => {
   const ref = useRef(null);
   const [openPlaylist, setOpenPlaylist] = useRecoilState(playlistDialogState);
   const videoStateValue = useRecoilValue(videoValue);
@@ -114,5 +119,7 @@ const SaveToPlaylist = () => {
     </div>
   );
 };
+
+
 
 export default SaveToPlaylist;

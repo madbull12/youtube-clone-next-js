@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,7 +8,7 @@ import Body from "../components/Body";
 import Header from "../components/Header";
 import nFormatter from "../helper/convertion";
 import useYoutubeHome from "../hooks/useYoutubeHome";
-import { ISnippet, IVideoV3, PlaylistVideo } from "../interface";
+import { IPlaylist, ISnippet, IVideoV3, PlaylistVideo } from "../interface";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { AiFillClockCircle } from "react-icons/ai";
 import { MdPlaylistAdd } from "react-icons/md";
@@ -22,6 +22,8 @@ import SaveToPlaylist from "../components/SaveToPlaylist";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { isPlaylistDialogOpen } from "../atom/playlist";
 import { videoState, videoValue } from "../atom/video";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 const categories = [
   "Music",
@@ -137,7 +139,11 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   );
 };
 
-const Home: NextPage = () => {
+interface IProps {
+  userPlaylists:IPlaylist[]
+}
+
+const Home: NextPage<IProps> = ({ userPlaylists }) => {
   const [category, setCategory] = useState("Music");
   const { data, loading, error } = useYoutubeHome(
     `/search?q=${category}&part=snippet,id&regionCode=US&maxResults=50`
@@ -162,7 +168,7 @@ const Home: NextPage = () => {
       </Head>
       {isPlaylistOpen && (
         <Backdrop>
-          <SaveToPlaylist />
+          <SaveToPlaylist userPlaylists={userPlaylists} />
         </Backdrop>
       )}
 
@@ -186,5 +192,24 @@ const Home: NextPage = () => {
     </div>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await unstable_getServerSession(context.req, context.res, authOptions);
+
+  const userPlaylists = await prisma?.playlist.findMany({
+    where: {
+      user:{
+        email:session?.user?.email
+      }
+    },
+  });
+  console.log(session)
+  return {
+    props: {
+      userPlaylists:JSON.parse(JSON.stringify(userPlaylists))
+    },
+  };
+};
+
 
 export default Home;

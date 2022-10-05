@@ -216,3 +216,12 @@ export interface IChannelDetails {
     };
     title:string;
 }
+
+export interface IPlaylist {
+    id:string;
+    title:string;
+    privacy:string;
+    saved:IVideoV3;
+    user:IUser;
+    userId:string;
+}

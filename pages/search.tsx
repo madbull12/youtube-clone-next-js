@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect, Context } from "react";
 import Body from "../components/Body";
 import SearchSnippet from "../components/SearchSnippet";
 import useSearch from "../hooks/useSearch";
 import useFetch from "../hooks/useSearch";
-import { IChannel, IVideo, IVideoDetails, IVideoInfo } from "../interface";
+import { IChannel, IPlaylist, IVideo, IVideoDetails, IVideoInfo } from "../interface";
 import { v4 as uuidv4 } from "uuid";
 import ChannelSnippet from "../components/ChannelSnippet";
 import { AiFillFilter } from "react-icons/ai";
@@ -12,22 +12,31 @@ import { useRecoilValue } from "recoil";
 import { isPlaylistDialogOpen } from "../atom/playlist";
 import Backdrop from "../components/Backdrop";
 import SaveToPlaylist from "../components/SaveToPlaylist";
+import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next";
+import { getSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 type Props = {
   item: IVideo | IChannel;
 };
 
-const SearchPage = () => {
+interface IProps {
+  userPlaylists:IPlaylist[]
+}
+
+const SearchPage = ({ userPlaylists }:IProps) => {
+  console.log(userPlaylists)
   const router = useRouter();
   const { results } = router.query;
   const [cursorToken, setCursorToken] = useState<string>("");
   const [didYouMean, setDidYouMean] = useState<string | null>(null);
-  const [filterClicked,setFilterClicked] = useState<boolean>(false);
+  const [filterClicked, setFilterClicked] = useState<boolean>(false);
   const isPlaylistOpen = useRecoilValue(isPlaylistDialogOpen);
 
-  useEffect(()=>{
-    setCursorToken("")
-  },[router.pathname]);
+  useEffect(() => {
+    setCursorToken("");
+  }, [router.pathname]);
 
   // const {data,loading,error} = useFetch(`search?q=${results}&part=snippet,id&maxResults=50`);
   const { data, loading, error } = useSearch(
@@ -42,16 +51,19 @@ const SearchPage = () => {
 
   return (
     <Body>
-        {isPlaylistOpen && (
+      {isPlaylistOpen && (
         <Backdrop>
-          <SaveToPlaylist />
+          <SaveToPlaylist userPlaylists={userPlaylists} />
         </Backdrop>
       )}
       <div className="flex flex-col space-y-4  ">
         {/* {data?.contents.map((item:IVideo)=>(
                 <SearchSnippet video={item} />
             ))} */}
-        <button onClick={()=>setFilterClicked(!filterClicked)} className="font-semibold text-gray-400 flex items-center">
+        <button
+          onClick={() => setFilterClicked(!filterClicked)}
+          className="font-semibold text-gray-400 flex items-center"
+        >
           <AiFillFilter />
           <span>FILTERS</span>
         </button>
@@ -65,7 +77,7 @@ const SearchPage = () => {
                 <div className="pt-4 space-y-3 cursor-pointer">
                   {item.filters.map((filter: any) => (
                     <p
-                      onClick={()=>setCursorToken(filter.cursorSelect)}
+                      onClick={() => setCursorToken(filter.cursorSelect)}
                       className={`${
                         filter.selected ? "text-white" : "text-gray-400"
                       }  text-sm`}
@@ -111,6 +123,24 @@ const SearchPage = () => {
       </div>
     </Body>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await unstable_getServerSession(context.req, context.res, authOptions);
+
+  const userPlaylists = await prisma?.playlist.findMany({
+    where: {
+      user:{
+        email:session?.user?.email
+      }
+    },
+  });
+  console.log(session)
+  return {
+    props: {
+      userPlaylists:JSON.parse(JSON.stringify(userPlaylists))
+    },
+  };
 };
 
 export default SearchPage;
