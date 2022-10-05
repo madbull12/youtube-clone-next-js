@@ -3,7 +3,7 @@ import { MdClose } from "react-icons/md";
 import { playlistDialogState } from "../atom/playlist";
 import { useRecoilState, useRecoilValue } from "recoil";
 import useOutsideClick from "../hooks/useOutsideClick";
-import { BsPlusLg } from "react-icons/bs";
+import { BsGlobe, BsLockFill, BsPlusLg } from "react-icons/bs";
 import toast from "react-hot-toast";
 import { videoValue } from "../atom/video";
 import { GetServerSideProps } from "next";
@@ -62,6 +62,20 @@ const SaveToPlaylist = ({ userPlaylists }: IProps) => {
         <p>Save to...</p>
         <MdClose className="text-lg" onClick={() => setOpenPlaylist(false)} />
       </header>
+      <div className="flex flex-col ">
+        {userPlaylists.map((playlist:IPlaylist)=>(
+          <div className="p-3 cursor-pointer hover:bg-zinc-600  flex items-center gap-x-4 justify-between">
+            <p>{playlist.title}</p>
+            {
+              playlist.privacy === "private" ?(
+                <BsLockFill />
+              ):(
+                <BsGlobe />
+              )
+            }
+          </div>
+        ))}
+      </div>
       <div className="px-4 py-2">
         {showPlaylistForm ? (
           <form
