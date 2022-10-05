@@ -217,11 +217,21 @@ export interface IChannelDetails {
     title:string;
 }
 
+export interface ISaved {
+    id:string;
+    videoId:string;
+    thumbnail:string;
+    authorTitle:string;
+    title:string;
+    publishedTimeText:string;
+    user:IUser;
+}
+
 export interface IPlaylist {
     id:string;
     title:string;
     privacy:string;
-    saved:IVideoV3;
+    saved:ISaved[];
     user:IUser;
     userId:string;
 }
