@@ -10,6 +10,7 @@ import AuthWrapper from "../components/AuthWrapper";
 import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 import { isPlaylistDialogOpen } from "../atom/playlist";
+import Sidebar from "../components/Sidebar";
 
 TimeAgo.addDefaultLocale(en)
 // Use the <SessionProvider> to improve performance and allow components that call
@@ -34,6 +35,7 @@ export default function App({
           <Toaster 
             position="bottom-left"
           />
+          <Sidebar />
           <Header />
           <Component {...pageProps} />
         </RecoilRoot>
