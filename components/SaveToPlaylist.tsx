@@ -87,7 +87,7 @@ const SaveToPlaylist = ({ userPlaylists }: IProps) => {
         <MdClose className="text-lg" onClick={() => setOpenPlaylist(false)} />
       </header>
       <div className="flex flex-col ">
-        {userPlaylists.map((playlist: IPlaylist) => (
+        {userPlaylists?.map((playlist: IPlaylist) => (
           <div
             onClick={()=>saveVideo(playlist.id,playlist.title)}
             className="p-3 cursor-pointer hover:bg-zinc-600  flex items-center gap-x-4 justify-between"

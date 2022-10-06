@@ -151,14 +151,14 @@ const Home: NextPage<IProps> = ({ userPlaylists }) => {
   console.log(data);
   const isPlaylistOpen = useRecoilValue(isPlaylistDialogOpen);
 
-  const openDialog = useRecoilValue(isPlaylistDialogOpen);
+  // const openDialog = useRecoilValue(isPlaylistDialogOpen);
   
   useEffect(() => {
     document.body.style.overflowY = "hidden";
-    if (!openDialog) {
+    if (!isPlaylistOpen) {
       document.body.style.overflowY = "visible";
     }
-  }, [openDialog]);
+  }, [isPlaylistOpen]);
   return (
     <div>
       <Head>
