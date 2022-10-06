@@ -242,10 +242,12 @@ export interface ITrending {
     channelTitle:string;
     description:string;
     lengthText:string;
-    publishedTimeText:string;
+    publishedText:string;
     title:string;
     videoId:string;
     richThumbnail:IThumbnail[];
-    thumbnail:IThumbnail[]
+    thumbnail:IThumbnail[];
+    viewCount:string;
+
 
 }
