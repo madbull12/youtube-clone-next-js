@@ -235,3 +235,17 @@ export interface IPlaylist {
     user:IUser;
     userId:string;
 }
+
+export interface ITrending {
+    channelId:string;
+    channelThumbnail:IThumbnail[];
+    channelTitle:string;
+    description:string;
+    lengthText:string;
+    publishedTimeText:string;
+    title:string;
+    videoId:string;
+    richThumbnail:IThumbnail[];
+    thumbnail:IThumbnail[]
+
+}

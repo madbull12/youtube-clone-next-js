@@ -51,4 +51,12 @@ export const youtubeHomeData = axios.create({
         'X-RapidAPI-Key': process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string,
     }
 })
+export const youtubeTrending = axios.create({
+    baseURL: 'https://youtube-v3-alternative.p.rapidapi.com/',
+    headers: {
+        'X-RapidAPI-Key': process.env.NEXT_PUBLIC_YOUTUBE_API_KEY as string,
+    }
+})
+
+
 
