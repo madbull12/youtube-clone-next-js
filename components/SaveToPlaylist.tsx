@@ -20,6 +20,7 @@ const SaveToPlaylist = ({ userPlaylists }: IProps) => {
   useOutsideClick(ref, () => {
     setOpenPlaylist(false);
   });
+  
   const [showPlaylistForm, setShowPlaylistForm] = useState<boolean>(false);
   const [playlistName, setPlaylistName] = useState<string>("");
   const [privacy, setPrivacy] = useState<string>("public");
