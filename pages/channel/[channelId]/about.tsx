@@ -15,7 +15,7 @@ const AboutPage  = () => {
 
   return (
     <Body>
-        <ChannelWrapper>
+      
             <div className='py-6 px-4 flex justify-between'>
                 <div className='divide-y divide-zinc-600 w-2/3'>
                     <div className='pb-4'>
@@ -49,7 +49,6 @@ const AboutPage  = () => {
                 </div>
 
             </div>
-        </ChannelWrapper>
     </Body>
   )
 }

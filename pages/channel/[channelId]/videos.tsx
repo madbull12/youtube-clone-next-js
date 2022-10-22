@@ -14,14 +14,13 @@ const ChannelVideos = () => {
   const { channelId } = router.query;
   const [filtering,setFiltering] = useState<string>("");
 
-  const { data: channelVideos } = useChannelVideos(`?id=${channelId}&filter=${filtering}`);
+  const { data: channelVideos } = useChannelVideos(filtering === "" ? `?id=${channelId}` :`?id=${channelId}&filter=${filtering}` );
 
   const [openSortBy,setOpenSortBy] = useState<boolean>(false);
   console.log(channelVideos)
 
   return (
     <Body>
-      <ChannelWrapper>
         <button onClick={()=>setOpenSortBy(!openSortBy)} className="relative font-semibold mt-3 ml-auto text-white flex items-center gap-x-2">
           <BsFilterLeft className="text-2xl text-white" />
           <span>SORT BY</span>
@@ -46,7 +45,6 @@ const ChannelVideos = () => {
             <VideoSnippet video={video} column={true} key={uuidv4()} />
           ))}
         </div>
-      </ChannelWrapper>
     </Body>
   );
 };

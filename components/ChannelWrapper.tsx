@@ -7,6 +7,7 @@ import useChannelDetails from "../hooks/useChannelDetails";
 import { IChannelDetails } from "../interface";
 import Avatar from "./Avatar";
 import Body from "./Body";
+import NoImage from '../public/no-image.png'
 
 interface IProps {
   children: React.ReactNode;
@@ -25,13 +26,24 @@ const ChannelWrapper = ({ children }: IProps) => {
   } = useChannelDetails(`?id=${channelId}`);
   console.log(channel);
 
+  if(loading) return <p>Loading...</p>
+
   return (
     <div>
+      {channel.banner.desktop !== null ? (
       <Image
         src={channel?.banner.desktop[0].url}
         height={channel?.banner.desktop[2].height}
         width={channel?.banner.desktop[2].width}
       />
+      ):(
+        <Image
+          src={NoImage}
+          height={150}
+          width={200}
+      />
+      )}
+  
       <div className="flex items-center justify-between mt-4 px-8">
         <div className="flex items-center gap-x-4">
           <Avatar

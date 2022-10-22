@@ -19,8 +19,8 @@ const ChannelPage = () => {
 
   return (
     <Body>
-        <ChannelWrapper >
-          <div className='mt-4 grid gap-x-2 gap-y-4 grid-cols-5 bg-black p-4'>
+      <ChannelWrapper>
+      <div className='mt-4 grid gap-x-2 gap-y-4 grid-cols-5 bg-black p-4'>
             {channelVideos?.contents.slice(0,1).map((video:IVideo)=>(
                 <div className="col-span-5 row-span-3" key={uuidv4()}>
                     <VideoSnippet video={video} column={false} />
@@ -31,8 +31,9 @@ const ChannelPage = () => {
               <VideoSnippet video={video} column={true} key={uuidv4()} />
             ))}
           </div>
+      </ChannelWrapper>
+         
         
-        </ChannelWrapper>
     </Body>
   )
 }

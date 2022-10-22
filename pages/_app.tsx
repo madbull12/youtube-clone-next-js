@@ -35,7 +35,7 @@ export default function App({
           <Toaster 
             position="bottom-left"
           />
-          <Sidebar />
+          {/* <Sidebar /> */}
           <Header />
           <Component {...pageProps} />
         </RecoilRoot>

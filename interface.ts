@@ -236,6 +236,19 @@ export interface IPlaylist {
     userId:string;
 }
 
+export interface IPlaylistVideo {
+    type:string;
+    playlist:{
+        author:IAuthor;
+        description:string;
+        stats:IStats;
+        thumbnails:IThumbnail[];
+        title:string;
+        updatedTime:string;
+        updatedTimeText:string;
+    }
+}
+
 export interface ITrending {
     channelId:string;
     channelThumbnail:IThumbnail[];

@@ -4,7 +4,14 @@ import Body from "../components/Body";
 import SearchSnippet from "../components/SearchSnippet";
 import useSearch from "../hooks/useSearch";
 import useFetch from "../hooks/useSearch";
-import { IChannel, IPlaylist, IVideo, IVideoDetails, IVideoInfo } from "../interface";
+import {
+  IChannel,
+  IPlaylist,
+  IPlaylistVideo,
+  IVideo,
+  IVideoDetails,
+  IVideoInfo,
+} from "../interface";
 import { v4 as uuidv4 } from "uuid";
 import ChannelSnippet from "../components/ChannelSnippet";
 import { AiFillFilter } from "react-icons/ai";
@@ -16,17 +23,18 @@ import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
+import PlaylistVideo from "../components/PlaylistVideo";
 
 type Props = {
   item: IVideo | IChannel;
 };
 
 interface IProps {
-  userPlaylists:IPlaylist[]
+  userPlaylists: IPlaylist[];
 }
 
-const SearchPage = ({ userPlaylists }:IProps) => {
-  console.log(userPlaylists)
+const SearchPage = ({ userPlaylists }: IProps) => {
+  console.log(userPlaylists);
   const router = useRouter();
   const { results } = router.query;
   const [cursorToken, setCursorToken] = useState<string>("");
@@ -39,8 +47,11 @@ const SearchPage = ({ userPlaylists }:IProps) => {
   }, [router.pathname]);
 
   // const {data,loading,error} = useFetch(`search?q=${results}&part=snippet,id&maxResults=50`);
+
   const { data, loading, error } = useSearch(
-    `?q=${didYouMean ? didYouMean : results}&cursor=${cursorToken}`
+    cursorToken === ""
+      ? `?q=${didYouMean ? didYouMean : results}`
+      : `?q=${didYouMean ? didYouMean : results}&cursor=${cursorToken}`
   );
 
   console.log(data);
@@ -113,11 +124,18 @@ const SearchPage = ({ userPlaylists }:IProps) => {
             ))}
         </div>
 
-        <div className="py-8 space-y-4">
+        <div className=" space-y-4">
           {data?.contents
             .filter((item: IVideo) => item.type === "video")
             .map((item: IVideo) => (
               <SearchSnippet video={item} key={uuidv4()} />
+            ))}
+        </div>
+        <div className=" space-y-4">
+          {data?.contents
+            .filter((item: IVideo) => item.type === "playlist")
+            .map((item: IPlaylistVideo) => (
+              <PlaylistVideo playlist={item} key={uuidv4()} />
             ))}
         </div>
       </div>
@@ -126,19 +144,23 @@ const SearchPage = ({ userPlaylists }:IProps) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(context.req, context.res, authOptions);
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
 
   const userPlaylists = await prisma?.playlist.findMany({
     where: {
-      user:{
-        email:session?.user?.email
-      }
+      user: {
+        email: session?.user?.email,
+      },
     },
   });
-  console.log(session)
+  console.log(session);
   return {
     props: {
-      userPlaylists:JSON.parse(JSON.stringify(userPlaylists))
+      userPlaylists: JSON.parse(JSON.stringify(userPlaylists)),
     },
   };
 };

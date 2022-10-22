@@ -41,8 +41,6 @@ const categories = [
   "Health",
 ];
 
-
-
 const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   const [onVideoHover, setOnVideoHover] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -83,55 +81,59 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
             <p className="text-gray-400 text-sm">
               <ReactTimeAgo date={video.snippet.publishTime} />
             </p>
-            {onVideoHover && (
-              <div className="relative">
-                <HiOutlineDotsVertical
-                  className="text-gray-400 cursor-pointer"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setDialogOpen(!dialogOpen);
-                  }}
-                />
-                {dialogOpen && (
-                  <div ref={ref}>
-                    <SaveDialog
-                      saveToPlaylist={() => {
-                        const data:PlaylistVideo = {
-                          videoId: video.id.videoId,
-                          thumbnail: video.snippet.thumbnails.medium.url,
-                          title: video.snippet.title,
-                          authorTitle: video.snippet.channelTitle,
-                          publishedTimeText: video.snippet.publishedAt,
-                        };
-
-                        {
-                          session?.status === "authenticated"
-                            ? setVideoState(data)
-                            : toast.error(
-                                "Please login first to perform the action!"
-                              );
-                        }
-                      }}
-                      saveToWatchLater={() => {
-                        {
-                          session?.status === "authenticated"
-                            ? saveToWatchLater(
-                                video.snippet.thumbnails.medium.url,
-                                video.snippet.title,
-                                video.snippet.channelTitle,
-                                video.snippet.publishedAt.toString(),
-                                video?.id.videoId
-                              )
-                            : toast.error(
-                                "Please login first to perform the action!"
-                              );
-                        }
+            {session.status === "authenticated" ? (
+              <>
+                {onVideoHover && (
+                  <div className="relative">
+                    <HiOutlineDotsVertical
+                      className="text-gray-400 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDialogOpen(!dialogOpen);
                       }}
                     />
+                    {dialogOpen && (
+                      <div ref={ref}>
+                        <SaveDialog
+                          saveToPlaylist={() => {
+                            const data: PlaylistVideo = {
+                              videoId: video.id.videoId,
+                              thumbnail: video.snippet.thumbnails.medium.url,
+                              title: video.snippet.title,
+                              authorTitle: video.snippet.channelTitle,
+                              publishedTimeText: video.snippet.publishedAt,
+                            };
+
+                            {
+                              session?.status === "authenticated"
+                                ? setVideoState(data)
+                                : toast.error(
+                                    "Please login first to perform the action!"
+                                  );
+                            }
+                          }}
+                          saveToWatchLater={() => {
+                            {
+                              session?.status === "authenticated"
+                                ? saveToWatchLater(
+                                    video.snippet.thumbnails.medium.url,
+                                    video.snippet.title,
+                                    video.snippet.channelTitle,
+                                    video.snippet.publishedAt.toString(),
+                                    video?.id.videoId
+                                  )
+                                : toast.error(
+                                    "Please login first to perform the action!"
+                                  );
+                            }
+                          }}
+                        />
+                      </div>
+                    )}
                   </div>
                 )}
-              </div>
-            )}
+              </>
+            ) : null}
           </div>
         </div>
       </div>
@@ -140,7 +142,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
 };
 
 interface IProps {
-  userPlaylists:IPlaylist[]
+  userPlaylists: IPlaylist[];
 }
 
 const Home: NextPage<IProps> = ({ userPlaylists }) => {
@@ -152,7 +154,7 @@ const Home: NextPage<IProps> = ({ userPlaylists }) => {
   const isPlaylistOpen = useRecoilValue(isPlaylistDialogOpen);
 
   // const openDialog = useRecoilValue(isPlaylistDialogOpen);
-  
+
   useEffect(() => {
     document.body.style.overflowY = "hidden";
     if (!isPlaylistOpen) {
@@ -194,24 +196,26 @@ const Home: NextPage<IProps> = ({ userPlaylists }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(context.req, context.res, authOptions);
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
 
   const userPlaylists = await prisma?.playlist.findMany({
     where: {
-      user:{
-        email:session?.user?.email
-      }
+      user: {
+        email: session?.user?.email,
+      },
     },
   });
 
-  
-  console.log(session)
+  console.log(session);
   return {
     props: {
-      userPlaylists:JSON.parse(JSON.stringify(userPlaylists))
+      userPlaylists: JSON.parse(JSON.stringify(userPlaylists)),
     },
   };
 };
-
 
 export default Home;

@@ -51,20 +51,21 @@ const SearchSnippet = ({ video }: IProps) => {
           </div>
         </div>
 
-        <div className="w-3/4">
+        <div className="w-3/4 space-y-2">
           <div className="flex items-center justify-between">
             <h1 className="text-white text-xl  text-ellipsis">
               {video.video.title}
             </h1>
 
-            <div className="relative" ref={ref}>
-              <HiOutlineDotsVertical
-                className="text-gray-400 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setDialogOpen(!dialogOpen);
-                }}
-              />
+            {session.status === "authenticated" ? (
+              <div className="relative" ref={ref}>
+                <HiOutlineDotsVertical
+                  className="text-gray-400 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setDialogOpen(!dialogOpen);
+                  }}
+                />
               {dialogOpen && (
                 <SaveDialog
                 saveToPlaylist={() => {
@@ -88,7 +89,7 @@ const SearchSnippet = ({ video }: IProps) => {
                     {
                       session.status === "authenticated"
                         ? saveToWatchLater(
-                            video?.video?.thumbnails[1].url,
+                            video?.video?.thumbnails[1]?.url,
                             video?.video.title,
                             video?.video.author.title,
                             video?.video.publishedTimeText,
@@ -102,6 +103,10 @@ const SearchSnippet = ({ video }: IProps) => {
                 />
               )}
             </div>
+            ):(
+              null
+            )}
+           
           </div>
 
           <div className="flex gap-x-3 items-center text-sm">
@@ -111,7 +116,7 @@ const SearchSnippet = ({ video }: IProps) => {
             <p className="text-gray-400">{video?.video.publishedTimeText}</p>
           </div>
 
-          <Link href="/">
+          <Link href={`/channel/${video.video.author.channelId}/feature`}>
             <div className="flex gap-x-2 items-center">
               <Avatar
                 src={video.video.author?.avatar[0].url ?? ""}
