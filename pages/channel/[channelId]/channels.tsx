@@ -21,7 +21,8 @@ const ChannelChannelsPage = () => {
   console.log(channelChannels);
   return (
     <Body>
-        <p className="text-white mt-8 text-lg">Subscriptions</p>
+      <ChannelWrapper>
+      <p className="text-white mt-8 text-lg">Subscriptions</p>
         <div className="p-8  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {channelChannels?.contents?.map((channel: IChannel) => (
             <Link href={`/channel/${channel.channel.channelId}/feature`}>
@@ -44,6 +45,9 @@ const ChannelChannelsPage = () => {
             
           ))}
         </div>
+
+      </ChannelWrapper>
+        
     </Body>
   );
 };

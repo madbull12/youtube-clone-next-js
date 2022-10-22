@@ -21,7 +21,8 @@ const ChannelVideos = () => {
 
   return (
     <Body>
-        <button onClick={()=>setOpenSortBy(!openSortBy)} className="relative font-semibold mt-3 ml-auto text-white flex items-center gap-x-2">
+      <ChannelWrapper>
+      <button onClick={()=>setOpenSortBy(!openSortBy)} className="relative font-semibold mt-3 ml-auto text-white flex items-center gap-x-2">
           <BsFilterLeft className="text-2xl text-white" />
           <span>SORT BY</span>
           {openSortBy && (
@@ -45,6 +46,8 @@ const ChannelVideos = () => {
             <VideoSnippet video={video} column={true} key={uuidv4()} />
           ))}
         </div>
+      </ChannelWrapper>
+        
     </Body>
   );
 };
