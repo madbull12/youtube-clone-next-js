@@ -175,7 +175,7 @@ const Home: NextPage<IProps> = ({ userPlaylists }) => {
       )}
 
       <Body>
-        <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer overflow-x-scroll  ">
+        <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer   ">
           {categories.map((item: string) => (
             <span
               onClick={() => setCategory(item)}

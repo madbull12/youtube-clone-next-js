@@ -10,7 +10,7 @@ export default async function handle(
         const { text,videoId } = req.body;
 
         const session = await getSession({ req });
-      
+        
         const result = await prisma?.comment.create({
           data: {
             text,

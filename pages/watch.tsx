@@ -29,6 +29,7 @@ import Backdrop from "../components/Backdrop";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 import SaveToPlaylist from "../components/SaveToPlaylist";
+import toast from "react-hot-toast";
 
 const VideoPage = ({
   comments,
@@ -54,26 +55,32 @@ const VideoPage = ({
   }, [isPlaylistOpen]);
 
   const refreshData = () => {
-    router.replace(router.asPath);
+    router.replace(router.asPath,undefined, { scroll: false });
   };
 
   const createComment = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    try {
+    e.preventDefault()
+
       const body = { text: textComment, videoId: data?.videoId };
       setTextComment("");
 
-      await fetch("/api/comment", {
+      await toast.promise(fetch("/api/comment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
+      }),{
+        loading:"Posting comment",
+        success:"Comment created",
+        error:"Oops... something went wrong!"
       });
-    } catch (error) {
-      console.error(error);
-    } finally {
-      refreshData();
-    }
+
+      await refreshData()
+
+ 
+
   };
+
+
 
   const { data: relatedContents } = useFetchRelated(`?id=${v}`);
   console.log(data);
@@ -121,6 +128,7 @@ const VideoPage = ({
                 onClick={(e) =>{ 
                   e.stopPropagation()
                   setOpenDialog(true)
+                  window.scrollTo(0,0)
                 }}
                 className="flex gap-x-2 items-center cursor-pointer"
               >
