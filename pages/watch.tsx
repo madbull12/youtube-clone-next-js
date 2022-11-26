@@ -46,7 +46,6 @@ const VideoPage = ({
   const [openDialog, setOpenDialog] = useRecoilState(playlistDialogState);
   const isPlaylistOpen = useRecoilValue(isPlaylistDialogOpen);
 
-
   useEffect(() => {
     document.body.style.overflowY = "hidden";
     if (!isPlaylistOpen) {
@@ -55,32 +54,30 @@ const VideoPage = ({
   }, [isPlaylistOpen]);
 
   const refreshData = () => {
-    router.replace(router.asPath,undefined, { scroll: false });
+    router.replace(router.asPath, undefined, { scroll: false });
   };
 
   const createComment = async (e: React.SyntheticEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-      const body = { text: textComment, videoId: data?.videoId };
-      setTextComment("");
+    const body = { text: textComment, videoId: data?.videoId };
+    setTextComment("");
 
-      await toast.promise(fetch("/api/comment", {
+    await toast.promise(
+      fetch("/api/comment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
-      }),{
-        loading:"Posting comment",
-        success:"Comment created",
-        error:"Oops... something went wrong!"
-      });
+      }),
+      {
+        loading: "Posting comment",
+        success: "Comment created",
+        error: "Oops... something went wrong!",
+      }
+    );
 
-      await refreshData()
-
- 
-
+    await refreshData();
   };
-
-
 
   const { data: relatedContents } = useFetchRelated(`?id=${v}`);
   console.log(data);
@@ -125,10 +122,10 @@ const VideoPage = ({
                 <p className="text-white font-semibold">DISLIKE</p>
               </div>
               <div
-                onClick={(e) =>{ 
-                  e.stopPropagation()
-                  setOpenDialog(true)
-                  window.scrollTo(0,0)
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpenDialog(true);
+                  window.scrollTo(0, 0);
                 }}
                 className="flex gap-x-2 items-center cursor-pointer"
               >

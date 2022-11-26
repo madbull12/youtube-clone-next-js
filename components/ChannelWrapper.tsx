@@ -67,7 +67,7 @@ const ChannelWrapper = ({ children }: IProps) => {
               : null
           }`}
         >
-          <Link href={`/channel/${channelId}/feature`} scroll={false}>
+          <Link href={`/channel/${channelId}/feature`}  as={`/channel/${channelId}/feature`}>
             HOME
           </Link>
         </li>
@@ -78,7 +78,7 @@ const ChannelWrapper = ({ children }: IProps) => {
               : null
           }`}
         >
-          <Link href={`/channel/${channelId}/videos`}>VIDEOS</Link>
+          <Link href={`/channel/${channelId}/videos`} as={`/channel/${channelId}/videos`}>VIDEOS</Link>
         </li>
         <li
           className={` text-gray-400 ${
@@ -87,7 +87,7 @@ const ChannelWrapper = ({ children }: IProps) => {
               : null
           }`}
         >
-          <Link href={`/channel/${channelId}/playlists`}>PLAYLISTS</Link>
+          <Link href={`/channel/${channelId}/playlists`} as={`/channel/${channelId}/playlists`}>PLAYLISTS</Link>
         </li>
         <li
           className={` text-gray-400 ${
@@ -96,7 +96,7 @@ const ChannelWrapper = ({ children }: IProps) => {
               : null
           }`}
         >
-          <Link href={`/channel/${channelId}/channels`}>CHANNELS</Link>
+          <Link href={`/channel/${channelId}/channels`} as={`/channel/${channelId}/channels`}>CHANNELS</Link>
         </li>
         <li
           className={` text-gray-400 ${
@@ -105,7 +105,7 @@ const ChannelWrapper = ({ children }: IProps) => {
               : null
           }`}
         >
-          <Link href={`/channel/${channelId}/about`}>ABOUT</Link>
+          <Link href={`/channel/${channelId}/about`} as={`/channel/${channelId}/about`}>ABOUT</Link>
         </li>
       </ul>
       {children}
