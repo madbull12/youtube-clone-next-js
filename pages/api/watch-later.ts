@@ -14,16 +14,29 @@ export default async function handle(
         const result = await prisma?.watchLater.create({
           data:{
             
-            title,
-            thumbnail,
-            videoId,
-            publishedTimeText:publishedAt,
-            authorTitle,
+          
             user:{
                 connect:{
                   email:session?.user?.email || ""
                 }
-              },
+            },
+            saved:{
+              create:{
+                  user:{
+                    connect:{
+                      email:session?.user?.email as string
+                    }
+                  },
+                  videoId,
+                  thumbnail,
+                  title,
+                  publishedTimeText:publishedAt,
+                  authorTitle,
+                  
+  
+               },
+  
+          }
           }
         });
         res.status(201).json(result);
