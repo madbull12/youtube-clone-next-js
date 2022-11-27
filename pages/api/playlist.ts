@@ -41,7 +41,8 @@ export default async function handle(
                 thumbnail,
                 title,
                 publishedTimeText,
-                authorTitle
+                authorTitle,
+                
 
              },
 
