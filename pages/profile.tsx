@@ -34,11 +34,11 @@ const ProfilePage = ({ videosList, userPlaylists }: IProps) => {
           <AiFillClockCircle className="text-white" />
           <p className=" text-xl text-white">Watch later</p>
         </div>
-        <div className="grid grid-cols-5 gap-4 mt-4">
+        <div>
           {videosList.length === 0 ? (
             <p className="text-white text-lg">No videos saved</p>
           ) : (
-            <>
+            <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
               {videosList?.slice(0, showMore).map((video: any) => (
                 <Link href={`/watch?v=${video.videoId}`}>
                   <div className="flex flex-col cursor-pointer space-y-2">
@@ -52,7 +52,7 @@ const ProfilePage = ({ videosList, userPlaylists }: IProps) => {
                   </div>
                 </Link>
               ))}
-            </>
+            </div>
           )}
         </div>
         <button

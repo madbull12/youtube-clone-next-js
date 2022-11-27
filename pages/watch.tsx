@@ -52,14 +52,13 @@ const VideoPage = ({
   const [dialogOpen, setDialogOpen] = useState(false);
   const [_videoState, setVideoState] = useRecoilState(videoState);
 
-
   const isPlaylistOpen = useRecoilValue(isPlaylistDialogOpen);
-  
+
   const saveDialogRef = useRef<HTMLDivElement>(null);
 
-  useOutsideClick(saveDialogRef,()=>{
-    setOpenDialog(false)
-  })
+  useOutsideClick(saveDialogRef, () => {
+    setOpenDialog(false);
+  });
 
   useEffect(() => {
     document.body.style.overflowY = "hidden";
@@ -104,8 +103,8 @@ const VideoPage = ({
           <SaveToPlaylist userPlaylists={userPlaylists} />
         </Backdrop>
       )}
-      <div className="flex gap-x-6">
-        <div className="w-[60%] space-y-2">
+      <div className="flex gap-x-6 gap-y-6 flex-col lg:flex-row">
+        <div className="flex-[0.6] space-y-2">
           <iframe
             height={400}
             className="w-full "
@@ -139,7 +138,9 @@ const VideoPage = ({
               <div
                 onClick={(e) => {
                   e.stopPropagation();
-                  status === "authenticated" ? setDialogOpen(true) : toast.error("Please login first")
+                  status === "authenticated"
+                    ? setDialogOpen(true)
+                    : toast.error("Please login first");
                 }}
                 className="flex gap-x-2 items-center cursor-pointer relative"
               >
@@ -199,8 +200,7 @@ const VideoPage = ({
             </div>
           </Link>
           <p className="text-white ">{data?.description}</p>
-
-          <div>
+          <div className="hidden lg:block">
             <h1 className="text-lg text-white mt-16">Comments</h1>
             <div className="flex items-center gap-x-2 mt-4">
               {status === "authenticated" && (
@@ -231,12 +231,38 @@ const VideoPage = ({
             </div>
           </div>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 flex-[0.4]">
           {relatedContents?.contents
             .filter((item: IVideo) => item.type === "video")
             .map((item: IVideo) => (
               <VideoSnippet column={false} video={item} />
             ))}
+        </div>
+      </div>
+      <div className="lg:hidden">
+        <h1 className="text-lg text-white mt-16">Comments</h1>
+        <div className="flex items-center gap-x-2 mt-4">
+          {status === "authenticated" && (
+            <Avatar src={session?.user?.image ?? ""} width={30} height={30} />
+          )}
+          <form className="w-full" onSubmit={createComment}>
+            <input
+              className="bg-transparent text-sm p-2 outline-none text-white border-b border-gray-600 focus:border-blue-500 w-full"
+              type="text"
+              disabled={status === "unauthenticated"}
+              placeholder={`${
+                status === "authenticated"
+                  ? "Add a comment"
+                  : "Please login first before comment"
+              }`}
+              onChange={(e) => setTextComment(e.target.value)}
+            />
+          </form>
+        </div>
+        <div className="space-y-6 mt-6">
+          {comments?.map((comment: IComment) => (
+            <Comment comment={comment} key={uuidv4()} />
+          ))}
         </div>
       </div>
     </Body>
