@@ -45,19 +45,19 @@ const VideoSnippet = ({ video, column }: IProps) => {
             column ? "w-full" : " w-1/2"
           } space-y-1 overflow-hidden`}
         >
-          <h1 className="text-md  text-white">{video.video.title}</h1>
+          <h1 className="text-sm md:text-base  text-white">{video.video.title}</h1>
           {video.video.author && (
             <Link href="/">
               <div className="flex items-center gap-x-2">
                 {/* <Avatar src={video.video.author?.avatar[0].url ?? ""} width={30} height={30} /> */}
-                <p className="text-gray-400 text-sm">
+                <p className="text-gray-400 text-xs md:text-sm">
                   {video.video.author?.title}
                 </p>
               </div>
             </Link>
           )}
 
-          <div className="flex items-center gap-x-2 text-xs">
+          <div className="flex items-center gap-x-2 text-xs md:text-sm">
             <p className="text-gray-400">
               {nFormatter(video.video.stats.views)} views
             </p>

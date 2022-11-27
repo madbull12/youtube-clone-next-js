@@ -39,21 +39,20 @@ const SearchSnippet = ({ video }: IProps) => {
                     height={video.snippet.thumbnails.medium.height}
                     width={video.snippet.thumbnails.medium.width}
                 /> */}
-        <div className="relative">
+        <div className="relative w-1/2 h-36 md:w-1/3 lg:w-1/4 md:h-44 ">
           <Image
-            className="w-1/2"
+            
             src={video.video.thumbnails[0].url}
-            height={video.video.thumbnails[0].height}
-            width={video.video.thumbnails[0].width}
+            layout="fill"
           />
           <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
             {toHHMS(video.video.lengthSeconds?.toString())}
           </div>
         </div>
 
-        <div className="w-3/4 space-y-2">
+        <div className="w-3/4 md:space-y-2 space-y-1">
           <div className="flex items-center justify-between">
-            <h1 className="text-white text-xl  text-ellipsis">
+            <h1 className="text-white text-sm sm:text-lg md:text-xl  text-ellipsis">
               {video.video.title}
             </h1>
 
@@ -109,7 +108,7 @@ const SearchSnippet = ({ video }: IProps) => {
            
           </div>
 
-          <div className="flex gap-x-3 items-center text-sm">
+          <div className="flex gap-x-3 items-center text-xs md:text-sm">
             <p className="text-gray-400">
               {nFormatter(video?.video.stats.views)} views
             </p>
@@ -123,13 +122,13 @@ const SearchSnippet = ({ video }: IProps) => {
                 width={30}
                 height={30}
               />
-              <p className="text-gray-400 text-sm pt-2 hover:text-gray-300">
+              <p className="text-gray-400 text-xs md:text-sm pt-2 hover:text-gray-300">
                 {video.video.author?.title}
               </p>
             </div>
           </Link>
 
-          <p className="text-gray-400 text-sm pt-3">
+          <p className="text-gray-400 text-sm sm:block hidden pt-3">
             {video?.video.descriptionSnippet}
           </p>
         </div>

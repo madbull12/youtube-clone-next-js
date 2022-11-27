@@ -104,7 +104,7 @@ const VideoPage = ({
         </Backdrop>
       )}
       <div className="flex gap-x-6 gap-y-6 flex-col lg:flex-row">
-        <div className="flex-[0.6] space-y-2">
+        <div className="flex-[0.6] space-y-4">
           <iframe
             height={400}
             className="w-full "
@@ -114,8 +114,8 @@ const VideoPage = ({
             {data?.superTitle.items.map((item: string) => item + " ")}
           </p>
 
-          <h1 className="text-xl text-white">{data?.title}</h1>
-          <div className="justify-between flex items-center">
+          <h1 className="lg:text-xl text-base text-white">{data?.title}</h1>
+          <div className="justify-between flex items-start text-sm md:text-base md:flex-row md:items-center flex-col ">
             <div className="gap-x-3 flex items-center ">
               <p className="text-gray-400 ">
                 {Number(data?.stats.views).toLocaleString()} views
@@ -194,12 +194,12 @@ const VideoPage = ({
                 width={data?.author.avatar[0].width}
                 height={data?.author.avatar[0].height}
               />
-              <p className="text-white cursor-pointer font-semibold">
+              <p className="text-white  cursor-pointer text-sm md:text-base font-semibold">
                 {data?.author.title}
               </p>
             </div>
           </Link>
-          <p className="text-white ">{data?.description}</p>
+          <p className="text-white text-sm md:text-base ">{data?.description}</p>
           <div className="hidden lg:block">
             <h1 className="text-lg text-white mt-16">Comments</h1>
             <div className="flex items-center gap-x-2 mt-4">
