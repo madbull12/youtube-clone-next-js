@@ -1,7 +1,7 @@
 import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Body from "../components/Body";
 import VideoSnippet from "../components/VideoSnippet";
 import nFormatter from "../helper/convertion";
@@ -13,6 +13,7 @@ import {
   ISnippet,
   IVideo,
   IVideoDetails,
+  PlaylistVideo,
 } from "../interface";
 import { FiThumbsDown, FiThumbsUp } from "react-icons/fi";
 import Comment from "../components/Comment";
@@ -30,6 +31,10 @@ import { authOptions } from "./api/auth/[...nextauth]";
 import { unstable_getServerSession } from "next-auth";
 import SaveToPlaylist from "../components/SaveToPlaylist";
 import toast from "react-hot-toast";
+import SaveDialog from "../components/SaveDialog";
+import saveToWatchLater from "../helper/saveToWatchLater";
+import { videoState } from "../atom/video";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 const VideoPage = ({
   comments,
@@ -44,7 +49,17 @@ const VideoPage = ({
   const [textComment, setTextComment] = useState<string>("");
   const { data, loading, error } = useFetchDetails(`?id=${v}`);
   const [openDialog, setOpenDialog] = useRecoilState(playlistDialogState);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [_videoState, setVideoState] = useRecoilState(videoState);
+
+
   const isPlaylistOpen = useRecoilValue(isPlaylistDialogOpen);
+  
+  const saveDialogRef = useRef<HTMLDivElement>(null);
+
+  useOutsideClick(saveDialogRef,()=>{
+    setOpenDialog(false)
+  })
 
   useEffect(() => {
     document.body.style.overflowY = "hidden";
@@ -124,13 +139,50 @@ const VideoPage = ({
               <div
                 onClick={(e) => {
                   e.stopPropagation();
-                  setOpenDialog(true);
-                  window.scrollTo(0, 0);
+                  status === "authenticated" ? setDialogOpen(true) : toast.error("Please login first")
                 }}
-                className="flex gap-x-2 items-center cursor-pointer"
+                className="flex gap-x-2 items-center cursor-pointer relative"
               >
                 <MdPlaylistAdd className="text-white text-lg" />
                 <p className="text-white font-semibold">SAVE</p>
+                {dialogOpen ? (
+                  <div ref={saveDialogRef}>
+                    <SaveDialog
+                      saveToPlaylist={() => {
+                        const video: PlaylistVideo = {
+                          videoId: data?.videoId,
+                          thumbnail: data?.thumbnails[0].url,
+                          title: data?.title,
+                          authorTitle: data?.author.title,
+                          publishedTimeText: data?.publishedDate,
+                        };
+
+                        {
+                          status === "authenticated"
+                            ? setVideoState(video)
+                            : toast.error(
+                                "Please login first to perform the action!"
+                              );
+                        }
+                      }}
+                      saveToWatchLater={() => {
+                        {
+                          status === "authenticated"
+                            ? saveToWatchLater(
+                                data?.thumbnails[0].url,
+                                data?.title,
+                                data?.author.title,
+                                data?.publishedDate,
+                                data?.videoId
+                              )
+                            : toast.error(
+                                "Please login first to perform the action!"
+                              );
+                        }
+                      }}
+                    />
+                  </div>
+                ) : null}
               </div>
             </div>
           </div>
