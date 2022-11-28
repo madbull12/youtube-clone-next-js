@@ -6,23 +6,23 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-    if(req.method === "POST") {
-        const { text,videoId } = req.body;
+  if (req.method === "POST") {
+    const { text, videoId } = req.body;
 
-        const session = await getSession({ req });
-        
-        const result = await prisma?.comment.create({
-          data: {
-            text,
-            videoId,
-            author:{
-              connect:{
-                email:session?.user?.email || ""
-              }
-            },
+    const session = await getSession({ req });
+
+
+    const result = await prisma?.comment.create({
+      data: {
+        text,
+        videoId,
+        author: {
+          connect: {
+            email: session?.user?.email || "",
           },
-        });
-        res.status(201).json(result);
-    }
-
+        },
+      },
+    });
+    res.status(201).json(result);
+  } 
 }

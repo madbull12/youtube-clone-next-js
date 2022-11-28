@@ -35,14 +35,9 @@ import SaveDialog from "../components/SaveDialog";
 import saveToWatchLater from "../helper/saveToWatchLater";
 import { videoState } from "../atom/video";
 import useOutsideClick from "../hooks/useOutsideClick";
+import useVideoComments from "../hooks/useVideoComments";
 
-const VideoPage = ({
-  comments,
-  userPlaylists,
-}: {
-  comments: IComment[];
-  userPlaylists: IPlaylist[];
-}) => {
+const VideoPage = ({ comments }:{ comments:IComment[]}) => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const { v } = router.query;
@@ -66,6 +61,8 @@ const VideoPage = ({
       document.body.style.overflowY = "visible";
     }
   }, [isPlaylistOpen]);
+
+  const commentInputRef = useRef<HTMLInputElement>(null);
 
   const refreshData = () => {
     router.replace(router.asPath, undefined, { scroll: false });
@@ -94,13 +91,13 @@ const VideoPage = ({
   };
 
   const { data: relatedContents } = useFetchRelated(`?id=${v}`);
-  console.log(data);
+  console.log(comments);
 
   return (
     <Body>
       {openDialog && (
         <Backdrop>
-          <SaveToPlaylist  />
+          <SaveToPlaylist />
         </Backdrop>
       )}
       <div className="flex gap-x-6 gap-y-6 flex-col lg:flex-row">
@@ -199,7 +196,9 @@ const VideoPage = ({
               </p>
             </div>
           </Link>
-          <p className="text-white text-sm md:text-base ">{data?.description}</p>
+          <p className="text-white text-sm md:text-base ">
+            {data?.description}
+          </p>
           <div className="hidden lg:block">
             <h1 className="text-lg text-white mt-16">Comments</h1>
             <div className="flex items-center gap-x-2 mt-4">
@@ -219,6 +218,7 @@ const VideoPage = ({
                     status === "authenticated"
                       ? "Add a comment"
                       : "Please login first before comment"
+
                   }`}
                   onChange={(e) => setTextComment(e.target.value)}
                 />
@@ -247,6 +247,7 @@ const VideoPage = ({
           )}
           <form className="w-full" onSubmit={createComment}>
             <input
+              ref={commentInputRef}
               className="bg-transparent text-sm p-2 outline-none text-white border-b border-gray-600 focus:border-blue-500 w-full"
               type="text"
               disabled={status === "unauthenticated"}
