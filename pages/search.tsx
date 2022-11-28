@@ -12,7 +12,7 @@ import {
   IVideoDetails,
   IVideoInfo,
 } from "../interface";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4, v4 } from "uuid";
 import ChannelSnippet from "../components/ChannelSnippet";
 import { AiFillFilter } from "react-icons/ai";
 import { useRecoilValue } from "recoil";
@@ -81,13 +81,14 @@ const SearchPage = ({ userPlaylists }: IProps) => {
         <div className={` ${filterClicked ? "block" : "hidden"}`}>
           <div className="flex gap-x-8 justify-between  ">
             {data?.filterGroups.map((item: any) => (
-              <div>
+              <div key={v4()}>
                 <p className="text-white font-semibold uppercase text-sm border-b border-gray-400">
                   {item.title}
                 </p>
                 <div className="pt-4 space-y-3 cursor-pointer">
                   {item.filters.map((filter: any) => (
                     <p
+                      key={v4()}
                       onClick={() => setCursorToken(filter.cursorSelect)}
                       className={`${
                         filter.selected ? "text-white" : "text-gray-400"

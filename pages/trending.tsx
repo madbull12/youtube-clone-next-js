@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { v4 } from "uuid";
 import Body from "../components/Body";
 import nFormatter from "../helper/convertion";
 import useTrending from "../hooks/useTrending";
@@ -74,6 +75,7 @@ const TrendingPage = () => {
           <ul className="flex items-center gap-x-16 text-gray-400 font-semibold">
             {trendingTypes.map(({ name }) => (
               <li
+                key={v4()}
                 className={`${name===trendingType ? "border-b-2" : ""}  font-semibold uppercase mb-4 cursor-pointer border-gray-400 `}
                 onClick={()=>setTrendingType(name)}
               >
@@ -84,7 +86,7 @@ const TrendingPage = () => {
         </nav>
         <div className="flex flex-col gap-y-4 bg-black py-4 px-2">
           {data?.data.map((trending: ITrending) => (
-            <TrendingVideo trending={trending} />
+            <TrendingVideo trending={trending} key={v4()} />
           ))}
         </div>
       </Body>

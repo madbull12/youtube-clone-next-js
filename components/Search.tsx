@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState, useRef } from "react";
 import { GoSearch } from "react-icons/go";
+import { v4 } from "uuid";
 import useDebounce from "../hooks/useDebounce";
 import useMediaQuery from "../hooks/useMediaQuery";
 import useOutsideClick from "../hooks/useOutsideClick";
@@ -76,6 +77,7 @@ const Search = () => {
             <div className="absolute  w-full py-2  top-full bg-white" ref={ref}>
               {data?.results.map((item: string) => (
                 <div
+                  key={v4()}
                   onClick={() => setTerm(item)}
                   className="flex gap-x-2 items-center py-1 px-2 hover:bg-gray-100 cursor-pointer"
                 >

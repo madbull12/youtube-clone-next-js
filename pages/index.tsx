@@ -179,6 +179,7 @@ const Home: NextPage<IProps> = ({ userPlaylists }) => {
         <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer   ">
           {categories.map((item: string) => (
             <span
+              key={v4()}
               onClick={() => setCategory(item)}
               className={`${item} whitespace-nowrap text-white bg-zinc-700 border-zinc-500 px-2 py-1 border rounded-full hover:bg-zinc-500 transition-all duration-200 ease-in-out`}
             >
