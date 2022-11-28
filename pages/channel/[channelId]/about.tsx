@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react'
+import { v4 } from 'uuid';
 import Body from '../../../components/Body'
 import ChannelWrapper from '../../../components/ChannelWrapper';
 import useChannelDetails from '../../../hooks/useChannelDetails';
@@ -30,7 +31,7 @@ const AboutPage  = () => {
                     </div>
                     <div className='grid grid-cols-4 pt-4'>
                         {channel?.links.map((link:any)=>(
-                                <a href={link.targetUrl} className="text-blue-500 text-sm">
+                                <a href={link.targetUrl} key={v4()} className="text-blue-500 text-sm">
                                     {link.title}
                                 </a>
                         ))}

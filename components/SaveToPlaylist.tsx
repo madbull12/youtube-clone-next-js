@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { videoValue } from "../atom/video";
 import { GetServerSideProps } from "next";
 import { IPlaylist } from "../interface";
+import { v4 } from "uuid";
 
 interface IProps {
   userPlaylists: IPlaylist[];
@@ -90,6 +91,7 @@ const SaveToPlaylist = ({ userPlaylists }: IProps) => {
       <div className="flex flex-col ">
         {userPlaylists?.map((playlist: IPlaylist) => (
           <div
+            key={v4()}
             onClick={()=>saveVideo(playlist.id,playlist.title)}
             className="p-3 cursor-pointer hover:bg-zinc-600  flex items-center gap-x-4 justify-between"
           >

@@ -25,8 +25,8 @@ const ChannelChannelsPage = () => {
       <p className="text-white mt-8 text-lg">Subscriptions</p>
         <div className="p-8  grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
           {channelChannels?.contents?.map((channel: IChannel) => (
-            <Link href={`/channel/${channel.channel.channelId}/feature`}>
-              <div key={uuidv4()} className="flex space-y-2 flex-col items-center">
+            <Link key={uuidv4()} href={`/channel/${channel.channel.channelId}/feature`}>
+              <div  className="flex space-y-2 flex-col items-center">
             
             <Avatar
               src={channel.channel.avatar[2].url ?? ""}

@@ -80,13 +80,13 @@ const Header = () => {
           <>
             {!openMobileSearch && (
               <div>
-                <a href="/profile">
+                <Link href="/profile">
                   <Avatar
                     src={data?.user?.image ?? ""}
                     width={30}
                     height={30}
                   />
-                </a>
+                </Link>
               </div>
             )}
           </>

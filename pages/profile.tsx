@@ -11,7 +11,7 @@ import Avatar from "../components/Avatar";
 import Body from "../components/Body";
 import { IPlaylist, IVideoV3, PlaylistVideo } from "../interface";
 import { authOptions } from "./api/auth/[...nextauth]";
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4, v4 } from 'uuid'
 
 interface IProps {
   videosList: any;
@@ -40,7 +40,7 @@ const ProfilePage = ({ videosList, userPlaylists }: IProps) => {
           ) : (
             <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
               {videosList?.slice(0, showMore).map((video: any) => (
-                <Link href={`/watch?v=${video.videoId}`}>
+                <Link href={`/watch?v=${video.videoId}`} key={v4()}>
                   <div className="flex flex-col cursor-pointer space-y-2">
                     <Image src={video.thumbnail} width={320} height={180} />
                     <p className="text-white">{video.title}</p>

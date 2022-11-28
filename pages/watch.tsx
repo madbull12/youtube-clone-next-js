@@ -21,7 +21,7 @@ import { useSession } from "next-auth/react";
 import Avatar from "../components/Avatar";
 import { GetServerSideProps } from "next";
 import useFetchDetails from "../hooks/useFetchDetails";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4, v4 } from "uuid";
 import useFetchRelated from "../hooks/useFetchRelated";
 import { MdPlaylistAdd } from "react-icons/md";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -235,7 +235,7 @@ const VideoPage = ({
           {relatedContents?.contents
             .filter((item: IVideo) => item.type === "video")
             .map((item: IVideo) => (
-              <VideoSnippet column={false} video={item} />
+              <VideoSnippet column={false} key={v4()} video={item} />
             ))}
         </div>
       </div>
