@@ -64,7 +64,7 @@ const SearchPage = ({ userPlaylists }: IProps) => {
     <Body>
       {isPlaylistOpen && (
         <Backdrop>
-          <SaveToPlaylist userPlaylists={userPlaylists} />
+          <SaveToPlaylist  />
         </Backdrop>
       )}
       <div className="flex flex-col space-y-4  ">
@@ -144,26 +144,26 @@ const SearchPage = ({ userPlaylists }: IProps) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const session = await unstable_getServerSession(
+//     context.req,
+//     context.res,
+//     authOptions
+//   );
 
-  const userPlaylists = await prisma?.playlist.findMany({
-    where: {
-      user: {
-        email: session?.user?.email,
-      },
-    },
-  });
-  console.log(session);
-  return {
-    props: {
-      userPlaylists: JSON.parse(JSON.stringify(userPlaylists)),
-    },
-  };
-};
+//   const userPlaylists = await prisma?.playlist.findMany({
+//     where: {
+//       user: {
+//         email: session?.user?.email,
+//       },
+//     },
+//   });
+//   console.log(session);
+//   return {
+//     props: {
+//       userPlaylists: JSON.parse(JSON.stringify(userPlaylists)),
+//     },
+//   };
+// };
 
 export default SearchPage;

@@ -142,11 +142,11 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   );
 };
 
-interface IProps {
-  userPlaylists: IPlaylist[];
-}
+// interface IProps {
+//   userPlaylists: IPlaylist[];
+// }
 
-const Home: NextPage<IProps> = ({ userPlaylists }) => {
+const Home: NextPage = ({  }) => {
   const [category, setCategory] = useState("Music");
   const { data, loading, error } = useYoutubeHome(
     `/search?q=${category}&part=snippet,id&regionCode=US&maxResults=50`
@@ -171,7 +171,7 @@ const Home: NextPage<IProps> = ({ userPlaylists }) => {
       </Head>
       {isPlaylistOpen && (
         <Backdrop>
-          <SaveToPlaylist userPlaylists={userPlaylists} />
+          <SaveToPlaylist  />
         </Backdrop>
       )}
 
@@ -197,23 +197,23 @@ const Home: NextPage<IProps> = ({ userPlaylists }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession();
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const session = await getSession();
   
-  const userPlaylists = await prisma?.playlist.findMany({
-    where: {
-      user: {
-        email: session?.user?.email,
-      },
-    },
-  });
+//   const userPlaylists = await prisma?.playlist.findMany({
+//     where: {
+//       user: {
+//         email: session?.user?.email,
+//       },
+//     },
+//   });
 
-  console.log(session);
-  return {
-    props: {
-      userPlaylists: JSON.parse(JSON.stringify(userPlaylists)),
-    },
-  };
-};
+//   console.log(session);
+//   return {
+//     props: {
+//       userPlaylists: JSON.parse(JSON.stringify(userPlaylists)),
+//     },
+//   };
+// };
 
 export default Home;

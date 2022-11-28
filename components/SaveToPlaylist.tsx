@@ -9,14 +9,17 @@ import { videoValue } from "../atom/video";
 import { GetServerSideProps } from "next";
 import { IPlaylist } from "../interface";
 import { v4 } from "uuid";
+import useUserPlaylists from "../hooks/useUserPlaylists";
 
 interface IProps {
   userPlaylists: IPlaylist[];
 }
-const SaveToPlaylist = ({ userPlaylists }: IProps) => {
+const SaveToPlaylist = () => {
   const ref = useRef(null);
   const [openPlaylist, setOpenPlaylist] = useRecoilState(playlistDialogState);
   const videoStateValue = useRecoilValue(videoValue);
+  const { data:userPlaylists } = useUserPlaylists("/api/userPlaylists");
+  console.log(userPlaylists)
 
   useOutsideClick(ref, () => {
     setOpenPlaylist(false);

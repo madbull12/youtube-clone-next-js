@@ -100,7 +100,7 @@ const VideoPage = ({
     <Body>
       {openDialog && (
         <Backdrop>
-          <SaveToPlaylist userPlaylists={userPlaylists} />
+          <SaveToPlaylist  />
         </Backdrop>
       )}
       <div className="flex gap-x-6 gap-y-6 flex-col lg:flex-row">
@@ -291,18 +291,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
-  const userPlaylists = await prisma?.playlist.findMany({
-    where: {
-      user: {
-        email: session?.user?.email,
-      },
-    },
-  });
+  // const userPlaylists = await prisma?.playlist.findMany({
+  //   where: {
+  //     user: {
+  //       email: session?.user?.email,
+  //     },
+  //   },
+  // });
 
   return {
     props: {
       comments: JSON.parse(JSON.stringify(comments)),
-      userPlaylists: JSON.parse(JSON.stringify(userPlaylists)),
+      // userPlaylists: JSON.parse(JSON.stringify(userPlaylists)),
     },
   };
 };

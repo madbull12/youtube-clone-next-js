@@ -6,6 +6,8 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const session = await getSession({ req });
+
   if (req.method === "POST") {
     const {
       privacy,
@@ -17,7 +19,6 @@ export default async function handle(
       authorTitle,
     } = req.body;
 
-    const session = await getSession({ req });
     console.log(req.body)
 
     console.log(session);
@@ -50,5 +51,14 @@ export default async function handle(
       },
     });
     res.status(201).json(result);
+  } else if(req.method ==="GET") {
+    const userPlaylists = await prisma.playlist.findMany({
+      where:{
+        user:{
+          email:session?.user?.email
+        }
+      }
+    });
+    res.status(200).json(userPlaylists)
   }
 }
