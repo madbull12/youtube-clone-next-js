@@ -58,7 +58,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   return (
     <Link href={`/watch?v=${video.id.videoId}`}>
       <div
-        className={`flex-col flex  gap-2 cursor-pointer`}
+        className={`flex-col flex items-center  gap-2 cursor-pointer`}
         onMouseEnter={() => setOnVideoHover(true)}
         onMouseLeave={() => setOnVideoHover(false)}
       >
@@ -76,7 +76,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
         </div>
 
         <div className={` space-y-2`}>
-          <h1 className="text-sm  text-white ">{video.snippet.title}</h1>
+          <h1 className="md:text-sm text-xs max-w-xs text-white ">{video.snippet.title}</h1>
 
           <div className="flex items-center justify-between gap-x-2">
             <p className="text-gray-400 text-sm">
@@ -187,7 +187,7 @@ const Home: NextPage<IProps> = ({ userPlaylists }) => {
             </span>
           ))}
         </div>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 items-center md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {data?.items?.map((video: IVideoV3) => (
             <VideoSnippet key={v4()} video={video} />
           ))}
