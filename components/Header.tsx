@@ -79,15 +79,15 @@ const Header = () => {
         {status === "authenticated" && (
           <>
             {!openMobileSearch && (
-              <div>
-                <Link href="/profile">
+              <Link href="/profile">
+                <div>
                   <Avatar
                     src={data?.user?.image ?? ""}
                     width={30}
                     height={30}
                   />
-                </Link>
-              </div>
+                </div>
+              </Link>
             )}
           </>
         )}
