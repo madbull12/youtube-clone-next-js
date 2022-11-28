@@ -20,23 +20,11 @@ export default async function handle(
                   email:session?.user?.email || ""
                 }
             },
-            saved:{
-              create:{
-                  user:{
-                    connect:{
-                      email:session?.user?.email as string
-                    }
-                  },
-                  videoId,
-                  thumbnail,
-                  title,
-                  publishedTimeText:publishedAt,
-                  authorTitle,
-                  
-  
-               },
-  
-          }
+            videoId,
+            thumbnail,
+            title,
+            publishedTimeText:publishedAt,
+            authorTitle,
           }
         });
         res.status(201).json(result);

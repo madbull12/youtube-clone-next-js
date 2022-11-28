@@ -57,7 +57,7 @@ const VideoPage = ({
   const saveDialogRef = useRef<HTMLDivElement>(null);
 
   useOutsideClick(saveDialogRef, () => {
-    setOpenDialog(false);
+    setDialogOpen(false);
   });
 
   useEffect(() => {

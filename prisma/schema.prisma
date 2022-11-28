@@ -88,7 +88,14 @@ model WatchLater {
 
   user      User        @relation(fields: [userId], references: [id])
   userId    String
-  saved     SavedVideo[]  
+  thumbnail         String
+  title             String
+  authorTitle       String
+  views             Int?
+  publishedTimeText String
+  videoId           String
+
+  @@unique([videoId,userId])
 }
 
 model SavedVideo {
@@ -105,11 +112,9 @@ model SavedVideo {
   userId            String
   playlistId        String
   playlist          Playlist    @relation(fields: [playlistId], references: [id], onDelete: Cascade)
-  watchLater        WatchLater  @relation(fields: [watchLaterId], references: [id],onDelete: Cascade)
-  watchLaterId      String
+
 
   @@unique([videoId, userId,playlistId])
-  @@unique([videoId,watchLaterId,userId])
 }
 
 // model WatchLater {
