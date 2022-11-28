@@ -24,6 +24,7 @@ import { isPlaylistDialogOpen } from "../atom/playlist";
 import { videoState, videoValue } from "../atom/video";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
+import { v4 } from "uuid";
 
 const categories = [
   "Music",
@@ -187,7 +188,7 @@ const Home: NextPage<IProps> = ({ userPlaylists }) => {
         </div>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {data?.items?.map((video: IVideoV3) => (
-            <VideoSnippet video={video} />
+            <VideoSnippet key={v4()} video={video} />
           ))}
         </div>
       </Body>
