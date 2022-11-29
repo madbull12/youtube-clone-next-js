@@ -40,11 +40,7 @@ const SearchSnippet = ({ video }: IProps) => {
                     width={video.snippet.thumbnails.medium.width}
                 /> */}
         <div className="relative w-1/2 h-36 md:w-1/3 lg:w-1/4 md:h-44 ">
-          <Image
-            
-            src={video.video.thumbnails[0].url}
-            layout="fill"
-          />
+          <Image src={video.video.thumbnails[0].url} layout="fill" />
           <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
             {toHHMS(video.video.lengthSeconds?.toString())}
           </div>
@@ -65,47 +61,44 @@ const SearchSnippet = ({ video }: IProps) => {
                     setDialogOpen(!dialogOpen);
                   }}
                 />
-              {dialogOpen && (
-                <SaveDialog
-                saveToPlaylist={() => {
-                  const data:PlaylistVideo = {
-                    videoId: video.video.videoId,
-                    thumbnail: video.video.thumbnails[1].url,
-                    title: video.video.title,
-                    authorTitle: video.video.author.title,
-                    publishedTimeText: video.video.publishedTimeText,
-                  };
+                {dialogOpen && (
+                  <SaveDialog
+                    saveToPlaylist={() => {
+                      const data: PlaylistVideo = {
+                        videoId: video.video.videoId,
+                        thumbnail: video.video.thumbnails[1].url,
+                        title: video.video.title,
+                        authorTitle: video.video.author.title,
+                        publishedTimeText: video.video.publishedTimeText,
+                      };
 
-                  {
-                    session?.status === "authenticated"
-                      ? setVideoState(data)
-                      : toast.error(
-                          "Please login first to perform the action!"
-                        );
-                  }
-                }}
-                  saveToWatchLater={() => {
-                    {
-                      session.status === "authenticated"
-                        ? saveToWatchLater(
-                            video?.video?.thumbnails[1]?.url,
-                            video?.video.title,
-                            video?.video.author.title,
-                            video?.video.publishedTimeText,
-                            video?.video.videoId
-                          )
-                        : toast.error(
-                            "Please login first to perform the action!"
-                          );
-                    }
-                  }}
-                />
-              )}
-            </div>
-            ):(
-              null
-            )}
-           
+                      {
+                        session?.status === "authenticated"
+                          ? setVideoState(data)
+                          : toast.error(
+                              "Please login first to perform the action!"
+                            );
+                      }
+                    }}
+                    saveToWatchLater={() => {
+                      {
+                        session.status === "authenticated"
+                          ? saveToWatchLater(
+                              video?.video?.thumbnails[1]?.url,
+                              video?.video.title,
+                              video?.video.author.title,
+                              video?.video.publishedTimeText,
+                              video?.video.videoId
+                            )
+                          : toast.error(
+                              "Please login first to perform the action!"
+                            );
+                      }
+                    }}
+                  />
+                )}
+              </div>
+            ) : null}
           </div>
 
           <div className="flex gap-x-3 items-center text-xs md:text-sm">

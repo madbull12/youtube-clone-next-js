@@ -18,13 +18,13 @@ const SaveToPlaylist = () => {
   const ref = useRef(null);
   const [openPlaylist, setOpenPlaylist] = useRecoilState(playlistDialogState);
   const videoStateValue = useRecoilValue(videoValue);
-  const { data:userPlaylists } = useUserPlaylists("/api/userPlaylists");
-  console.log(userPlaylists)
+  const { data: userPlaylists } = useUserPlaylists("/api/userPlaylists");
+  console.log(userPlaylists);
 
   useOutsideClick(ref, () => {
     setOpenPlaylist(false);
   });
-  
+
   const [showPlaylistForm, setShowPlaylistForm] = useState<boolean>(false);
   const [playlistName, setPlaylistName] = useState<string>("");
   const [privacy, setPrivacy] = useState<string>("public");
@@ -95,11 +95,11 @@ const SaveToPlaylist = () => {
         {userPlaylists?.map((playlist: IPlaylist) => (
           <div
             key={v4()}
-            onClick={()=>saveVideo(playlist.id,playlist.title)}
+            onClick={() => saveVideo(playlist.id, playlist.title)}
             className="p-3 cursor-pointer hover:bg-zinc-600  flex items-center gap-x-4 justify-between"
           >
-              <p>{playlist.title}</p>
-              {playlist.privacy === "private" ? <BsLockFill /> : <BsGlobe />}
+            <p>{playlist.title}</p>
+            {playlist.privacy === "private" ? <BsLockFill /> : <BsGlobe />}
           </div>
         ))}
       </div>

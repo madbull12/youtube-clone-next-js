@@ -45,7 +45,9 @@ const VideoSnippet = ({ video, column }: IProps) => {
             column ? "w-full" : " w-1/2"
           } space-y-1 overflow-hidden`}
         >
-          <h1 className="text-sm md:text-base  text-white">{video.video.title}</h1>
+          <h1 className="text-sm md:text-base  text-white">
+            {video.video.title}
+          </h1>
           {video.video.author && (
             <Link href="/">
               <div className="flex items-center gap-x-2">

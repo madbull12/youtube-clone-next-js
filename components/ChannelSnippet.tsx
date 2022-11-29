@@ -30,7 +30,7 @@ const ChannelSnippet = ({ channel }: IProps) => {
             {channel.channel.descriptionSnippet}
           </p>
         </div>
-        <button className="bg-[#CC0000] rounded-sm text-white font-semibold px-4 lg:ml-auto py-2">
+        <button className="bg-[#CC00F00] rounded-sm text-white font-semibold px-4 lg:ml-auto py-2">
           Subscribe
         </button>
       </div>

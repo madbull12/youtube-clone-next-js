@@ -1,6 +1,6 @@
 import React from "react";
 import { MdHomeFilled } from "react-icons/md";
-import { AiFillFire } from 'react-icons/ai'
+import { AiFillFire } from "react-icons/ai";
 
 const Sidebar = () => {
   return (
@@ -13,7 +13,6 @@ const Sidebar = () => {
         <AiFillFire className="text-xl" />
         <p className="text-xs">Trending</p>
       </div>
-
     </aside>
   );
 };
