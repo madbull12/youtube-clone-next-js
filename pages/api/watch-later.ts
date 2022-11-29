@@ -6,28 +6,38 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-    if(req.method === "POST") {
+  const session = await getSession({ req });
 
-        const { title,thumbnail,videoId,publishedAt,authorTitle } = req.body;
-        const session = await getSession({ req });
-      
-        const result = await prisma?.watchLater.create({
-          data:{
-            
-          
-            user:{
-                connect:{
-                  email:session?.user?.email || ""
-                }
-            },
-            videoId,
-            thumbnail,
-            title,
-            publishedTimeText:publishedAt,
-            authorTitle,
-          }
-        });
-        res.status(201).json(result);
-    }
+  if (req.method === "POST") {
+    const { title, thumbnail, videoId, publishedAt, authorTitle } = req.body;
 
+    const result = await prisma?.watchLater.create({
+      data: {
+        user: {
+          connect: {
+            email: session?.user?.email || "",
+          },
+        },
+        videoId,
+        thumbnail,
+        title,
+        publishedTimeText: publishedAt,
+        authorTitle,
+      },
+    });
+    res.status(201).json(result);
+  } else if (req.method === "GET") {
+    const videosList = await prisma?.watchLater.findMany({
+      where: {
+        user: {
+          email: session?.user?.email,
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    res.status(200).json(videosList)
+  }
 }

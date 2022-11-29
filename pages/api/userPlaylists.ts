@@ -13,7 +13,11 @@ export default async function handle(
       user: {
         email: session?.user?.email,
       },
+      
     },
+    include:{
+      saved:true
+    }
   });
   res.status(200).json(userPlaylists);
 }

@@ -19,7 +19,7 @@ import { FiThumbsDown, FiThumbsUp } from "react-icons/fi";
 import Comment from "../components/Comment";
 import { useSession } from "next-auth/react";
 import Avatar from "../components/Avatar";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetStaticProps } from "next";
 import useFetchDetails from "../hooks/useFetchDetails";
 import { v4 as uuidv4, v4 } from "uuid";
 import useFetchRelated from "../hooks/useFetchRelated";
@@ -36,8 +36,10 @@ import saveToWatchLater from "../helper/saveToWatchLater";
 import { videoState } from "../atom/video";
 import useOutsideClick from "../hooks/useOutsideClick";
 import useVideoComments from "../hooks/useVideoComments";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 
-const VideoPage = ({ comments }:{ comments:IComment[]}) => {
+const VideoPage = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const { v } = router.query;
@@ -48,7 +50,7 @@ const VideoPage = ({ comments }:{ comments:IComment[]}) => {
   const [_videoState, setVideoState] = useRecoilState(videoState);
 
   const isPlaylistOpen = useRecoilValue(isPlaylistDialogOpen);
-
+  const queryClient = useQueryClient();
   const saveDialogRef = useRef<HTMLDivElement>(null);
 
   useOutsideClick(saveDialogRef, () => {
@@ -62,32 +64,41 @@ const VideoPage = ({ comments }:{ comments:IComment[]}) => {
     }
   }, [isPlaylistOpen]);
 
+  const {
+    isLoading,
+    error: queryCommentsError,
+    data: comments,
+  } = useQuery({
+    queryKey: ["videoComments"],
+    queryFn: () => fetch(`/api/videoComments/${v}`).then((res) => res.json()),
+  });
+
+  const { mutateAsync } = useMutation({
+    mutationFn: (newComment: { text: string; videoId: string }) => {
+      return axios.post("/api/comment", newComment);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["videoComments"] });
+    },
+  });
+
   const commentInputRef = useRef<HTMLInputElement>(null);
 
-  const refreshData = () => {
-    router.replace(router.asPath, undefined, { scroll: false });
-  };
+  // const refreshData = () => {
+  //   router.replace(router.asPath, undefined, { scroll: false });
+  // };
 
-  const createComment = async (e: React.SyntheticEvent) => {
+  const postComment = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
     const body = { text: textComment, videoId: data?.videoId };
     setTextComment("");
 
-    await toast.promise(
-      fetch("/api/comment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      }),
-      {
-        loading: "Posting comment",
-        success: "Comment created",
-        error: "Oops... something went wrong!",
-      }
-    );
-
-    await refreshData();
+    await toast.promise(mutateAsync(body), {
+      loading: "Posting comment",
+      success: "Comment created",
+      error: "Oops... something went wrong!",
+    });
   };
 
   const { data: relatedContents } = useFetchRelated(`?id=${v}`);
@@ -209,7 +220,7 @@ const VideoPage = ({ comments }:{ comments:IComment[]}) => {
                   height={30}
                 />
               )}
-              <form className="w-full" onSubmit={createComment}>
+              <form className="w-full" onSubmit={postComment}>
                 <input
                   className="bg-transparent text-sm p-2 outline-none text-white border-b border-gray-600 focus:border-blue-500 w-full"
                   type="text"
@@ -218,7 +229,6 @@ const VideoPage = ({ comments }:{ comments:IComment[]}) => {
                     status === "authenticated"
                       ? "Add a comment"
                       : "Please login first before comment"
-
                   }`}
                   onChange={(e) => setTextComment(e.target.value)}
                 />
@@ -245,7 +255,7 @@ const VideoPage = ({ comments }:{ comments:IComment[]}) => {
           {status === "authenticated" && (
             <Avatar src={session?.user?.image ?? ""} width={30} height={30} />
           )}
-          <form className="w-full" onSubmit={createComment}>
+          <form className="w-full" onSubmit={postComment}>
             <input
               ref={commentInputRef}
               className="bg-transparent text-sm p-2 outline-none text-white border-b border-gray-600 focus:border-blue-500 w-full"
@@ -270,42 +280,42 @@ const VideoPage = ({ comments }:{ comments:IComment[]}) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  // const session = await unstable_getServerSession(
-  //   context.req,
-  //   context.res,
-  //   authOptions
-  // );
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   // const session = await unstable_getServerSession(
+//   //   context.req,
+//   //   context.res,
+//   //   authOptions
+//   // );
 
-  const comments = await prisma?.comment.findMany({
-    where: {
-      videoId: context.query.v as string,
-    },
-    include: {
-      author: {
-        select: {
-          name: true,
-          email: true,
-          image: true,
-        },
-      },
-    },
-  });
+//   const comments = await prisma?.comment.findMany({
+//     where: {
+//       videoId: context.query.v as string,
+//     },
+//     include: {
+//       author: {
+//         select: {
+//           name: true,
+//           email: true,
+//           image: true,
+//         },
+//       },
+//     },
+//   });
 
-  // const userPlaylists = await prisma?.playlist.findMany({
-  //   where: {
-  //     user: {
-  //       email: session?.user?.email,
-  //     },
-  //   },
-  // });
+//   // const userPlaylists = await prisma?.playlist.findMany({
+//   //   where: {
+//   //     user: {
+//   //       email: session?.user?.email,
+//   //     },
+//   //   },
+//   // });
 
-  return {
-    props: {
-      comments: JSON.parse(JSON.stringify(comments)),
-      // userPlaylists: JSON.parse(JSON.stringify(userPlaylists)),
-    },
-  };
-};
+//   return {
+//     props: {
+//       comments: JSON.parse(JSON.stringify(comments)),
+//       // userPlaylists: JSON.parse(JSON.stringify(userPlaylists)),
+//     },
+//   };
+// };
 
 export default VideoPage;
