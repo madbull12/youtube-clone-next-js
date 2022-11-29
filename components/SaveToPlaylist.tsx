@@ -10,7 +10,8 @@ import { GetServerSideProps } from "next";
 import { IPlaylist } from "../interface";
 import { v4 } from "uuid";
 import useUserPlaylists from "../hooks/useUserPlaylists";
-
+import { useMutation } from '@tanstack/react-query'
+import axios from "axios";
 interface IProps {
   userPlaylists: IPlaylist[];
 }
@@ -18,31 +19,43 @@ const SaveToPlaylist = () => {
   const ref = useRef(null);
   const [openPlaylist, setOpenPlaylist] = useRecoilState(playlistDialogState);
   const videoStateValue = useRecoilValue(videoValue);
-  const { data: userPlaylists } = useUserPlaylists("/api/userPlaylists");
-  console.log(userPlaylists);
+  const { data:userPlaylists } = useUserPlaylists("/api/userPlaylists");
+  console.log(userPlaylists)
 
   useOutsideClick(ref, () => {
     setOpenPlaylist(false);
   });
-
+  
   const [showPlaylistForm, setShowPlaylistForm] = useState<boolean>(false);
   const [playlistName, setPlaylistName] = useState<string>("");
   const [privacy, setPrivacy] = useState<string>("public");
 
   console.log(privacy);
+  const { mutateAsync:createPlaylist } = useMutation({
+    mutationFn: (data:any) => {
+      return axios.post("/api/playlist", data);
+    },
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries({ queryKey: ["videoComments"] });
+    // },
+  });
+  const { mutateAsync:saveVideoToPlaylist } = useMutation({
+    mutationFn: (data:any) => {
+      return axios.post("/api/save", data);
+    },
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries({ queryKey: ["videoComments"] });
+    // },
+  });
 
   const saveVideo = async (playlistId: string, playlistName: string) => {
     try {
-      const data = {
+      const body = {
         playlistId,
         ...videoStateValue,
       };
       await toast.promise(
-        fetch("/api/save", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        }),
+        saveVideoToPlaylist(body),
         {
           loading: "Saving video...",
           success: `Added to ${playlistName}`,
@@ -59,20 +72,16 @@ const SaveToPlaylist = () => {
   const createPlaylistAndSaveVideo = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const data = {
+      const body = {
         playlistName,
         privacy,
         ...videoStateValue,
       };
       await toast.promise(
-        fetch("/api/playlist", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-        }),
+        createPlaylist(body),
         {
           loading: "Creating playlist",
-          success: `Added to ${data.playlistName}`,
+          success: `Added to ${body.playlistName}`,
           error: "Oops... Something went wrong!",
         }
       );
@@ -95,11 +104,11 @@ const SaveToPlaylist = () => {
         {userPlaylists?.map((playlist: IPlaylist) => (
           <div
             key={v4()}
-            onClick={() => saveVideo(playlist.id, playlist.title)}
+            onClick={()=>saveVideo(playlist.id,playlist.title)}
             className="p-3 cursor-pointer hover:bg-zinc-600  flex items-center gap-x-4 justify-between"
           >
-            <p>{playlist.title}</p>
-            {playlist.privacy === "private" ? <BsLockFill /> : <BsGlobe />}
+              <p>{playlist.title}</p>
+              {playlist.privacy === "private" ? <BsLockFill /> : <BsGlobe />}
           </div>
         ))}
       </div>

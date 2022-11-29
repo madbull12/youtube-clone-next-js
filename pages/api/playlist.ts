@@ -51,14 +51,5 @@ export default async function handle(
       },
     });
     res.status(201).json(result);
-  } else if(req.method ==="GET") {
-    const userPlaylists = await prisma.playlist.findMany({
-      where:{
-        user:{
-          email:session?.user?.email
-        }
-      }
-    });
-    res.status(200).json(userPlaylists)
-  }
+  } 
 }

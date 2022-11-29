@@ -13,6 +13,7 @@ export default function useFetchDetails(url: string) {
     isLoading: loading,
     error,
     refetch,
+    isFetching
   } = useQuery({
     queryKey: ["detailsQuery"],
     queryFn: fetchDetails,
@@ -22,5 +23,5 @@ export default function useFetchDetails(url: string) {
     refetch();
   }, [url]);
 
-  return { data, error, loading };
+  return { data, error, loading,isFetching };
 }
