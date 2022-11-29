@@ -1,29 +1,26 @@
 import { useEffect, useState } from "react"
+import { useQuery } from '@tanstack/react-query'
 
 import  { youtubeTrending } from "../lib/axios"
 
 export default function useTrending(url:string){
 
-    const [data,setData] = useState<any>(null)
-    const [error,setError] = useState(null)
-    const [loading,setLoading] = useState(false)
+    const fetchTrending = async()=>{
+        const res = await youtubeTrending(url);
+        return res.data;
+    }
 
-    useEffect(() => {
-        (
-            async function(){
-                try{
-                    setLoading(true)
-                    const response = await youtubeTrending.get(url)
-                    setData(response.data)
-                }catch(err:any){
-                    setError(err)
-                }finally{
-                    setLoading(false)
-                }
-            }
-        )()
-    }, [url])
+    const { data,isLoading:loading,error,refetch } =  useQuery({
+        queryKey: ["trendingQuery"],
+        queryFn:fetchTrending,
+        
+    });
+
+    useEffect(()=>{
+        refetch()
+    },[url])
 
     return { data, error, loading }
+
 
 }

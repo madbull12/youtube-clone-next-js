@@ -1,29 +1,22 @@
 import { useEffect, useState } from "react"
-
+import { useQuery } from '@tanstack/react-query'
 import  { youtubeChannelChannels } from "../lib/axios"
 
 export default function useChannelChannels(url:string){
+    const fetchChannelChannels = async()=>{
+        const res = await youtubeChannelChannels(url);
+        return res.data;
+    }
 
-    const [data,setData] = useState<any>(null)
-    const [error,setError] = useState(null)
-    const [loading,setLoading] = useState(false)
+    const { data,isLoading:loading,error,refetch } =  useQuery({
+        queryKey: ["channelChannelsQuery"],
+        queryFn:fetchChannelChannels,
+        
+    });
 
-    useEffect(() => {
-        (
-            async function(){
-                try{
-                    setLoading(true)
-                    const response = await youtubeChannelChannels.get(url)
-                    setData(response.data)
-                }catch(err:any){
-                    setError(err)
-                }finally{
-                    setLoading(false)
-                }
-            }
-        )()
-    }, [url])
+    useEffect(()=>{
+        refetch()
+    },[url])
 
     return { data, error, loading }
-
 }

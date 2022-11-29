@@ -21,6 +21,7 @@
     "react-icons": "^4.4.0",
     "react-time-ago": "^7.2.1",
     "recoil": "^0.7.5",
+    "tailwind-scrollbar": "^2.0.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

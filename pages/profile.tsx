@@ -82,7 +82,7 @@ const ProfilePage = () => {
             }
           }}
           className={`${
-            userWatchLaterVideos?.length === 5 ? "hidden" : "block"
+            userWatchLaterVideos?.length <= 5 ? "hidden" : "block"
           } bg-transparent border border-blue-500 px-4 py-2 mt-4 text-white uppercase font-semibold`}
         >
           {userWatchLaterVideos?.length < showMore ? "Show less" : "Show more"}

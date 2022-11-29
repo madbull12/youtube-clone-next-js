@@ -176,7 +176,7 @@ const Home: NextPage = ({  }) => {
       )}
 
       <Body>
-        <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer   ">
+        <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer overflow-x-scroll  scrollbar-track-neutral-100 scrollbar-thumb-slate-500 scrollbar-thin    ">
           {categories.map((item: string) => (
             <span
               key={v4()}

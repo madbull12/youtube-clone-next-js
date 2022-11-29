@@ -1,29 +1,26 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-import  { youtubeDetails } from "../lib/axios"
+import { youtubeDetails } from "../lib/axios";
+import { useQuery } from "@tanstack/react-query";
+export default function useFetchDetails(url: string) {
+  const fetchDetails = async () => {
+    const res = await youtubeDetails(url);
+    return res.data;
+  };
 
-export default function useFetchDetails(url:string){
+  const {
+    data,
+    isLoading: loading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["detailsQuery"],
+    queryFn: fetchDetails,
+  });
 
-    const [data,setData] = useState<any>(null)
-    const [error,setError] = useState(null)
-    const [loading,setLoading] = useState(false)
+  useEffect(() => {
+    refetch();
+  }, [url]);
 
-    useEffect(() => {
-        (
-            async function(){
-                try{
-                    setLoading(true)
-                    const response = await youtubeDetails.get(url)
-                    setData(response.data)
-                }catch(err:any){
-                    setError(err)
-                }finally{
-                    setLoading(false)
-                }
-            }
-        )()
-    }, [url])
-
-    return { data, error, loading }
-
+  return { data, error, loading };
 }

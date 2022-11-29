@@ -1,28 +1,23 @@
 import { useEffect, useState } from "react"
-
+import { useQuery } from '@tanstack/react-query'
 import  {  youtubeRelated } from "../lib/axios"
 
 export default function useFetchRelated(url:string){
 
-    const [data,setData] = useState<any>(null)
-    const [error,setError] = useState(null)
-    const [loading,setLoading] = useState(false)
+    const fetchRelated = async()=>{
+        const res = await youtubeRelated(url);
+        return res.data;
+    }
 
-    useEffect(() => {
-        (
-            async function(){
-                try{
-                    setLoading(true)
-                    const response = await youtubeRelated.get(url)
-                    setData(response.data)
-                }catch(err:any){
-                    setError(err)
-                }finally{
-                    setLoading(false)
-                }
-            }
-        )()
-    }, [url])
+    const { data,isLoading:loading,error,refetch } =  useQuery({
+        queryKey: ["relatedQuery"],
+        queryFn:fetchRelated,
+        
+    });
+
+    useEffect(()=>{
+        refetch()
+    },[url])
 
     return { data, error, loading }
 
