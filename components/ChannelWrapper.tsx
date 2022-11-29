@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
-import useSWR from "swr";
 import useChannelDetails from "../hooks/useChannelDetails";
 import { IChannelDetails } from "../interface";
 import Avatar from "./Avatar";
