@@ -4,14 +4,16 @@ import type { AppProps } from "next/app";
 import Header from "../components/Header";
 import "../styles/globals.css";
 import TimeAgo from "javascript-time-ago";
-import { RecoilRoot, useRecoilValue } from "recoil";
+import { RecoilRoot, useRecoilState, useRecoilValue } from "recoil";
 import en from "javascript-time-ago/locale/en.json";
 import AuthWrapper from "../components/AuthWrapper";
 import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 import { isPlaylistDialogOpen } from "../atom/playlist";
 import Sidebar from "../components/Sidebar";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { menuNavState } from "../atom/menuNav";
+import Layout from "../components/Layout";
 
 TimeAgo.addDefaultLocale(en);
 // Use the <SessionProvider> to improve performance and allow components that call
@@ -33,9 +35,9 @@ export default function App({
         <AuthWrapper>
           <RecoilRoot>
             <Toaster position="bottom-left" />
-            {/* <Sidebar /> */}
-            <Header />
-            <Component {...pageProps} />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
           </RecoilRoot>
         </AuthWrapper>
       </QueryClientProvider>

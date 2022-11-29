@@ -8,11 +8,15 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import Avatar from "./Avatar";
 import useMediaQuery from "../hooks/useMediaQuery";
 import { GoSearch } from "react-icons/go";
-import { BsArrowLeft } from "react-icons/bs";
+import { BsArrowLeft, BsMenuApp } from "react-icons/bs";
+import { AiOutlineMenu } from "react-icons/ai";
+import { useRecoilState } from "recoil";
+import { menuNavState } from "../atom/menuNav";
 
 const Header = () => {
   const { data, status } = useSession();
   const [openMobileSearch, setOpenMobileSearch] = useState<boolean>(false);
+  const [openMenuNav,setMenuNav] = useRecoilState(menuNavState);
 
   const matches = useMediaQuery("(min-width: 500px)");
   useEffect(() => {
@@ -37,14 +41,18 @@ const Header = () => {
   };
   return (
     <div className="px-4 py-2 bg-neutral-800 z-50 fixed top-0 w-full right-0 flex justify-between items-center">
-      <Link href="/">
-        <Image
-          className="cursor-pointer"
-          src={YoutubeLogo}
-          width={100}
-          height={70}
-        />
-      </Link>
+      <div className="flex gap-x-2 items-center">
+        <AiOutlineMenu className="text-white   text-lg cursor-pointer" onClick={()=>setMenuNav(!openMenuNav)}  />
+        <Link href="/">
+          <Image
+            className="cursor-pointer mr-auto"
+            src={YoutubeLogo}
+            width={100}
+            height={70}
+          />
+        </Link>
+      </div>
+ 
       {matches ? (
         <Search />
       ) : (
