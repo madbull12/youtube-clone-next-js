@@ -39,8 +39,8 @@ const SearchSnippet = ({ video }: IProps) => {
                     height={video.snippet.thumbnails.medium.height}
                     width={video.snippet.thumbnails.medium.width}
                 /> */}
-        <div className="relative w-1/2 h-36 md:w-1/3 lg:w-1/4 md:h-44 ">
-          <Image src={video.video.thumbnails[0].url} layout="fill" />
+        <div className="relative w-1/2 h-24 sm:h-36 md:w-1/3 lg:w-1/4 md:h-44 ">
+          <Image src={video.video.thumbnails[0].url} layout="fill" objectFit="cover"/>
           <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
             {toHHMS(video.video.lengthSeconds?.toString())}
           </div>
