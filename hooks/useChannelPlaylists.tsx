@@ -10,7 +10,7 @@ export default function useChannelPlaylists(url:string){
     }
 
     const { data,isLoading:loading,error,refetch } =  useQuery({
-        queryKey: ["channelDetailsQuery"],
+        queryKey: ["channelPlaylistsQuery"],
         queryFn:fetchChannelPlaylists,
         
     });

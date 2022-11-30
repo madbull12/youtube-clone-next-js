@@ -26,7 +26,6 @@ const ChannelWrapper = ({ children }: IProps) => {
     loading,
     error,
   } = useChannelDetails(`?id=${channelId}`);
-  console.log(channel);
 
   if (loading) return <p>Loading...</p>;
 
