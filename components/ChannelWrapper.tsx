@@ -8,6 +8,7 @@ import Avatar from "./Avatar";
 import Body from "./Body";
 import NoImage from "../public/no-image.png";
 import useChannelChannels from "../hooks/useChannelChannels";
+import useMediaQuery from "../hooks/useMediaQuery";
 
 interface IProps {
   children: React.ReactNode;
@@ -16,6 +17,7 @@ interface IProps {
 const ChannelWrapper = ({ children }: IProps) => {
   const router = useRouter();
   const { channelId } = router.query;
+  const isNotMobile = useMediaQuery("(min-width:768px)");
   // useEffect(()=>{
   //     router.replace("/")
   // },[]);
@@ -43,15 +45,25 @@ const ChannelWrapper = ({ children }: IProps) => {
           )}
 
           <div className="flex items-center justify-between mt-4 px-8">
-            <div className="flex items-center gap-x-4">
+            <div className="flex items-start md:items-center gap-x-4 flex-col md:flex-row">
               <Avatar
                 src={channel?.avatar[1].url}
-                height={channel?.avatar[1].height}
-                width={channel?.avatar[1].width}
+                height={
+                  isNotMobile
+                    ? channel?.avatar[1].height
+                    : channel?.avatar[0].height
+                }
+                width={
+                  isNotMobile
+                    ? channel?.avatar[1].width
+                    : channel?.avatar[0].width
+                }
               />
               <div>
-                <p className="text-white text-lg">{channel?.title}</p>
-                <p className="text-gray-400">
+                <p className="text-white text-base md:text-lg">
+                  {channel?.title}
+                </p>
+                <p className="text-gray-400 text-xs md:text-sm">
                   {channel?.stats.subscribersText}
                 </p>
               </div>
@@ -60,7 +72,7 @@ const ChannelWrapper = ({ children }: IProps) => {
               SUBSCRIBE
             </button>
           </div>
-          <ul className="text-white font-semibold mt-4 flex items-center w-1/2 justify-between gap-x-4">
+          <ul className="text-white font-semibold text-xs sm:text-sm md:text-base mt-4 flex items-center justify-around gap-2 md:gap-4 flex-wrap">
             <li
               className={` text-gray-400 ${
                 router.pathname.includes("/feature")

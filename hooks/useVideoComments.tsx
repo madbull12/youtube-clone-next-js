@@ -1,24 +1,25 @@
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-
 export default function useVideoComments(url: string) {
-  const [data, setData] = useState<any>(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const fetchVideoComments = async () => {
+    const res = await axios.get(url);
+    return res.data;
+  };
+
+  const {
+    data,
+    isLoading: loading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["videoCommentsQuery"],
+    queryFn: fetchVideoComments,
+  });
 
   useEffect(() => {
-    (async function () {
-      try {
-        setLoading(true);
-        const response = await axios.get(url)
-        setData(response.data);
-      } catch (err: any) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    refetch();
   }, [url]);
 
   return { data, error, loading };
