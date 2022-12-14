@@ -15,7 +15,7 @@ interface IProps {
 const TrendingVideo = ({ trending }: IProps) => {
   return (
     <Link href={`/watch?v=${trending.videoId}`}>
-      <div className="flex gap-x-3 cursor-pointer">
+      <div className="flex gap-3 items-start w-full justify-center flex-col md:flex-row cursor-pointer">
         <Image
           src={trending.thumbnail[1].url}
           width={trending.thumbnail[1].width}
@@ -23,13 +23,13 @@ const TrendingVideo = ({ trending }: IProps) => {
           className="w-1/3"
         />
         <div className="w-2/3">
-          <h1 className="text-white text-lg">{trending.title}</h1>
-          <div className="text-gray-400 text-sm flex items-center gap-x-2">
+          <h1 className="text-white text-base md:text-lg">{trending.title}</h1>
+          <div className="text-gray-400 text-xs md:text-sm flex items-center gap-x-2">
             <p>{trending.channelTitle}</p>
             <p>{nFormatter(parseInt(trending.viewCount))}</p>
             <p>{trending.publishedText}</p>
           </div>
-          <p className="mt-3 text-gray-400">{trending.description}</p>
+          <p className="mt-3 text-xs md:text-base text-gray-400">{trending.description}</p>
         </div>
       </div>
     </Link>
@@ -72,11 +72,11 @@ const TrendingPage = () => {
           <p className="text-xl text-white">Trending</p>
         </div>
         <nav>
-          <ul className="flex items-center gap-x-16 text-gray-400 font-semibold">
+          <ul className="flex items-center gap-x-4 md:gap-x-8 xl:gap-x-16 text-gray-400 font-semibold">
             {trendingTypes.map(({ name }) => (
               <li
                 key={v4()}
-                className={`${name===trendingType ? "border-b-2" : ""}  font-semibold uppercase mb-4 cursor-pointer border-gray-400 `}
+                className={`${name===trendingType ? "border-b-2" : ""} text-sm md:text-base  font-semibold uppercase mb-4 cursor-pointer border-gray-400 `}
                 onClick={()=>setTrendingType(name)}
               >
                 {name}
@@ -84,7 +84,7 @@ const TrendingPage = () => {
             ))}
           </ul>
         </nav>
-        <div className="flex flex-col gap-y-4 bg-black py-4 px-2">
+        <div className="flex flex-wrap gap-y-4 bg-black py-4 px-2">
           {data?.data.map((trending: ITrending) => (
             <TrendingVideo trending={trending} key={v4()} />
           ))}
