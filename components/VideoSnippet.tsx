@@ -21,6 +21,7 @@ const VideoSnippet = ({ video, column }: IProps) => {
       >
         <div className="relative ">
           <Image
+          
             src={
               video?.video.thumbnails[3]?.url ?? video?.video.thumbnails[0].url
             }
@@ -33,7 +34,7 @@ const VideoSnippet = ({ video, column }: IProps) => {
               video?.video.thumbnails[3]?.width ??
               video?.video.thumbnails[0].width
             }
-            className="w-1/2"
+            className="w-1/2 rounded-xl"
           />
           <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
             {toHHMS(video.video.lengthSeconds?.toString())}

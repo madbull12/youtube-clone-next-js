@@ -25,6 +25,7 @@ import { videoState, videoValue } from "../atom/video";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { v4 } from "uuid";
+import Loader from "../components/Loader";
 
 const categories = [
   "Music",
@@ -68,7 +69,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
             height={video.snippet.thumbnails.medium.height ?? 200}
             objectFit="cover"
             width={video.snippet.thumbnails.medium.width ?? 200}
-            className="w-1/2"
+            className="w-1/2 rounded-xl"
           />
           {/* <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
   {toHHMS(video.video.lengthSeconds?.toString())}
@@ -162,6 +163,7 @@ const Home: NextPage = ({  }) => {
       document.body.style.overflowY = "visible";
     }
   }, [isPlaylistOpen]);
+
   return (
     <div>
       <Head>
@@ -176,6 +178,7 @@ const Home: NextPage = ({  }) => {
       )}
 
       <Body>
+    
         <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer overflow-x-scroll  scrollbar-track-neutral-100 scrollbar-thumb-slate-500 scrollbar-thin    ">
           {categories.map((item: string) => (
             <span
@@ -187,6 +190,9 @@ const Home: NextPage = ({  }) => {
             </span>
           ))}
         </div>
+        {loading ? (
+          <Loader cols={5} />
+        ):null}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 items-center md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {data?.items?.map((video: IVideoV3) => (
             <VideoSnippet key={v4()} video={video} />

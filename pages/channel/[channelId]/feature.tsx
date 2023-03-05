@@ -8,6 +8,7 @@ import useChannelDetails from '../../../hooks/useChannelDetails'
 import useChannelVideos from '../../../hooks/useChannelVideos'
 import { IVideo } from '../../../interface'
 import { v4 as uuidv4 } from 'uuid'
+import HomeVideo from '../../../components/HomeVideo'
 
 const ChannelPage = () => {
     const router = useRouter();
@@ -20,10 +21,10 @@ const ChannelPage = () => {
   return (
     <Body>
       <ChannelWrapper>
-      <div className='mt-4 grid gap-x-2 gap-y-4 grid-cols-5 bg-black p-4'>
+      <div className='mt-4 grid gap-x-2 gap-y-4 grid-cols-5  p-4'>
             {channelVideos?.contents.slice(0,1).map((video:IVideo)=>(
                 <div className="col-span-5 row-span-3" key={uuidv4()}>
-                    <VideoSnippet video={video} column={false} />
+                    <HomeVideo video={video} />
 
                 </div>
             ))}
