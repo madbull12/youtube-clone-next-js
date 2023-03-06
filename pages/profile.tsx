@@ -1,7 +1,6 @@
-import { GetServerSideProps } from "next";
 import { unstable_getServerSession } from "next-auth";
 import { getSession, useSession } from "next-auth/react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { AiFillClockCircle } from "react-icons/ai";
@@ -14,6 +13,7 @@ import { authOptions } from "./api/auth/[...nextauth]";
 import { v4 as uuidv4, v4 } from 'uuid';
 import { useQuery } from '@tanstack/react-query'
 import axios from "axios";
+import { BiLoaderAlt } from 'react-icons/bi'
 
 interface IProps {
   videosList: any;
@@ -52,7 +52,7 @@ const ProfilePage = () => {
           <p className=" text-xl text-white">Watch later</p>
         </div>
         <div>
-          {userWatchLaterVideosLoading ? <p>Loading...</p> :null}
+          {userWatchLaterVideosLoading ? <BiLoaderAlt className="animate-spin text-red-600 text-xl" /> :null}
           {userWatchLaterVideos?.length === 0 ? (
             <p className="text-white text-lg">No videos saved</p>
           ) : (
@@ -94,6 +94,8 @@ const ProfilePage = () => {
           <h1 className="text-xl">Playlists</h1>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
+          {userWatchPlaylistsLoading ? <BiLoaderAlt className="animate-spin text-red-600 text-xl" /> :null}
+            
             {userPlaylistsVideos?.length === 0 ? (
                 <p className="text-white text-lg">No playlists created</p>
               ) : (

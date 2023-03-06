@@ -19,7 +19,6 @@ import { useRecoilValue } from "recoil";
 import { isPlaylistDialogOpen } from "../atom/playlist";
 import Backdrop from "../components/Backdrop";
 import SaveToPlaylist from "../components/SaveToPlaylist";
-import { GetServerSideProps, NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";

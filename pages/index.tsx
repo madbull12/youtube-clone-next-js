@@ -1,6 +1,6 @@
-import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
+import Image from "next/legacy/image";
+
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import ReactTimeAgo from "react-time-ago";
@@ -71,6 +71,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
             width={video.snippet.thumbnails.medium.width ?? 200}
             className="w-1/2 rounded-xl"
           />
+          
           {/* <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
   {toHHMS(video.video.lengthSeconds?.toString())}
 </div> */}
@@ -147,7 +148,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
 //   userPlaylists: IPlaylist[];
 // }
 
-const Home: NextPage = ({  }) => {
+const Home = ({  }) => {
   const [category, setCategory] = useState("Music");
   const { data, loading, error } = useYoutubeHome(
     `/search?q=${category}&part=snippet,id&regionCode=US&maxResults=50`

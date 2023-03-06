@@ -6,7 +6,6 @@ import useOutsideClick from "../hooks/useOutsideClick";
 import { BsGlobe, BsLockFill, BsPlusLg } from "react-icons/bs";
 import toast from "react-hot-toast";
 import { videoValue } from "../atom/video";
-import { GetServerSideProps } from "next";
 import { IPlaylist } from "../interface";
 import { v4 } from "uuid";
 import useUserPlaylists from "../hooks/useUserPlaylists";

@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
 import React, { useState, useRef } from "react";
 import toast from "react-hot-toast";

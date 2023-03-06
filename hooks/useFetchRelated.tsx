@@ -12,8 +12,9 @@ export default function useFetchRelated(url:string){
     const { data,isLoading:loading,error,refetch } =  useQuery({
         queryKey: ["relatedQuery"],
         queryFn:fetchRelated,
-        
-    });
+        refetchOnWindowFocus:false
+    }
+    );
 
     useEffect(()=>{
         refetch()

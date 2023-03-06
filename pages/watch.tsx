@@ -19,7 +19,6 @@ import { FiThumbsDown, FiThumbsUp } from "react-icons/fi";
 import Comment from "../components/Comment";
 import { useSession } from "next-auth/react";
 import Avatar from "../components/Avatar";
-import { GetServerSideProps, GetStaticProps } from "next";
 import useFetchDetails from "../hooks/useFetchDetails";
 import { v4 as uuidv4, v4 } from "uuid";
 import useFetchRelated from "../hooks/useFetchRelated";
@@ -73,17 +72,19 @@ const VideoPage = () => {
     queryKey: ["videoComments"],
     queryFn: () => fetch(`/api/videoComments/${v}`).then((res) => res.json()),
   });
+  const commentInputRef = useRef<HTMLInputElement | null>(null);
+
 
   const { mutateAsync } = useMutation({
     mutationFn: (newComment: { text: string; videoId: string }) => {
       return axios.post("/api/comment", newComment);
     },
     onSuccess: () => {
+
       queryClient.invalidateQueries({ queryKey: ["videoComments"] });
     },
   });
 
-  const commentInputRef = useRef<HTMLInputElement>(null);
 
   // const refreshData = () => {
   //   router.replace(router.asPath, undefined, { scroll: false });
@@ -100,6 +101,7 @@ const VideoPage = () => {
       success: "Comment created",
       error: "Oops... something went wrong!",
     });
+
   };
 
   const { data: relatedContents, loading: relatedLoading } = useFetchRelated(
