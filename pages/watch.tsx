@@ -38,6 +38,7 @@ import useOutsideClick from "../hooks/useOutsideClick";
 import useVideoComments from "../hooks/useVideoComments";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import Loader from "../components/Loader";
 
 const VideoPage = () => {
   const router = useRouter();
@@ -101,7 +102,9 @@ const VideoPage = () => {
     });
   };
 
-  const { data: relatedContents } = useFetchRelated(`?id=${v}`);
+  const { data: relatedContents, loading: relatedLoading } = useFetchRelated(
+    `?id=${v}`
+  );
   console.log(comments);
 
   return (
@@ -241,13 +244,13 @@ const VideoPage = () => {
             </div>
           </div>
         </div>
-        <div className="space-y-2 flex-[0.4]">
-          {relatedContents?.contents
-            .filter((item: IVideo) => item.type === "video")
-            .map((item: IVideo) => (
-              <VideoSnippet column={false} key={v4()} video={item} />
-            ))}
-        </div>
+          <div className="space-y-2 flex-[0.4]">
+            {relatedContents?.contents
+              .filter((item: IVideo) => item.type === "video")
+              .map((item: IVideo) => (
+                <VideoSnippet column={false} key={v4()} video={item} />
+              ))}
+          </div>
       </div>
       <div className="lg:hidden">
         <h1 className="text-lg text-white mt-16">Comments</h1>

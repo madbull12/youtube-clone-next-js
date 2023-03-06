@@ -15,13 +15,18 @@ interface IProps {
 const TrendingVideo = ({ trending }: IProps) => {
   return (
     <Link href={`/watch?v=${trending.videoId}`}>
-      <div className="flex gap-3 items-start w-full justify-center flex-col md:flex-row cursor-pointer">
-        <Image
-          src={trending.thumbnail[1].url}
-          width={trending.thumbnail[1].width}
-          height={trending.thumbnail[1].height}
-          className="w-1/3"
-        />
+      <div className="flex gap-3 w-full   flex-col sm:flex-row cursor-pointer">
+        <div className="relative w-full h-44 sm:w-1/3">
+          <Image
+            src={trending.thumbnail[2].url}
+            // width={trending.thumbnail[1].width}
+            // height={trending.thumbnail[1].height}
+            layout="fill"
+            className=" rounded-xl"
+            objectFit="cover"
+          />
+        </div>
+
         <div className="w-2/3">
           <h1 className="text-white text-base md:text-lg">{trending.title}</h1>
           <div className="text-gray-400 text-xs md:text-sm flex items-center gap-x-2">
@@ -29,7 +34,9 @@ const TrendingVideo = ({ trending }: IProps) => {
             <p>{nFormatter(parseInt(trending.viewCount))}</p>
             <p>{trending.publishedText}</p>
           </div>
-          <p className="mt-3 text-xs md:text-base text-gray-400">{trending.description}</p>
+          <p className="mt-3 text-xs md:text-base text-gray-400">
+            {trending.description}
+          </p>
         </div>
       </div>
     </Link>
@@ -76,15 +83,17 @@ const TrendingPage = () => {
             {trendingTypes.map(({ name }) => (
               <li
                 key={v4()}
-                className={`${name===trendingType ? "border-b-2" : ""} text-sm md:text-base  font-semibold uppercase mb-4 cursor-pointer border-gray-400 `}
-                onClick={()=>setTrendingType(name)}
+                className={`${
+                  name === trendingType ? "border-b-2" : ""
+                } text-sm md:text-base  font-semibold uppercase mb-4 cursor-pointer border-gray-400 `}
+                onClick={() => setTrendingType(name)}
               >
                 {name}
               </li>
             ))}
           </ul>
         </nav>
-        <div className="flex flex-wrap gap-y-4 bg-black py-4 px-2">
+        <div className="flex flex-wrap gap-y-4  py-4 px-2">
           {data?.data.map((trending: ITrending) => (
             <TrendingVideo trending={trending} key={v4()} />
           ))}

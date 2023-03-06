@@ -179,7 +179,7 @@ const Home: NextPage = ({  }) => {
 
       <Body>
     
-        <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer overflow-x-scroll  scrollbar-track-neutral-100 scrollbar-thumb-slate-500 scrollbar-thin    ">
+        <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer  overflow-x-scroll scrollbar-none  scrollbar-track-neutral-100 scrollbar-thumb-slate-500 scrollbar-thin    ">
           {categories.map((item: string) => (
             <span
               key={v4()}
@@ -191,9 +191,9 @@ const Home: NextPage = ({  }) => {
           ))}
         </div>
         {loading ? (
-          <Loader cols={5} />
+          <Loader col={true} />
         ):null}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 items-center md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="grid gap-4 items-center grid-cols-skeleton">
           {data?.items?.map((video: IVideoV3) => (
             <VideoSnippet key={v4()} video={video} />
           ))}
