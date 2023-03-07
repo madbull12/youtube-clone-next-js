@@ -124,7 +124,7 @@ const SearchPage = ({ userPlaylists }: IProps) => {
             ))}
         </div>
 
-        <div className=" space-y-4">
+        <div className=" flex flex-col gap-y-4">
           {data?.contents
             .filter((item: IVideo) => item.type === "video")
             .map((item: IVideo) => (

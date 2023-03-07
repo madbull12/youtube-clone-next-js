@@ -6,3 +6,8 @@ export type PlaylistWithPayload = Prisma.PlaylistGetPayload<{
       user:true
     }
   }>
+
+
+// export type SavedWithPayload = Prisma.SavedVideoGetPayload<{
+
+// }>

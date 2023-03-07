@@ -11,7 +11,7 @@ export default function useSearch(url:string){
     const { data,isLoading:loading,error,refetch } =  useQuery({
         queryKey: ["searchQuery"],
         queryFn:fetchSearch,
-        
+        refetchOnWindowFocus:false
     });
 
     useEffect(()=>{

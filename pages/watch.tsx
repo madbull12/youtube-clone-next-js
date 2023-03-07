@@ -96,7 +96,7 @@ const VideoPage = () => {
   const postComment = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    const body = { text: textComment, videoId: data?.videoId };
+    const body = { text: textComment, videoId: data?.videoId as string };
     setTextComment("");
 
     await toast.promise(mutateAsync(body), {
@@ -116,6 +116,15 @@ const VideoPage = () => {
   },{
     enabled:list !== undefined
   })
+
+  const saveVideoProps = {
+    videoId:data?.videoId as string,
+    thumbnail: data?.thumbnails[1].url as string,
+    title: data?.title as string,
+    authorTitle: data?.author.title as string,
+    publishedTimeText: data?.publishedDate as string,
+  };
+
 
   console.log(playlistDetails);
 
@@ -138,7 +147,7 @@ const VideoPage = () => {
           </p>
 
           <h1 className="lg:text-xl text-base text-white">{data?.title}</h1>
-          <div className="justify-between flex items-start text-sm md:text-base md:flex-row md:items-center flex-col ">
+          <div className="justify-between flex items-start text-sm md:text-base md:flex-row md:items-center flex-col gap-y-4">
             <div className="gap-x-3 flex items-center ">
               <p className="text-gray-400 ">
                 {Number(data?.stats.views).toLocaleString()} views
@@ -151,7 +160,7 @@ const VideoPage = () => {
               <div className="flex gap-x-2 items-center cursor-pointer">
                 <FiThumbsUp className="text-white" />
                 <p className="text-white font-semibold">
-                  {nFormatter(data?.stats.likes)}
+                  {nFormatter(data?.stats.likes as number)}
                 </p>
               </div>
               <div className="flex gap-x-2 items-center cursor-pointer">
@@ -172,38 +181,7 @@ const VideoPage = () => {
                 {dialogOpen ? (
                   <div ref={saveDialogRef}>
                     <SaveDialog
-                      saveToPlaylist={() => {
-                        const video: PlaylistVideo = {
-                          videoId: data?.videoId,
-                          thumbnail: data?.thumbnails[0].url,
-                          title: data?.title,
-                          authorTitle: data?.author.title,
-                          publishedTimeText: data?.publishedDate,
-                        };
-
-                        {
-                          status === "authenticated"
-                            ? setVideoState(video)
-                            : toast.error(
-                                "Please login first to perform the action!"
-                              );
-                        }
-                      }}
-                      saveToWatchLater={() => {
-                        {
-                          status === "authenticated"
-                            ? saveToWatchLater(
-                                data?.thumbnails[0].url,
-                                data?.title,
-                                data?.author.title,
-                                data?.publishedDate,
-                                data?.videoId
-                              )
-                            : toast.error(
-                                "Please login first to perform the action!"
-                              );
-                        }
-                      }}
+                      {...saveVideoProps}
                     />
                   </div>
                 ) : null}
@@ -211,11 +189,11 @@ const VideoPage = () => {
             </div>
           </div>
           <Link href={`/channel/${data?.author.channelId}/feature`}>
-            <div className="flex items-center gap-x-4 ">
+            <div className="flex items-center gap-x-4 mt-4 ">
               <Avatar
-                src={data?.author.avatar[0].url}
-                width={data?.author.avatar[0].width}
-                height={data?.author.avatar[0].height}
+                src={data?.author.avatar[0].url as string}
+                width={data?.author.avatar[0].width as number}
+                height={data?.author.avatar[0].height as number}
               />
               <p className="text-white  cursor-pointer text-sm md:text-base font-semibold">
                 {data?.author.title}

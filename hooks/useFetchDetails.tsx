@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 
 import { youtubeDetails } from "../lib/axios";
 import { useQuery } from "@tanstack/react-query";
+import { IVideoDetails } from "../interface";
 export default function useFetchDetails(url: string) {
-  const fetchDetails = async () => {
+  const fetchDetails = async ():Promise<IVideoDetails> => {
     const res = await youtubeDetails(url);
     return res.data;
   };
