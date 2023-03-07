@@ -26,6 +26,7 @@ import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { v4 } from "uuid";
 import Loader from "../components/Loader";
+import { trpc } from "../utils/trpc";
 
 const categories = [
   "Music",
@@ -55,6 +56,8 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
   useOutsideClick(ref, () => {
     setDialogOpen(false);
   });
+  const data = trpc.watchLater.userWatchLater.useQuery();
+  console.log(data)
 
   return (
     <Link href={`/watch?v=${video.id.videoId}`}>
@@ -68,7 +71,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
             src={video.snippet.thumbnails.medium.url ?? ""}
             height={video.snippet.thumbnails.medium.height ?? 200}
             objectFit="cover"
-            width={video.snippet.thumbnails.medium.width ?? 200}
+            width={video.snippet.thumbnails.medium.width as any  ?? 200}
             className="w-1/2 rounded-xl"
           />
           

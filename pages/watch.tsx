@@ -38,11 +38,14 @@ import useVideoComments from "../hooks/useVideoComments";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import Loader from "../components/Loader";
+import { trpc } from "../utils/trpc";
+import PlaylistBox from "../components/PlaylistBox";
+import { PlaylistWithPayload } from "../types";
 
 const VideoPage = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { v } = router.query;
+  const { v,list } = router.query;
   const [textComment, setTextComment] = useState<string>("");
   const { data, loading, error } = useFetchDetails(`?id=${v}`);
   const [openDialog, setOpenDialog] = useRecoilState(playlistDialogState);
@@ -107,7 +110,14 @@ const VideoPage = () => {
   const { data: relatedContents, loading: relatedLoading } = useFetchRelated(
     `?id=${v}`
   );
-  console.log(comments);
+
+  const { data:playlistDetails } = trpc.playlist.playlistDetails.useQuery({
+    playlistId:list as string
+  },{
+    enabled:list !== undefined
+  })
+
+  console.log(playlistDetails);
 
   return (
     <Body>
@@ -246,7 +256,11 @@ const VideoPage = () => {
             </div>
           </div>
         </div>
+        
           <div className="space-y-2 flex-[0.4]">
+            {list ? (
+              <PlaylistBox playlist={playlistDetails as PlaylistWithPayload} />
+            ):null}
             {relatedContents?.contents
               .filter((item: IVideo) => item.type === "video")
               .map((item: IVideo) => (

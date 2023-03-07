@@ -1,6 +1,7 @@
-import { Session } from "next-auth";
+import { type Session } from "next-auth";
+import { trpc } from '../utils/trpc';
 import { SessionProvider } from "next-auth/react";
-import type { AppProps } from "next/app";
+import type { AppProps, AppType } from "next/app";
 import Header from "../components/Header";
 import "../styles/globals.css";
 import TimeAgo from "javascript-time-ago";
@@ -19,17 +20,15 @@ TimeAgo.addDefaultLocale(en);
 // Use the <SessionProvider> to improve performance and allow components that call
 // `useSession()` anywhere in your application to access the `session` object.
 const queryClient = new QueryClient();
-export default function App({
+const MyApp: AppType<{ session: Session | null}> = ({
   Component,
-  pageProps,
-}: AppProps<{
-  session: Session;
-}>) {
+  pageProps: { session, ...pageProps },
+}) => {
   return (
-    <SessionProvider
+<SessionProvider
       // Provider options are not required but can be useful in situations where
       // you have a short session maxAge time. Shown here with default values.
-      session={pageProps.session}
+      session={session}
     >
       <QueryClientProvider client={queryClient}>
         <AuthWrapper>
@@ -43,4 +42,5 @@ export default function App({
       </QueryClientProvider>
     </SessionProvider>
   );
-}
+};
+export default trpc.withTRPC(MyApp);

@@ -5,17 +5,13 @@ import { IncomingMessage } from "http";
 import { type Session } from "next-auth";
 
 import { getServerAuthSession } from "../common/get-server-auth-session";
-import  prisma  from "../../lib/prisma";
+import { prisma } from "../../lib/prisma";
 
 type CreateContextOptions = {
   session: Session | null;
 };
 
-/** Use this helper for:
- * - testing, so we dont have to mock Next.js' req/res
- * - trpc's `createSSGHelpers` where we don't have req/res
- * @see https://beta.create.t3.gg/en/usage/trpc#-servertrpccontextts
- **/
+
 export const createContextInner = async (opts: CreateContextOptions) => {
   return {
     session: opts.session,

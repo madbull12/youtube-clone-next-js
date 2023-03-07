@@ -14,32 +14,30 @@ import { v4 as uuidv4, v4 } from 'uuid';
 import { useQuery } from '@tanstack/react-query'
 import axios from "axios";
 import { BiLoaderAlt } from 'react-icons/bi'
+import { trpc } from "../utils/trpc";
+import {  Prisma } from "@prisma/client";
+import PlaylistComponent from "../components/PlaylistComponent";
 
-interface IProps {
-  videosList: any;
-  userPlaylists: IPlaylist[];
-}
+
+
+
 
 const ProfilePage = () => {
-  const {
-    isLoading:userWatchLaterVideosLoading,
-    error: userWatchLaterVideosError,
-    data: userWatchLaterVideos,
-  } = useQuery({
-    queryKey: ["watchLaterVideos"],
-    queryFn: () => axios.get(`/api/watch-later`).then((res)=>res.data),
-  });
-  const {
-    isLoading:userWatchPlaylistsLoading,
-    error: userPlaylistsVideosError,
-    data: userPlaylistsVideos,
-  } = useQuery({
-    queryKey: ["playlistVideos"],
-    queryFn: () => axios.get(`/api/userPlaylists`).then((res)=>res.data),
-  });
+  
+  // const {
+  //   isLoading:userWatchLaterVideosLoading,
+  //   error: userWatchLaterVideosError,
+  //   data: userWatchLaterVideos,
+  // } = useQuery({
+  //   queryKey: ["watchLaterVideos"],
+  //   queryFn: () => axios.get(`/api/watch-later`).then((res)=>res.data),
+  // });
+
+
+  const {  data:userPlaylists,isLoading:userPlaylistsLoading } = trpc.playlist.userPlaylists.useQuery();
+  const {  data:userWatchLaterVideos,isLoading:userWatchLaterVideosLoading } = trpc.watchLater.userWatchLater.useQuery();
   const { data: session } = useSession();
   const [showMore, setShowMore] = useState<number>(5);
-  console.log(userPlaylistsVideos)
   return (
     <Body>
       <div className="flex items-center gap-x-4">
@@ -94,40 +92,14 @@ const ProfilePage = () => {
           <h1 className="text-xl">Playlists</h1>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-4">
-          {userWatchPlaylistsLoading ? <BiLoaderAlt className="animate-spin text-red-600 text-xl" /> :null}
+          {userPlaylistsLoading ? <BiLoaderAlt className="animate-spin text-red-600 text-xl" /> :null}
             
-            {userPlaylistsVideos?.length === 0 ? (
+            {userPlaylists?.length === 0 ? (
                 <p className="text-white text-lg">No playlists created</p>
               ) : (
                 <>
-                  {userPlaylistsVideos?.map((playlist: IPlaylist) => (
-                    <div key={uuidv4()} className="relative">
-                        <Link href={`/`}>
-                          <div className="flex flex-col cursor-pointer space-y-2">
-                            <div className="relative ">
-                              <Image  src={playlist?.saved[0].thumbnail} width={320} height={180} />
-
-                              <div className="bg-neutral-900 grid place-items-center absolute opacity-75 right-0 top-0 bottom-0 w-1/3">
-
-                                <div className="text-white flex-col flex gap-y-2 items-center">
-                                  <p className="text-lg">{playlist.saved.length}</p>
-
-                                  <MdPlaylistPlay className="text-3xl"  />
-                                </div>
-
-
-                              </div>
-                                
-                            </div>
-                            <p className="text-white">{playlist.title}</p>
-                            <p className="text-gray-400 font-semibold">
-                              VIEW FULL PLAYLIST
-                            </p>
-
-                          </div>
-                        </Link>
-                       
-                    </div>
+                  {userPlaylists?.map((playlist) => (
+                      <PlaylistComponent key={v4()} playlist={playlist} />
                 
                   ))}
                 </>
@@ -138,41 +110,6 @@ const ProfilePage = () => {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const session = await getSession();
-//   const userPlaylists = await prisma?.playlist.findMany({
-//     where: {
-//       user: {
-//         email: session?.user?.email,
-//       },
-//     },
-//     include: {
-//       saved: {
-//         select: {
-//           thumbnail: true,
-//         },
-//       },
-//     },
-//   });
-//   const userWatchLaterVideos = await prisma?.watchLater.findMany({
-//     where: {
-//       user: {
-//         email: session?.user?.email,
-//       },
-//     },
-//     orderBy: {
-//       createdAt: "desc",
-//     },
-//   });
 
-//   console.log(userPlaylists);
-
-//   return {
-//     props: {
-//       videosList: JSON.parse(JSON.stringify(videosList)),
-//       userPlaylists: JSON.parse(JSON.stringify(userPlaylists)),
-//     },
-//   };
-// };
 
 export default ProfilePage;
