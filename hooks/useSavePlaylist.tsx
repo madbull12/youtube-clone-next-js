@@ -7,9 +7,14 @@ const useSavePlaylist = () => {
   const utils = trpc.useContext();
   const videoState = useRecoilValue(videoValue);
   console.log(videoState)
-  const { mutateAsync } = trpc.playlist.saveToPlaylist.useMutation({
+  const { mutateAsync:saveVideo } = trpc.playlist.saveToPlaylist.useMutation({
     onSettled: () => {
       utils.playlist.playlistDetails.invalidate();
+    },
+  });
+  const { mutateAsync:createAndSaveToPlaylist } = trpc.playlist.createAndSaveToPlaylist.useMutation({
+    onSettled: () => {
+      utils.playlist.userPlaylists.invalidate();
     },
   });
 
@@ -22,7 +27,7 @@ const useSavePlaylist = () => {
         playlistId,
     }
     await toast.promise(
-      mutateAsync(data),
+      saveVideo(data),
       {
         loading: "Saving to playlist",
         error: () => `Oops... something went wrong`,
@@ -31,7 +36,22 @@ const useSavePlaylist = () => {
     );
   };
 
-  return { handleSaveToPlaylist };
+  const handleCreateandSavetoPlaylist = async(playlistName:string,privacy:string) => {
+    const data = {
+        ...videoState,
+        playlistName,
+        privacy
+    }
+    await toast.promise(
+        createAndSaveToPlaylist(data),{
+            loading: "Creating playlist",
+            error: () => `Oops... something went wrong`,
+            success: () => "Saved to playlist",
+        }
+    )
+  }
+
+  return { handleSaveToPlaylist,handleCreateandSavetoPlaylist };
 };
 
 export default useSavePlaylist;

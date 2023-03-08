@@ -32,8 +32,8 @@ const SaveToPlaylist = () => {
   const [privacy, setPrivacy] = useState<string>("public");
 
 
-  const { handleSaveToPlaylist } = useSavePlaylist();
-  
+  const { handleSaveToPlaylist,handleCreateandSavetoPlaylist } = useSavePlaylist();
+
 
   console.log(privacy);
   const { mutateAsync:createPlaylist } = useMutation({
@@ -51,23 +51,7 @@ const SaveToPlaylist = () => {
 
   const createPlaylistAndSaveVideo = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    try {
-      const body = {
-        playlistName,
-        privacy,
-        ...videoStateValue,
-      };
-      await toast.promise(
-        createPlaylist(body),
-        {
-          loading: "Creating playlist",
-          success: `Added to ${body.playlistName}`,
-          error: "Oops... Something went wrong!",
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
+    handleCreateandSavetoPlaylist(playlistName,privacy)
 
     setOpenPlaylist(false);
   };
