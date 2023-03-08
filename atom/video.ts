@@ -1,8 +1,15 @@
 import { atom, selector } from "recoil";
+import { ISaved, IVideo } from "../interface";
 
-export const videoState = atom({
+export const videoState = atom<Omit<ISaved,"id"|"user">>({
   key: "videoState",
-  default: {}
+  default: {
+    title:"",
+    authorTitle:"",
+    publishedTimeText:"",
+    thumbnail:"",
+    videoId:""
+  }
 });
 
 export const videoValue = selector({

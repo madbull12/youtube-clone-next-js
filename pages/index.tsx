@@ -57,7 +57,14 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
     setDialogOpen(false);
   });
   const data = trpc.watchLater.userWatchLater.useQuery();
-  console.log(data)
+  console.log(data);
+  const saveVideoProps = {
+    videoId: video.id.videoId,
+    thumbnail: video.snippet.thumbnails.medium.url,
+    title: video.snippet.title,
+    authorTitle: video.snippet.channelTitle,
+    publishedTimeText: video.snippet.publishTime.toString(),
+  };
 
   return (
     <Link href={`/watch?v=${video.id.videoId}`}>
@@ -71,17 +78,19 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
             src={video.snippet.thumbnails.medium.url ?? ""}
             height={video.snippet.thumbnails.medium.height ?? 200}
             objectFit="cover"
-            width={video.snippet.thumbnails.medium.width as any  ?? 200}
+            width={(video.snippet.thumbnails.medium.width as any) ?? 200}
             className="w-1/2 rounded-xl"
           />
-          
+
           {/* <div className="bg-black opacity-75 text-white text-xs p-1 right-2 rounded-sm absolute bottom-2">
   {toHHMS(video.video.lengthSeconds?.toString())}
 </div> */}
         </div>
 
         <div className={` space-y-2`}>
-          <h1 className="md:text-sm text-xs max-w-xs text-white ">{video.snippet.title}</h1>
+          <h1 className="md:text-sm text-xs max-w-xs text-white ">
+            {video.snippet.title}
+          </h1>
 
           <div className="flex items-center justify-between gap-x-2">
             <p className="text-gray-400 text-sm">
@@ -90,52 +99,16 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
             {session.status === "authenticated" ? (
               <>
                 {onVideoHover && (
-                  <div className="relative">
-                    <HiOutlineDotsVertical
-                      className="text-gray-400 cursor-pointer"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setDialogOpen(!dialogOpen);
-                      }}
-                    />
-                    {dialogOpen && (
-                      <div ref={ref}>
-                        <SaveDialog
-                          saveToPlaylist={() => {
-                            const data: PlaylistVideo = {
-                              videoId: video.id.videoId,
-                              thumbnail: video.snippet.thumbnails.medium.url,
-                              title: video.snippet.title,
-                              authorTitle: video.snippet.channelTitle,
-                              publishedTimeText: video.snippet.publishedAt,
-                            };
-
-                            {
-                              session?.status === "authenticated"
-                                ? setVideoState(data)
-                                : toast.error(
-                                    "Please login first to perform the action!"
-                                  );
-                            }
-                          }}
-                          saveToWatchLater={() => {
-                            {
-                              session?.status === "authenticated"
-                                ? saveToWatchLater(
-                                    video.snippet.thumbnails.medium.url,
-                                    video.snippet.title,
-                                    video.snippet.channelTitle,
-                                    video.snippet.publishedAt.toString(),
-                                    video?.id.videoId
-                                  )
-                                : toast.error(
-                                    "Please login first to perform the action!"
-                                  );
-                            }
-                          }}
-                        />
-                      </div>
-                    )}
+                  <div
+                    className="relative"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setDialogOpen(!dialogOpen);
+                    }}
+                  >
+                    <HiOutlineDotsVertical className="text-gray-400 cursor-pointer" />
+                    {dialogOpen ? <SaveDialog {...saveVideoProps} /> : null}
+               
                   </div>
                 )}
               </>
@@ -151,22 +124,22 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
 //   userPlaylists: IPlaylist[];
 // }
 
-const Home = ({  }) => {
+const Home = ({}) => {
   const [category, setCategory] = useState("Music");
   const { data, loading, error } = useYoutubeHome(
     `/search?q=${category}&part=snippet,id&regionCode=US&maxResults=50`
   );
   console.log(data);
-  const isPlaylistOpen = useRecoilValue(isPlaylistDialogOpen);
+  // const isPlaylistOpen = useRecoilValue(isPlaylistDialogOpen);
 
-  // const openDialog = useRecoilValue(isPlaylistDialogOpen);
+  // // const openDialog = useRecoilValue(isPlaylistDialogOpen);
 
-  useEffect(() => {
-    document.body.style.overflowY = "hidden";
-    if (!isPlaylistOpen) {
-      document.body.style.overflowY = "visible";
-    }
-  }, [isPlaylistOpen]);
+  // useEffect(() => {
+  //   document.body.style.overflowY = "hidden";
+  //   if (!isPlaylistOpen) {
+  //     document.body.style.overflowY = "visible";
+  //   }
+  // }, [isPlaylistOpen]);
 
   return (
     <div>
@@ -175,14 +148,9 @@ const Home = ({  }) => {
         <meta name="description" content="Generated by create next app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {isPlaylistOpen && (
-        <Backdrop>
-          <SaveToPlaylist  />
-        </Backdrop>
-      )}
+
 
       <Body>
-    
         <div className="flex items-center gap-x-2 mb-6 [&>*]:cursor-pointer  overflow-x-scroll scrollbar-none  scrollbar-track-neutral-100 scrollbar-thumb-slate-500 scrollbar-thin    ">
           {categories.map((item: string) => (
             <span
@@ -194,9 +162,7 @@ const Home = ({  }) => {
             </span>
           ))}
         </div>
-        {loading ? (
-          <Loader col={true} />
-        ):null}
+        {loading ? <Loader col={true} /> : null}
         <div className="grid gap-4 items-center grid-cols-skeleton">
           {data?.items?.map((video: IVideoV3) => (
             <VideoSnippet key={v4()} video={video} />
@@ -209,7 +175,7 @@ const Home = ({  }) => {
 
 // export const getServerSideProps: GetServerSideProps = async (context) => {
 //   const session = await getSession();
-  
+
 //   const userPlaylists = await prisma?.playlist.findMany({
 //     where: {
 //       user: {

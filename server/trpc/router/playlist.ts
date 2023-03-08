@@ -11,7 +11,7 @@ export const playlistRouter = router({
       },
       include: {
         saved: true,
-        user:true
+        user: true,
       },
     });
   }),
@@ -26,7 +26,99 @@ export const playlistRouter = router({
         },
         include: {
           saved: true,
-          user:true
+          user: true,
+        },
+      });
+    }),
+
+  createAndSaveToPlaylist: publicProcedure
+    .input(
+      z.object({
+        playlistName: z.string(),
+        privacy: z.string(),
+        videoId: z.string(),
+        thumbnail: z.string(),
+        title: z.string(),
+        publishedTimeText: z.string(),
+        authorTitle: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const userId = ctx?.session?.user?.id;
+      const {
+        playlistName,
+        privacy,
+        videoId,
+        thumbnail,
+        title,
+        publishedTimeText,
+        authorTitle,
+      } = input;
+      return prisma?.playlist.create({
+        data: {
+          title: playlistName,
+          privacy,
+          user: {
+            connect: {
+              id: userId as string,
+            },
+          },
+          saved: {
+            create: {
+              user: {
+                connect: {
+                  id: userId as string,
+                },
+              },
+              videoId,
+              thumbnail,
+              title,
+              publishedTimeText,
+              authorTitle,
+            },
+          },
+        },
+      });
+    }),
+
+  saveToPlaylist: publicProcedure
+    .input(
+      z.object({
+        playlistId: z.string(),
+        videoId: z.string(),
+        thumbnail: z.string(),
+        title: z.string(),
+        authorTitle: z.string(),
+        publishedTimeText: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const {
+        playlistId,
+        videoId,
+        thumbnail,
+        title,
+        authorTitle,
+        publishedTimeText,
+      } = input;
+      const userId = ctx?.session?.user?.id;
+      return ctx.prisma.savedVideo.create({
+        data: {
+          playlist: {
+            connect: {
+              id: playlistId as string,
+            },
+          },
+          videoId,
+          thumbnail,
+          title,
+          authorTitle,
+          publishedTimeText,
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
         },
       });
     }),

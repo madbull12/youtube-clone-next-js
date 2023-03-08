@@ -11,6 +11,8 @@ import { v4 } from "uuid";
 import useUserPlaylists from "../hooks/useUserPlaylists";
 import { useMutation } from '@tanstack/react-query'
 import axios from "axios";
+import { trpc } from "../utils/trpc";
+import useSavePlaylist from "../hooks/useSavePlaylist";
 interface IProps {
   userPlaylists: IPlaylist[];
 }
@@ -18,8 +20,8 @@ const SaveToPlaylist = () => {
   const ref = useRef(null);
   const [openPlaylist, setOpenPlaylist] = useRecoilState(playlistDialogState);
   const videoStateValue = useRecoilValue(videoValue);
-  const { data:userPlaylists } = useUserPlaylists("/api/userPlaylists");
-  console.log(userPlaylists)
+  const { data:userPlaylists } = trpc.playlist.userPlaylists.useQuery();
+  console.log(userPlaylists);
 
   useOutsideClick(ref, () => {
     setOpenPlaylist(false);
@@ -28,6 +30,10 @@ const SaveToPlaylist = () => {
   const [showPlaylistForm, setShowPlaylistForm] = useState<boolean>(false);
   const [playlistName, setPlaylistName] = useState<string>("");
   const [privacy, setPrivacy] = useState<string>("public");
+
+
+  const { handleSaveToPlaylist } = useSavePlaylist();
+  
 
   console.log(privacy);
   const { mutateAsync:createPlaylist } = useMutation({
@@ -38,35 +44,10 @@ const SaveToPlaylist = () => {
     //   queryClient.invalidateQueries({ queryKey: ["videoComments"] });
     // },
   });
-  const { mutateAsync:saveVideoToPlaylist } = useMutation({
-    mutationFn: (data:any) => {
-      return axios.post("/api/save", data);
-    },
-    // onSuccess: () => {
-    //   queryClient.invalidateQueries({ queryKey: ["videoComments"] });
-    // },
-  });
 
-  const saveVideo = async (playlistId: string, playlistName: string) => {
-    try {
-      const body = {
-        playlistId,
-        ...videoStateValue,
-      };
-      await toast.promise(
-        saveVideoToPlaylist(body),
-        {
-          loading: "Saving video...",
-          success: `Added to ${playlistName}`,
-          error: "Oops... Something went wrong!",
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
 
-    setOpenPlaylist(false);
-  };
+
+  
 
   const createPlaylistAndSaveVideo = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -100,10 +81,10 @@ const SaveToPlaylist = () => {
         <MdClose className="text-lg" onClick={() => setOpenPlaylist(false)} />
       </header>
       <div className="flex flex-col ">
-        {userPlaylists?.map((playlist: IPlaylist) => (
+        {userPlaylists?.map((playlist) => (
           <div
             key={v4()}
-            onClick={()=>saveVideo(playlist.id,playlist.title)}
+            onClick={()=>handleSaveToPlaylist(playlist.id)}
             className="p-3 cursor-pointer hover:bg-zinc-600  flex items-center gap-x-4 justify-between"
           >
               <p>{playlist.title}</p>

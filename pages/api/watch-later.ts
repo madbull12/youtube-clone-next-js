@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import prisma from "../../lib/prisma";
+import { prisma } from "../../lib/prisma";
 
 export default async function handle(
   req: NextApiRequest,
@@ -38,6 +38,6 @@ export default async function handle(
       },
     });
 
-    res.status(200).json(videosList)
+    res.status(200).json(videosList);
   }
 }
