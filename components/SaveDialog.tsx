@@ -7,6 +7,7 @@ import { playlistDialogState } from "../atom/playlist";
 import { videoState } from "../atom/video";
 import useOutsideClick from "../hooks/useOutsideClick";
 import useSavePlaylist from "../hooks/useSavePlaylist";
+import useSaveWatchLater from "../hooks/useSaveWatchLater";
 
 interface IProps {
   videoId: string;
@@ -26,6 +27,7 @@ const SaveDialog = ({
   const [saveVideoState,setVideoState] = useRecoilState(videoState);
   const ref = useRef(null);
 
+  const { handleSaveToWatchLater } = useSaveWatchLater();
 
   const saveVideoObj={
     videoId,
@@ -42,7 +44,8 @@ const SaveDialog = ({
           className="flex items-center gap-x-3 py-1 hover:bg-zinc-600 px-4 w-full"
           onClick={(e) => {
             e.stopPropagation();
-            // saveToWatchLater();
+            e.preventDefault()
+            handleSaveToWatchLater();
           }}
         >
           <AiFillClockCircle className="text-xl" />

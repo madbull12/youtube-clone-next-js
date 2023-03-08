@@ -13,7 +13,7 @@ export default function useTrending(url:string){
     const { data,isLoading:loading,error,refetch } =  useQuery({
         queryKey: ["trendingQuery"],
         queryFn:fetchTrending,
-        
+        refetchOnWindowFocus:false
     });
 
     useEffect(()=>{

@@ -132,7 +132,7 @@ const VideoPage = () => {
     <Body>
       {openDialog && (
         <Backdrop>
-          <SaveToPlaylist />
+          <SaveToPlaylist   />
         </Backdrop>
       )}
       <div className="flex gap-x-6 gap-y-6 flex-col lg:flex-row">

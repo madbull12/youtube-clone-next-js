@@ -14,7 +14,7 @@ export default function useYoutubeHome(url:string){
     const { data,isLoading:loading,error,refetch } =  useQuery({
         queryKey: ["homePageQuery"],
         queryFn:fetchHomePage,
-        
+        refetchOnWindowFocus:false
     });
 
     useEffect(()=>{

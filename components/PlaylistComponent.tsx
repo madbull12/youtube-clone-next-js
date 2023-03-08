@@ -14,6 +14,7 @@ const PlaylistComponent = ({ playlist }:{ playlist:PlaylistWithPayload}) => {
               src={playlist?.saved[0].thumbnail}
               width={320}
               height={180}
+              className="rounded-xl"
             />
 
             <div className="bg-neutral-900 grid place-items-center absolute opacity-75 right-0 top-0 bottom-0 w-1/3">

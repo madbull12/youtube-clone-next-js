@@ -18,6 +18,7 @@ export default function useFetchDetails(url: string) {
   } = useQuery({
     queryKey: ["detailsQuery"],
     queryFn: fetchDetails,
+    
   });
 
   useEffect(() => {

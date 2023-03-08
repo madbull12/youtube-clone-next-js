@@ -6,7 +6,12 @@ import { trpc } from "../utils/trpc";
 const useSavePlaylist = () => {
   const utils = trpc.useContext();
   const videoState = useRecoilValue(videoValue);
-  console.log(videoState)
+  console.log(videoState);
+
+  // const { data:playlistDetails } = trpc.playlist.playlistDetails.useQuery({
+  //   playlistId:
+  // })
+
   const { mutateAsync:saveVideo } = trpc.playlist.saveToPlaylist.useMutation({
     onSettled: () => {
       utils.playlist.playlistDetails.invalidate();
