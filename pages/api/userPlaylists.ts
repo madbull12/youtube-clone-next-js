@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
-import prisma from "../../lib/prisma";
+import { prisma } from "../../lib/prisma";
 
 export default async function handle(
   req: NextApiRequest,
@@ -13,11 +13,10 @@ export default async function handle(
       user: {
         email: session?.user?.email,
       },
-      
     },
-    include:{
-      saved:true
-    }
+    include: {
+      saved: true,
+    },
   });
   res.status(200).json(userPlaylists);
 }
