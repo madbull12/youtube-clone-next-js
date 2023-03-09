@@ -4,7 +4,7 @@ import { youtubeDetails } from "../lib/axios";
 import { useQuery } from "@tanstack/react-query";
 import { IVideoDetails } from "../interface";
 export default function useFetchDetails(url: string) {
-  const fetchDetails = async ():Promise<IVideoDetails> => {
+  const fetchDetails = async (): Promise<IVideoDetails> => {
     const res = await youtubeDetails(url);
     return res.data;
   };
@@ -14,16 +14,16 @@ export default function useFetchDetails(url: string) {
     isLoading: loading,
     error,
     refetch,
-    isFetching
+    isFetching,
   } = useQuery({
     queryKey: ["detailsQuery"],
     queryFn: fetchDetails,
-    
+
   });
 
   useEffect(() => {
     refetch();
   }, [url]);
 
-  return { data, error, loading,isFetching };
+  return { data, error, loading, isFetching };
 }

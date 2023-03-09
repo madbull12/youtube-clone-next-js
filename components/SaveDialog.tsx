@@ -44,7 +44,7 @@ const SaveDialog = ({
           className="flex items-center gap-x-3 py-1 hover:bg-zinc-600 px-4 w-full"
           onClick={(e) => {
             e.stopPropagation();
-            e.preventDefault()
+            e.preventDefault();
             handleSaveToWatchLater();
           }}
         >

@@ -71,6 +71,8 @@ const SearchSnippet = ({ video }: IProps) => {
                 onClick={(e) => {
                   e.preventDefault()
                   setDialogOpen(!dialogOpen);
+                  setVideoState(saveVideoProps)
+
                 }}
               >
                 <MenuHorizontal />

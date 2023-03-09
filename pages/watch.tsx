@@ -45,7 +45,7 @@ import { PlaylistWithPayload } from "../types";
 const VideoPage = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const { v,list } = router.query;
+  const { v, list } = router.query;
   const [textComment, setTextComment] = useState<string>("");
   const { data, loading, error } = useFetchDetails(`?id=${v}`);
   const [openDialog, setOpenDialog] = useRecoilState(playlistDialogState);
@@ -77,17 +77,14 @@ const VideoPage = () => {
   });
   const commentInputRef = useRef<HTMLInputElement | null>(null);
 
-
   const { mutateAsync } = useMutation({
     mutationFn: (newComment: { text: string; videoId: string }) => {
       return axios.post("/api/comment", newComment);
     },
     onSuccess: () => {
-
       queryClient.invalidateQueries({ queryKey: ["videoComments"] });
     },
   });
-
 
   // const refreshData = () => {
   //   router.replace(router.asPath, undefined, { scroll: false });
@@ -104,37 +101,35 @@ const VideoPage = () => {
       success: "Comment created",
       error: "Oops... something went wrong!",
     });
-
   };
 
   const { data: relatedContents, loading: relatedLoading } = useFetchRelated(
     `?id=${v}`
   );
 
-  const { data:playlistDetails } = trpc.playlist.playlistDetails.useQuery({
-    playlistId:list as string
-  },{
-    enabled:list !== undefined
-  })
+  const { data: playlistDetails } = trpc.playlist.playlistDetails.useQuery(
+    {
+      playlistId: list as string,
+    },
+    {
+      enabled: list !== undefined,
+    }
+  );
 
   const saveVideoProps = {
-    videoId:data?.videoId as string,
+    videoId: data?.videoId as string,
     thumbnail: data?.thumbnails[1].url as string,
     title: data?.title as string,
     authorTitle: data?.author.title as string,
     publishedTimeText: data?.publishedDate as string,
   };
 
-
   console.log(playlistDetails);
+
+  if(error) return <p>Something went wrong (might've exceeded api monthly limit)</p>
 
   return (
     <Body>
-      {openDialog && (
-        <Backdrop>
-          <SaveToPlaylist   />
-        </Backdrop>
-      )}
       <div className="flex gap-x-6 gap-y-6 flex-col lg:flex-row">
         <div className="flex-[0.6] space-y-4">
           <iframe
@@ -173,6 +168,7 @@ const VideoPage = () => {
                   status === "authenticated"
                     ? setDialogOpen(true)
                     : toast.error("Please login first");
+                  setVideoState(saveVideoProps);
                 }}
                 className="flex gap-x-2 items-center cursor-pointer relative"
               >
@@ -180,9 +176,7 @@ const VideoPage = () => {
                 <p className="text-white font-semibold">SAVE</p>
                 {dialogOpen ? (
                   <div ref={saveDialogRef}>
-                    <SaveDialog
-                      {...saveVideoProps}
-                    />
+                    <SaveDialog {...saveVideoProps} />
                   </div>
                 ) : null}
               </div>
@@ -234,17 +228,17 @@ const VideoPage = () => {
             </div>
           </div>
         </div>
-        
-          <div className="space-y-2 flex-[0.4]">
-            {list ? (
-              <PlaylistBox playlist={playlistDetails as PlaylistWithPayload} />
-            ):null}
-            {relatedContents?.contents
-              .filter((item: IVideo) => item.type === "video")
-              .map((item: IVideo) => (
-                <VideoSnippet column={false} key={v4()} video={item} />
-              ))}
-          </div>
+
+        <div className="space-y-2 flex-[0.4]">
+          {list ? (
+            <PlaylistBox playlist={playlistDetails as PlaylistWithPayload} />
+          ) : null}
+          {relatedContents?.contents
+            .filter((item: IVideo) => item.type === "video")
+            .map((item: IVideo) => (
+              <VideoSnippet column={false} key={v4()} video={item} />
+            ))}
+        </div>
       </div>
       <div className="lg:hidden">
         <h1 className="text-lg text-white mt-16">Comments</h1>

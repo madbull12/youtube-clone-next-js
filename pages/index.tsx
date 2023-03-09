@@ -27,6 +27,7 @@ import { authOptions } from "./api/auth/[...nextauth]";
 import { v4 } from "uuid";
 import Loader from "../components/Loader";
 import { trpc } from "../utils/trpc";
+import MenuHorizontal from "../components/MenuHorizontal";
 
 const categories = [
   "Music",
@@ -45,7 +46,6 @@ const categories = [
 ];
 
 const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
-  const [onVideoHover, setOnVideoHover] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const [_videoState, setVideoState] = useRecoilState(videoState);
@@ -70,8 +70,7 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
     <Link href={`/watch?v=${video.id.videoId}`}>
       <div
         className={`flex-col flex items-center  gap-2 cursor-pointer`}
-        onMouseEnter={() => setOnVideoHover(true)}
-        onMouseLeave={() => setOnVideoHover(false)}
+
       >
         <div className="relative ">
           <Image
@@ -98,19 +97,18 @@ const VideoSnippet = ({ video }: { video: IVideoV3 }) => {
             </p>
             {session.status === "authenticated" ? (
               <>
-                {onVideoHover && (
                   <div
                     className="relative"
                     onClick={(e) => {
                       e.preventDefault();
                       setDialogOpen(!dialogOpen);
+                      setVideoState(saveVideoProps)
                     }}
                   >
-                    <HiOutlineDotsVertical className="text-gray-400 cursor-pointer" />
+                    <MenuHorizontal />
                     {dialogOpen ? <SaveDialog {...saveVideoProps} /> : null}
                
                   </div>
-                )}
               </>
             ) : null}
           </div>
