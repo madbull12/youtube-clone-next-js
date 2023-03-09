@@ -8,6 +8,13 @@ export type PlaylistWithPayload = Prisma.PlaylistGetPayload<{
   }>
 
 
+
+export type CommentWithPayload = Prisma.CommentGetPayload<{
+  include:{
+    author:true
+  }
+}>
+
 // export type SavedWithPayload = Prisma.SavedVideoGetPayload<{
 
 // }>

@@ -40,7 +40,7 @@ import axios from "axios";
 import Loader from "../components/Loader";
 import { trpc } from "../utils/trpc";
 import PlaylistBox from "../components/PlaylistBox";
-import { PlaylistWithPayload } from "../types";
+import { CommentWithPayload, PlaylistWithPayload } from "../types";
 
 const VideoPage = () => {
   const router = useRouter();
@@ -67,41 +67,17 @@ const VideoPage = () => {
     }
   }, [isPlaylistOpen]);
 
-  const {
-    isLoading,
-    error: queryCommentsError,
-    data: comments,
-  } = useQuery({
-    queryKey: ["videoComments"],
-    queryFn: () => fetch(`/api/videoComments/${v}`).then((res) => res.json()),
-  });
+
   const commentInputRef = useRef<HTMLInputElement | null>(null);
 
-  const { mutateAsync } = useMutation({
-    mutationFn: (newComment: { text: string; videoId: string }) => {
-      return axios.post("/api/comment", newComment);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["videoComments"] });
-    },
-  });
+  const { comments,handleAddComment } = useVideoComments(v as string);
 
-  // const refreshData = () => {
-  //   router.replace(router.asPath, undefined, { scroll: false });
-  // };
 
-  const postComment = async (e: React.SyntheticEvent) => {
+  const postComment = (e:React.ChangeEvent<HTMLFormElement>) =>{
     e.preventDefault();
+    handleAddComment(textComment);
+  }
 
-    const body = { text: textComment, videoId: data?.videoId as string };
-    setTextComment("");
-
-    await toast.promise(mutateAsync(body), {
-      loading: "Posting comment",
-      success: "Comment created",
-      error: "Oops... something went wrong!",
-    });
-  };
 
   const { data: relatedContents, loading: relatedLoading } = useFetchRelated(
     `?id=${v}`
@@ -222,8 +198,8 @@ const VideoPage = () => {
               </form>
             </div>
             <div className="space-y-6 mt-6">
-              {comments?.map((comment: IComment) => (
-                <Comment comment={comment} key={uuidv4()} />
+              {comments?.map((comment) => (
+                <Comment comment={comment as CommentWithPayload} key={uuidv4()} />
               ))}
             </div>
           </div>
@@ -262,8 +238,8 @@ const VideoPage = () => {
           </form>
         </div>
         <div className="space-y-6 mt-6">
-          {comments?.map((comment: IComment) => (
-            <Comment comment={comment} key={uuidv4()} />
+          {comments?.map((comment) => (
+            <Comment comment={comment as CommentWithPayload} key={uuidv4()} />
           ))}
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { router } from "../trpc";
+import { commentRouter } from "./comment";
 import { playlistRouter } from "./playlist";
 import { watchLaterRouter } from "./watchLater";
 
@@ -6,7 +7,8 @@ import { watchLaterRouter } from "./watchLater";
 
 export const appRouter = router({
     playlist:playlistRouter,
-    watchLater:watchLaterRouter
+    watchLater:watchLaterRouter,
+    comment:commentRouter
 });
 
 // export type definition of API
