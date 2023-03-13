@@ -35,12 +35,13 @@ const ChannelWrapper = ({ children }: IProps) => {
         <div>
           {channel.banner.desktop !== null ? (
             <Image
+              alt="thumbnail"
               src={channel?.banner.desktop[0].url}
               height={channel?.banner.desktop[2].height}
               width={channel?.banner.desktop[2].width}
             />
           ) : (
-            <Image src={NoImage} height={150} width={200} />
+            <Image alt="thumbnail" src={NoImage} height={150} width={200} />
           )}
 
           <div className="flex items-center justify-between mt-4 px-8">

@@ -16,7 +16,7 @@ import useSavePlaylist from "../hooks/useSavePlaylist";
 interface IProps {
   userPlaylists: IPlaylist[];
 }
-const SaveToPlaylist = ({ playlistId }: { playlistId: string }) => {
+const SaveToPlaylist = () => {
   const ref = useRef(null);
   const [openPlaylist, setOpenPlaylist] = useRecoilState(playlistDialogState);
   const videoStateValue = useRecoilValue(videoValue);

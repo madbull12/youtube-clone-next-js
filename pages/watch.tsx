@@ -31,7 +31,6 @@ import { unstable_getServerSession } from "next-auth";
 import SaveToPlaylist from "../components/SaveToPlaylist";
 import toast from "react-hot-toast";
 import SaveDialog from "../components/SaveDialog";
-import saveToWatchLater from "../helper/saveToWatchLater";
 import { videoState } from "../atom/video";
 import useOutsideClick from "../hooks/useOutsideClick";
 import useVideoComments from "../hooks/useVideoComments";

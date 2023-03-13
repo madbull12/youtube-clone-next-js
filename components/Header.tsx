@@ -45,6 +45,7 @@ const Header = () => {
         <AiOutlineMenu className="text-white   text-lg cursor-pointer" onClick={()=>setMenuNav(!openMenuNav)}  />
         <Link href="/">
           <Image
+          alt="logo"
             className="cursor-pointer mr-auto"
             src={YoutubeLogo}
             width={100}
