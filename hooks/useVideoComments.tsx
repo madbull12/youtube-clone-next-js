@@ -7,19 +7,22 @@ import { trpc } from "../utils/trpc";
 export default function useVideoComments(videoId: string) {
   const { data: comments } = trpc.comment.getVideoComments.useQuery({
     videoId,
+    
+  },{
+    refetchOnMount:true
   });
 
   const utils = trpc.useContext();
   const { mutateAsync: addComment } = trpc.comment.createComment.useMutation({
-    onMutate: () => {
-      utils.comment.getVideoComments.cancel();
-      const optimisticUpdate = utils.comment.getVideoComments.getData({ videoId });
-      if(optimisticUpdate) {
-        utils.comment.getVideoComments.setData(optimisticUpdate)
-      }
-    },
+    // onMutate: () => {
+    //   utils.comment.getVideoComments.cancel();
+    //   const optimisticUpdate = utils.comment.getVideoComments.getData({ videoId });
+    //   if(optimisticUpdate) {
+    //     utils.comment.getVideoComments.setData(optimisticUpdate);
+    //   }
+    // },
     onSettled: () => {
-      utils.comment.getVideoComments.invalidate();
+      utils.comment.getVideoComments.invalidate({ videoId });
     },
   });
 

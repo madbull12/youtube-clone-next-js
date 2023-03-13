@@ -58,7 +58,7 @@ const ProfilePage = () => {
               {userWatchLaterVideos?.slice(0, showMore).map((video: any) => (
                 <Link href={`/watch?v=${video.videoId}`} key={v4()}>
                   <div className="flex flex-col cursor-pointer space-y-2">
-                    <Image src={video.thumbnail} width={320} height={180} />
+                    <Image src={video.thumbnail} width={320} height={180} className="rounded-xl" />
                     <p className="text-white">{video.title}</p>
                     <div className="flex justify-between items-center">
                       <p className="text-gray-400 text-sm">

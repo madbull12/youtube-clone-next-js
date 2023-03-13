@@ -68,7 +68,7 @@ const VideoPage = () => {
   }, [isPlaylistOpen]);
 
 
-  const commentInputRef = useRef<HTMLInputElement | null>(null);
+  const commentInputRef = useRef<HTMLInputElement>(null);
 
   const { comments,handleAddComment } = useVideoComments(v as string);
 
@@ -76,6 +76,7 @@ const VideoPage = () => {
   const postComment = (e:React.ChangeEvent<HTMLFormElement>) =>{
     e.preventDefault();
     handleAddComment(textComment);
+      commentInputRef!.current!.value = ""
   }
 
 
