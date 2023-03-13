@@ -13,6 +13,7 @@ const Avatar = ({ src, width, height }: IProps) => {
         width={width ?? 30}
         height={height ?? 30}
         src={src ?? ""}
+        alt="avatar"
         className="rounded-full cursor-pointer"
       />
     </div>
