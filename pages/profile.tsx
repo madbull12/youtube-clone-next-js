@@ -74,16 +74,16 @@ const ProfilePage = () => {
         <button
           onClick={() => {
             {
-              userWatchLaterVideos?.length < showMore
+              userWatchLaterVideos?.length as number < showMore
                 ? setShowMore((prev) => prev - 5)
                 : setShowMore((prev) => prev + 5);
             }
           }}
           className={`${
-            userWatchLaterVideos?.length <= 5 ? "hidden" : "block"
+            userWatchLaterVideos?.length as number <= 5 ? "hidden" : "block"
           } bg-transparent border border-blue-500 px-4 py-2 mt-4 text-white uppercase font-semibold`}
         >
-          {userWatchLaterVideos?.length < showMore ? "Show less" : "Show more"}
+          {userWatchLaterVideos?.length as number < showMore ? "Show less" : "Show more"}
         </button>
       </div>
       <div className="mt-8">
